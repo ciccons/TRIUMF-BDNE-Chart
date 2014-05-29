@@ -1,13 +1,25 @@
 #-----------------------------------------------------------------------------
 
+# imports all necessary libraries and functions
+import gc
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
+# function to display Chart with theoretical data from the MOELLER(2003) paper
 def MOELLER():
-    filename1_MO = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_P_MOELLER.txt"
-    filename2_MO = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_ELE_MOELLER.txt"
-    filename3_MO = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable1.txt" 
-    filename4_MO = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\N_Z_stable.txt"
+
+    # determines if running on a Windows or a Unix machine and yields the required directory deliminator
+    if os.name == "nt":
+        dirDelim = "\\"
+    else:
+        dirDelim = "/"
+
+    # reads in values from text files and stores all of the data columns into arrays
+    filename1_MO = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_P_MOELLER.txt"
+    filename2_MO = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_ELE_MOELLER.txt"
+    filename3_MO = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable1.txt"
+    filename4_MO = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "N_Z_stable.txt"
 
     #assigns one column of data in the text files to various specific arrays
     N_P,Z_P,P1n,P2n,P3n = np.loadtxt(filename1_MO,skiprows=1,unpack=True)
@@ -21,9 +33,18 @@ def MOELLER():
 
     f2_MO = open(filename2_MO,'r')
     header_MO = f2_MO.readline()
-    ELE_names_MO = []
+    
+    limit = 4500
+    ar = np.arange(limit) ; dt = np.dtype((str,3))
+    ELE_names_MO = np.array(ar,dt)
+    i_ELE=0
+    
     for line in f2_MO:
-        ELE_names_MO = np.append(ELE_names_MO,line)
+        ELE_names_MO[i_ELE] = line
+        i_ELE=i_ELE+1
+        end=i_ELE
+    ELE_names_MO = ELE_names_MO[:end]
+    print ELE_names_MO
     f2_MO.close()
 
     #-------------------------------------------------------------------------
@@ -31,9 +52,9 @@ def MOELLER():
     leg_text=['Known nuclei','Stable','P(1n) dominates','P(2n) dominates','P(3n) dominates']
     
     #-------------------------------------------------------------------------
-    
+
     r = 0 
-    while r != 1 and r != 2:
+    while r != 1:
 
         N_low_user = 0;N_high_user = 0
         Z_low_user = 0;Z_high_user = 0
@@ -67,34 +88,32 @@ def MOELLER():
         
         #this part of the code makes an array for only the N and Z values that denote a stable nuclei
 
-        N_stable_user = []
-        Z_stable_user = []
+        N_stable_user = [];Z_stable_user = []
+        append_Nstable = N_stable_user.append;append_Zstable = Z_stable_user.append
 
-        for i in range(0,s1):
+        for i in xrange(0,s1):
             if Z_stable[i] >= Z_low_user and Z_stable[i] <= Z_high_user:
-                N_stable_user = np.append(N_stable_user,N_stable[i])
-                Z_stable_user = np.append(Z_stable_user,Z_stable[i])
+                append_Nstable(N_stable[i])
+                append_Zstable(Z_stable[i])
 
         #------------------------------------------------------------------------------
 
-        N_P_user = [] ; Z_P_user = [] 
+        N_P_user = [] ; Z_P_user = []
+        append_NP = N_P_user.append;append_ZP = Z_P_user.append
         N_user_magic = [] ; Z_user_magic = []
-        N_AME_user = [] ; Z_AME_user = []
+        append_Nmag = N_user_magic.append;append_Zmag = Z_user_magic.append
                 
-        for i in range(0,size_P):
+        for i in xrange(0,size_P):
 
             if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user:
-                N_P_user = np.append(N_P_user,N_P[i])
-                Z_P_user = np.append(Z_P_user,Z_P[i])
+                append_NP(N_P[i])
+                append_ZP(Z_P[i])
 
             if Z_P[i] >= 0 and Z_P[i] <= Z_high_user:
-                N_user_magic = np.append(N_user_magic,N_P[i])
-                Z_user_magic = np.append(Z_user_magic,Z_P[i])
-
-            for ii in range(0,s2):
-                if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N[ii] == N_P[i] and Z[ii] == Z_P[i]:
-                    N_AME_user = np.append(N_AME_user,N[ii])
-                    Z_AME_user = np.append(Z_AME_user,Z[ii])
+                append_Nmag(N_P[i])
+                append_Zmag(Z_P[i])
+        N_user_magic = np.array(N_user_magic)
+        Z_user_magic = np.array(Z_user_magic)
 
         #-----------------------------------------------------------------------------
 
@@ -102,47 +121,62 @@ def MOELLER():
         #greater than 0 (measured probability) and determines array of P values that should be displayed on the plot
 
         N_P1n_user = [];Z_P1n_user = []
+        append_NP1 = N_P1n_user.append;append_ZP1 = Z_P1n_user.append
         N_P2n_user = [];Z_P2n_user = []
+        append_NP2 = N_P2n_user.append;append_ZP2 = Z_P2n_user.append
         N_P3n_user = [];Z_P3n_user = []
+        append_NP3 = N_P3n_user.append;append_ZP3 = Z_P3n_user.append
 
-        N_P1n_user_value = [];Z_P1n_user_value = [];P1n_user = []
-        N_P2n_user_value = [];Z_P2n_user_value = [];P2n_user = []
-        N_P3n_user_value = [];Z_P3n_user_value = [];P3n_user = []
+        N_P1n_user_value = [];Z_P1n_user_value = []
+        append_NP1V = N_P1n_user_value.append;append_ZP1V = Z_P1n_user_value.append
+        P1n_user = []
+        append_P1 = P1n_user.append
+        
+        N_P2n_user_value = [];Z_P2n_user_value = []
+        append_NP2V = N_P2n_user_value.append;append_ZP2V = Z_P2n_user_value.append
+        P2n_user = []
+        append_P2 = P2n_user.append
+        
+        N_P3n_user_value = [];Z_P3n_user_value = []
+        append_NP3V = N_P3n_user_value.append;append_ZP3V = Z_P3n_user_value.append
+        P3n_user = []
+        append_P3 = P3n_user.append
 
-        N_ELE = [];Z_ELE = [];A_ELE = []
-        ELE_name_user = []
+        N_ELE = [];Z_ELE = []
+        append_NELE = N_ELE.append;append_ZELE = Z_ELE.append
+        A_ELE = [];ELE_name_user = []
+        append_AELE = A_ELE.append;append_ELEn = ELE_name_user.append
 
-        for i in range(0,size_P):
+        for i in xrange(0,size_P):
             if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user:
                 if P1n[i] != 0 and P1n[i] > P2n[i] and P1n[i] > P3n[i]:
-                    N_P1n_user = np.append(N_P1n_user,N_P[i]);Z_P1n_user = np.append(Z_P1n_user,Z_P[i])
+                    append_NP1(N_P[i]);append_ZP1(Z_P[i])
 
                 if P1n[i] != 0 and Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
-                    N_P1n_user_value = np.append(N_P1n_user_value,N_P[i]);Z_P1n_user_value = np.append(Z_P1n_user_value,Z_P[i])
-                    P1n_user = np.append(P1n_user,P1n[i])
+                    append_NP1V(N_P[i]);append_ZP1V(Z_P[i])
+                    append_P1(P1n[i])
 
                 if P2n[i] != 0 and P2n[i] > P1n[i] and P2n[i] > P3n[i]:
-                    N_P2n_user = np.append(N_P2n_user,N_P[i]);Z_P2n_user = np.append(Z_P2n_user,Z_P[i])
-
+                    append_NP2(N_P[i]);append_ZP2(Z_P[i])
+                    
                 if P2n[i] != 0 and Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
-                    N_P2n_user_value = np.append(N_P2n_user_value,N_P[i]);Z_P2n_user_value = np.append(Z_P2n_user_value,Z_P[i])
-                    P2n_user = np.append(P2n_user,P2n[i])
+                    append_NP2V(N_P[i]);append_ZP2V(Z_P[i])
+                    append_P2(P2n[i])
                                                  
                 if P3n[i] != 0 and P3n[i] > P1n[i] and P3n[i] > P2n[i]:
-                    N_P3n_user = np.append(N_P3n_user,N_P[i]);Z_P3n_user = np.append(Z_P3n_user,Z_P[i])
+                    append_NP3(N_P[i]);append_ZP3(Z_P[i])
 
                 if P3n[i] != 0 and Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
-                    N_P3n_user_value = np.append(N_P3n_user_value,N_P[i]);Z_P3n_user_value = np.append(Z_P3n_user_value,Z_P[i])
-                    P3n_user = np.append(P3n_user,P3n[i])
+                    append_NP3V(N_P[i]);append_ZP3V(Z_P[i])
+                    append_P3(P3n[i])
 
                 if Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
 
-                    N_ELE = np.append(N_ELE,N_P[i])
-                    Z_ELE = np.append(Z_ELE,Z_P[i])
-                    A_calc = N_P[i] + Z_P[i]
-                    ELE_name_user = np.append(ELE_name_user,ELE_names_MO[i])
-                    A_ELE = np.append(A_ELE,A_calc)
-
+                    append_NELE(N_P[i])
+                    append_ZELE(Z_P[i])
+                    append_ELEn(ELE_names_MO[i])
+                    append_AELE(N_P[i]+Z_P[i])
+                    
         #---------------------------------------------------------------------------
         
         color1='black'
@@ -219,22 +253,22 @@ def MOELLER():
 
         if len(N_ELE) != 0 and len(ELE_name_user) != 0 and Delta_Z <= 10: 
             #xyouts,N_spec-0.35,Z_spec+0.28,Special_user,charsize=1,color=color1
-            for i in range(0,len(N_ELE)):
+            for i in xrange(0,len(N_ELE)):
                 ELE_info = ' '.join([ELE_name_user[i].rstrip('\n'),str(int(A_ELE[i]))])
                 plt.text(N_ELE[i]-N_ELE_adj1,Z_ELE[i]+Z_ELE_adj1,ELE_info,fontsize=fontsize_set_1)
 
             if len(N_P1n_user_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
-                for i in range(0,len(N_P1n_user_value)):
+                for i in xrange(0,len(N_P1n_user_value)):
                     str_ratio="{0:.2f}".format(P1n_user[i])
                     plt.text(N_P1n_user_value[i]-N_adj,Z_P1n_user_value[i]+Z_adj_1,str_ratio+'%',fontsize=fontsize_set_3)
                         
             if len(N_P2n_user_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
-                for i in range(0,len(N_P2n_user_value)):
+                for i in xrange(0,len(N_P2n_user_value)):
                     str_ratio="{0:.2f}".format(P2n_user[i])
                     plt.text(N_P2n_user_value[i]-N_adj,Z_P2n_user_value[i]+Z_adj_2,str_ratio+'%',fontsize=fontsize_set_3)
 
             if len(N_P3n_user_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
-                for i in range(0,len(N_P3n_user_value)):
+                for i in xrange(0,len(N_P3n_user_value)):
                     str_ratio="{0:.2f}".format(P3n_user[i])
                     plt.text(N_P3n_user_value[i]-N_adj,Z_P3n_user_value[i]+Z_adj_3,str_ratio+'%',fontsize=fontsize_set_3)
             
@@ -316,10 +350,9 @@ def MOELLER():
             leg_list = np.append(leg_list,leg_text[3])
         if c5 == 1:
             leg_list = np.append(leg_list,leg_text[4])        
-            
-        l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
 
         if Delta_N <= 10 and Delta_Z <= 10:
+            l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
             if Delta_Z == 10 and Delta_N == 10:
                 l2 = plt.legend(('  Isotope  ','  P1n','  P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                 g.add_artist(l1)
@@ -327,34 +360,42 @@ def MOELLER():
                 l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                 g.add_artist(l1)
             if Delta_Z == 4 and Delta_N == 4:
-                l2 = plt.legend(('     Isotope  ','  P1n','  P2n','  P3n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                 g.add_artist(l1)
+        else:
+            l1 = plt.legend(leg_list,loc=4,markerscale=ms1,numpoints=1)
 
         plt.show()
-        r=input("If r = 1 or 2, program will stop. If r = 0, program continues. Enter r: ")
+        r=input("If r = 1, program will stop. If r = 0, program continues. Enter r: ")
 #------------------------------------------------------------------------------------------------------------
 
 def main():
     
     choice_user = 0
     choice_user = input("Enter 1 to display the experimental version; Enter 2 to display the theoretical version: ")
+    
+    if os.name == "nt":
+        dirDelim = "\\"
+    else:
+        dirDelim = "/"
 
     if choice_user == 2:
         MOELLER()
     else:
         #reads in values from text files and stores all of the data columns into arrays
-        filename1 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable1.txt" 
-        filename2 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\N_Z_stable.txt"
+        #filename1 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-BDNE-Chart\Text_Files\ChartNuclides_DataTable1.txt" 
+        filename1 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable1.txt"
+        filename2 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "N_Z_stable.txt"
         
-        filename3 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_Qbn.txt" 
-        filename4 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_Qb2n.txt"
-        filename5 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_Qb3n.txt"
-        filename6 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_Qb4n.txt"
-
-        filename7 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_P_ENSDF.txt"
-        filename8 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_ELE_ENSDF.txt"
-        filename9 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_iso1_ENSDF.txt"
-        filename10 = "C:\Users\Stephanie_2\Documents\GitHub\TRIUMF-Bn-Chart\Text_Files\ChartNuclides_DataTable_iso2_ENSDF.txt"
+        filename3 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_Qbn.txt"
+        filename4 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_Qb2n.txt"
+        filename5 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_Qb3n.txt"
+        filename6 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_Qb4n.txt"
+        
+        filename7 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_P_ENSDF.txt"
+        filename8 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_ELE_ENSDF.txt"
+        filename9 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_iso1_ENSDF.txt"
+        filename10 = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_iso2_ENSDF.txt"
 
         N,Z,bn,b2n = np.loadtxt(filename1,skiprows=1,unpack=True)
         s1 = len(N)
@@ -390,7 +431,7 @@ def main():
 
         r = 0
 
-        while r != 1 and r != 2:
+        while r != 1:
 
             N_low_user = 0
             N_high_user = 0
@@ -446,7 +487,7 @@ def main():
             Z_Qb4n_user = []
 
             # for loop that assigns the values of N and Z to each array
-            for i in range(0,s1):
+            for i in xrange(0,s1):
 
                 if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user: 
                     N_user = np.append(N_user,N[i])
@@ -480,7 +521,7 @@ def main():
             N_stable_user = []
             Z_stable_user = []
 
-            for i in range(0,s2):
+            for i in xrange(0,s2):
 
                 if Z_stable[i] >= Z_low_user and Z_stable[i] <= Z_high_user and N_stable[i] >= N_low_user and N_stable[i] <= N_high_user:
                     N_stable_user = np.append(N_stable_user,N_stable[i])
@@ -557,7 +598,7 @@ def main():
             P1n_user_iso2 = []
             P2n_user_iso2 = []
             
-            for i in range(0,size_P):
+            for i in xrange(0,size_P):
 
                 if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and P1n[i] != 0 and Special[i] <= 5: 
                     N_P1n_user = np.append(N_P1n_user,N_P[i]) 
@@ -638,7 +679,7 @@ def main():
                          N_spec = np.append(N_spec,N_P[i])
                          Z_spec = np.append(Z_spec,Z_P[i])
 
-            for i in range(0,size_P_iso1): 
+            for i in xrange(0,size_P_iso1): 
                 if Z_P_iso1[i] >= Z_low_user and Z_P_iso1[i] <= Z_high_user and N_P_iso1[i] > N_low_user and N_P_iso1[i] < N_high_user and Special_iso1[i] > 5 and P1n_iso1[i] != 0:
                     N_P1n_user_iso1 = np.append(N_P1n_user_iso1,N_P_iso1[i]) 
                     Z_P1n_user_iso1 = np.append(Z_P1n_user_iso1,Z_P_iso1[i])
@@ -649,7 +690,7 @@ def main():
                         Z_P2n_user_iso1 = np.append(Z_P2n_user_iso1,Z_P_iso1[i])
                         P2n_user_iso1 = np.append(P2n_user_iso1,P2n_iso1[i])
 
-            for i in range(0,size_P_iso2):
+            for i in xrange(0,size_P_iso2):
                 if Z_P_iso2[i] >= Z_low_user and Z_P_iso2[i] <= Z_high_user and N_P_iso2[i] > N_low_user and N_P_iso2[i] < N_high_user and Special_iso2[i] > 5 and P1n_iso2[i] != 0:
                     N_P1n_user_iso2 = np.append(N_P1n_user_iso2,N_P_iso2[i])
                     Z_P1n_user_iso2 = np.append(Z_P1n_user_iso2,Z_P_iso2[i])
@@ -758,63 +799,63 @@ def main():
 
             if ratio_user == 1: 
                 if len(N_P1n_ratio) != 0 and Delta_Z <= 10 and Delta_N <= 10:
-                    for i in range(0,len(N_P1n_ratio)):
+                    for i in xrange(0,len(N_P1n_ratio)):
                         str_ratio="{0:.2f}".format(P1n_ratio[i])
                         plt.text(N_P1n_ratio[i]-N_adj_r,Z_P1n_ratio[i]+Z_adj_1,str_ratio,fontsize=fontsize_set_2)
                       
                 if len(N_P2n_ratio) != 0 and Delta_Z <= 10 and Delta_N <= 10:
-                    for i in range(0,len(N_P2n_ratio)):
+                    for i in xrange(0,len(N_P2n_ratio)):
                         str_ratio="{0:.2f}".format(P2n_ratio[i])
                         plt.text(N_P2n_ratio[i]-N_adj_r,Z_P2n_ratio[i]+Z_adj_2,str_ratio,fontsize=fontsize_set_2)
 
                 if len(N_P3n_ratio) != 0 and Delta_Z <= 7 and Delta_N <= 7:
-                    for i in range(0,len(N_P3n_ratio)):
+                    for i in xrange(0,len(N_P3n_ratio)):
                         str_ratio="{0:.2f}".format(P3n_ratio[i])
                         plt.text(N_P3n_ratio[i]-N_adj_r,Z_P3n_ratio[i]+Z_adj_3,str_ratio,fontsize=fontsize_set_2)
 
                 if len(N_P4n_ratio) != 0 and Delta_Z <= 7 and Delta_N <= 7:
-                    for i in range(0,len(N_P4n_ratio)):
+                    for i in xrange(0,len(N_P4n_ratio)):
                         str_ratio="{0:.2f}".format(P4n_ratio[i])
                         plt.text(N_P4n_ratio[i]-N_adj_r,Z_P4n_ratio[i]+Z_adj_4,str_ratio,fontsize=fontsize_set_2)
 
             if ratio_user != 1:
                 if len(N_P1n_user_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
-                    for i in range(0,len(N_P1n_user_value)):
+                    for i in xrange(0,len(N_P1n_user_value)):
                         str_ratio="{0:.2f}".format(P1n_user[i])
                         plt.text(N_P1n_user_value[i]-N_adj,Z_P1n_user_value[i]+Z_adj_1,str_ratio+'%',fontsize=fontsize_set_3)
                             
                 if len(N_P2n_user_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
-                    for i in range(0,len(N_P2n_user_value)):
+                    for i in xrange(0,len(N_P2n_user_value)):
                         str_ratio="{0:.2f}".format(P2n_user[i])
                         plt.text(N_P2n_user_value[i]-N_adj,Z_P2n_user_value[i]+Z_adj_2,str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P3n_user_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
-                    for i in range(0,len(N_P3n_user_value)):
+                    for i in xrange(0,len(N_P3n_user_value)):
                         str_ratio="{0:.2f}".format(P3n_user[i])
                         plt.text(N_P3n_user_value[i]-N_adj,Z_P3n_user_value[i]+Z_adj_3,str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P4n_user_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
-                    for i in range(0,len(N_P4n_user_value)):
+                    for i in xrange(0,len(N_P4n_user_value)):
                         str_ratio="{0:.2f}".format(P4n_user[i])
                         plt.text(N_P4n_user_value[i]-N_adj,Z_P4n_user_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P1n_user_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
-                    for i in range(0,len(N_P1n_user_iso1)):
+                    for i in xrange(0,len(N_P1n_user_iso1)):
                         str_ratio="{0:.2f}".format(P1n_user_iso1[i])
                         plt.text(N_P1n_user_iso1[i]-N_adj_i,Z_P1n_user_iso1[i]+Z_adj_1,': '+str_ratio+'%',fontsize=fontsize_set_3)
                         
                 if len(N_P2n_user_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
-                    for i in range(0,len(N_P2n_user_iso1)):
+                    for i in xrange(0,len(N_P2n_user_iso1)):
                         str_ratio="{0:.2f}".format(P2n_user_iso1[i])
                         plt.text(N_P2n_user_iso1[i]-N_adj_i,Z_P2n_user_iso1[i]+Z_adj_2,': '+str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P1n_user_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
-                    for i in range(0,len(N_P1n_user_iso2)):
+                    for i in xrange(0,len(N_P1n_user_iso2)):
                         str_ratio="{0:.2f}".format(P1n_user_iso2[i])
                         plt.text(N_P1n_user_iso2[i]-N_adj_i,Z_P1n_user_iso2[i]+Z_adj_3,': '+str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P2n_user_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
-                    for i in range(0,len(N_P2n_user_iso2)):
+                    for i in xrange(0,len(N_P2n_user_iso2)):
                         str_ratio="{0:.2f}".format(P2n_user_iso2[i])
                         plt.text(N_P2n_user_iso2[i]-N_adj_i,Z_P2n_user_iso2[i]+Z_adj_4,': '+str_ratio+'%',fontsize=fontsize_set_3)
                 
@@ -916,10 +957,9 @@ def main():
                 leg_list = np.append(leg_list,leg_text[8])
             if c10 == 1:
                 leg_list = np.append(leg_list,leg_text[9])
-                
-            l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
 
             if Delta_N <= 10 and Delta_Z <= 10:
+                l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
                 if ratio_user == 1 and Delta_Z == 10 and Delta_N == 10:
                     l2 = plt.legend(('      Isotope','(P1n Exp./P1n Theory)','(P2n Exp./P2n Theory)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
@@ -936,8 +976,10 @@ def main():
                 if ratio_user != 1 and Delta_Z == 4 and Delta_N == 4:
                     l2 = plt.legend(('     Isotope  ','  P1n : iso1-P1n','  P2n : iso1-P2n','  P3n : iso2-P1n','  P4n : iso2-P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
+            else:
+                l1 = plt.legend(leg_list,loc=4,markerscale=ms1,numpoints=1)
 
             plt.show()
-            r=input("If r = 1 or 2, program will stop. If r = 0, program continues. Enter r: ")
+            r=input("If r = 1, program will stop. If r = 0, program continues. Enter r: ")
                         
 main()
