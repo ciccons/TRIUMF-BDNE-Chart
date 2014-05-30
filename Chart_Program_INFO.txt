@@ -1,0 +1,30 @@
+beta-delayed neutron Chart Program
+Author: Stephanie Ciccone, TRIUMF/McMaster University
+Supervisor: Dr. Iris Dillmann
+-------------------------------------------------------------
+
+Set-Up Instructions
+----------------------
+
+This program was written in Python using Python 2.7. Please Have Python 2.7 installed in order to run this program. 
+A version tested to run in the Python 3x series will be made in the future.
+This program should run on a Windows machine or a Unix machine.
+
+Once Python is installed, some extra libraries will also have to be installed in order to run this program. 
+Those are:
+
+numpy - http://sourceforge.net/projects/numpy/files/
+
+matplotlib - http://matplotlib.org/downloads.html
+Also requires dateutil, pytz, pyparsing, and six to run properly which can be found here: 
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#matplotlib 
+
+
+After installing Python 2.7 and the relevant extra libraries, this program should compile and run once obtained off of Github.
+https://github.com/ciccons/TRIUMF-BDNE-Chart
+
+------------------------
+
+This BDNE Chart program is still in the process of being optimized. 
+Some problems/issues may occur but they will be dealt with quickly.
+
