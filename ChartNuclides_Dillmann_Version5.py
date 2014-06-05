@@ -48,7 +48,6 @@ def MOELLER():
         i_ELE=i_ELE+1
         end=i_ELE
     ELE_names_MO = ELE_names_MO[:end]
-    print ELE_names_MO
     f2_MO.close()
 
     #-------------------------------------------------------------------------
@@ -73,7 +72,10 @@ def MOELLER():
         print " 1. An N range with a difference equal to 10 and a Z range with a difference equal to 10."
         print " 2. An N range with a difference equal to 7 and a Z range with a difference equal to 7."
         print " 3. An N range with a difference equal to 4 and a Z range with a difference equal to 4."
+        print " 4. An N range with a difference equal to 0 and a Z range with a difference equal to 0."
         print "The Chart will output normally if BOTH ranges are greater than these limits."
+        print "You also have the option to display a color bar for either P1n, P2n, or P3n values."
+        print "It is recommended to input exact differences following Options 1 to 4 above for optimal viewing results."
         print""
         print"---------------------------------------------------"
         print""
@@ -168,7 +170,7 @@ def MOELLER():
                 if P1n[i] != 0:
                     append_NP1C(N_P[i]);append_ZP1C(Z_P[i]) #makes an array for the color bar version
 
-                    if Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
+                    if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
                         append_NP1V(N_P[i]);append_ZP1V(Z_P[i]) #makes array for nuclei which will have data displayed about them
                         append_P1(P1n[i])
 
@@ -202,7 +204,7 @@ def MOELLER():
                 if P2n[i] != 0:
                     append_NP2C(N_P[i]);append_ZP2C(Z_P[i])
 
-                    if Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
+                    if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
                         append_NP2V(N_P[i]);append_ZP2V(Z_P[i])
                         append_P2(P2n[i])
 
@@ -235,7 +237,7 @@ def MOELLER():
                 if P3n[i] != 0:
                     append_NP3C(N_P[i]);append_ZP3C(Z_P[i]) 
                     
-                    if Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
+                    if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
                         append_NP3V(N_P[i]);append_ZP3V(Z_P[i])
                         append_P3(P3n[i])
 
@@ -262,7 +264,7 @@ def MOELLER():
                         if P3n[i] > 90 and P3n[i] <= 100:
                             append_P3ncolor('purple')
 
-                if Z_P[i] > Z_low_user and Z_P[i] < Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
+                if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
 
                     append_NELE(N_P[i])
                     append_ZELE(Z_P[i])
@@ -280,19 +282,14 @@ def MOELLER():
         color2='Tomato'
         color3='DeepSkyBlue'
         color4='orange'
-        color5='Maroon'
-        color6='Lime'
-        color7='Red'
-        color8='Magenta'
-
         # all variables necessary to tweak the plots for optimal viewing
         if Delta_N > 10 and Delta_Z > 10:
             msize = 9
             mew = 2.0;ms1=1
             lw1 = '0.5';lw2 = '1'
-            ax1_1=0.9;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
+            ax1_1=0.93;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
             
-        if Delta_N == 10 and Delta_Z == 10:
+        if Delta_N <= 10 and Delta_Z <= 10 and Delta_N > 7 and Delta_Z > 7:
             msize = 35
             mew = 3.0;ms1=0.2;ms2=0
             lw1 = '2.0';lw2 = '2.5'
@@ -305,7 +302,7 @@ def MOELLER():
             Z_adj_1=-0.06;Z_adj_2=-0.3
             ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
             
-        if Delta_N == 7 and Delta_Z == 7:
+        if Delta_N <= 7 and Delta_Z <= 7 and Delta_N > 4 and Delta_Z > 4:
             msize = 45
             mew = 4.0;ms1=0.2;ms2=0
             lw1 = '2.0';lw2 = '2.5'
@@ -318,7 +315,7 @@ def MOELLER():
             Z_adj_1=0.05;Z_adj_2=-0.08;Z_adj_3=-0.22;Z_adj_4=-0.36
             ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
             
-        if Delta_N == 4 and Delta_Z == 4:
+        if Delta_N <= 4 and Delta_Z <= 4  and Delta_N > 0 and Delta_Z > 0:
             msize = 70
             mew = 5.0;ms1=0.1;ms2=0
             lw1 = '3.0';lw2 = '3.5'
@@ -329,6 +326,19 @@ def MOELLER():
             fontsize_set_1=12;fontsize_set_2=11;fontsize_set_3=8.5
             N_adj=0.4;N_adj_i=0;N_adj_r=0.25
             Z_adj_1=0.15;Z_adj_2=0.05;Z_adj_3=-0.05;Z_adj_4=-0.16
+            ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
+
+        if Delta_N == 0 and Delta_Z == 0:
+            msize = 200
+            mew = 5.0;ms1=0.05;ms2=0
+            lw1 = '3.0';lw2 = '3.5'
+            Cred_N = -0.1 
+            Cred_Z1=0.9;Cred_Z2=0.95;Cred_Z3=1
+            Cred_Z4=1.05;Cred_Z5=1.1;Cred_Z6=1.15
+            N_ELE_adj1=0.1;Z_ELE_adj1=0.3
+            fontsize_set_1=20;fontsize_set_2=4;fontsize_set_3=18
+            N_adj=0.1;N_adj_i=0;N_adj_r=0.25
+            Z_adj_1=0.2;Z_adj_2=0.1;Z_adj_3=0;Z_adj_4=-0.1
             ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
 
         # if statement which determines which Chart type will be displayed
@@ -343,7 +353,7 @@ def MOELLER():
             plt.ylabel("Z")
 
             # Credits 
-            if Delta_N <= 10 and Delta_Z <= 10:
+            if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                 plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie',fontsize=10)
                 plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'               TRIUMF/McMaster University',fontsize=10)
                 plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,'Masses: AME 2012 (Wang et al.)',fontsize=10)
@@ -420,6 +430,7 @@ def MOELLER():
                 plt.plot(N_user_magic,Z_user_magic*0.+126.5,color=color1,linewidth=lw2)
                 plt.plot(N_user_magic,Z_user_magic*0.+125.5,color=color1,linewidth=lw2)
 
+            print len(N_ELE),len(ELE_name_user)
             if len(N_ELE) != 0 and len(ELE_name_user) != 0 and Delta_Z <= 10 and Delta_N <= 10: 
                 #xyouts,N_spec-0.35,Z_spec+0.28,Special_user,charsize=1,color=color1
                 for i in xrange(0,len(N_ELE)):
@@ -456,13 +467,10 @@ def MOELLER():
 
             if Delta_N <= 10 and Delta_Z <= 10:
                 l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
-                if Delta_Z == 10 and Delta_N == 10:
+                if Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
                     l2 = plt.legend(('  Isotope  ','  P1n','  P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
-                if Delta_Z == 7 and Delta_N == 7:
-                    l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
-                    g.add_artist(l1)
-                if Delta_Z == 4 and Delta_N == 4:
+                if Delta_Z <= 7 and Delta_N <= 7:
                     l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
             else:
@@ -628,7 +636,7 @@ def main():
 
         # list of text in order to properly set up the legend and special symbols
         Special_sym = ['<','>','ca.','?']
-        leg_text = ['Known','Stable','Q(B1n) > 0 keV','Q(B2n) > 0 keV','Q(B3n) > 0 keV','Q(B4n) > 0 keV','Meas. P(1n)','Meas. P(2n)','Meas. P(3n)','Meas. P(4n)']
+        leg_text = ['Known','Stable','Q(b1n) > 0 keV','Q(b2n) > 0 keV','Q(b3n) > 0 keV','Q(b4n) > 0 keV','Measured P(1n)','Measured P(2n)','Measured P(3n)','Measured P(4n)']
 
     #----------------------------------------------------------------------------
 
@@ -646,11 +654,13 @@ def main():
             print "Welcome to the Chart of Nuclides Output Program - ENSDF Edition."
             print ""
             print "The Chart will zoom in and display P values of the measured, known emitters if the user inputs: "
-            print " 1. An N range with a difference equal to 4 and a Z range with a difference equal to 4."
-            print " 2. An N range with a difference equal to 7 and a Z range with a difference equal to 7."
-            print " 3. An N range with a difference equal to 10 and a Z range with a difference equal to 10."
+            print " 1. An N range with a difference equal to 0 and a Z range with a difference equal to 0."
+            print " 2. An N range with a difference equal to 4 and a Z range with a difference equal to 4."
+            print " 3. An N range with a difference equal to 7 and a Z range with a difference equal to 7."
+            print " 4. An N range with a difference equal to 10 and a Z range with a difference equal to 10."
             print "The Chart will output normally if BOTH ranges are greater than 10."
             print "You also have the option to display the ratio difference between the experimentally known and theoretically known emitters."
+            print "It is recommended to input exact differences following Options 1 to 4 above for optimal viewing results."
             print ""
             print "---------------------------------------------------"
             print ""
@@ -910,7 +920,7 @@ def main():
             color2='Tomato'
             color3='DeepSkyBlue'
             color4='orange'
-            color5='Maroon'
+            color5='IndianRed'
             color6='Lime'
             color7='Red'
             color8='Magenta'
@@ -925,20 +935,23 @@ def main():
                 msize = 9
                 mew = 2.0;ms1=1
                 lw1 = '0.5';lw2 = '1'
+                Cred_N = -0.3
+                Cred_Z1=-0.8;Cred_Z2=0;Cred_Z3=0.8 
+                Cred_Z4=1.6;Cred_Z5=2.4;Cred_Z6=3.2
                 
-            if Delta_N == 10 and Delta_Z == 10:
+            if Delta_N <= 10 and Delta_Z <= 10  and Delta_Z > 7 and Delta_Z > 7:
                 msize = 35
                 mew = 3.0;ms1=0.2;ms2=0
                 lw1 = '2.0';lw2 = '2.5'
                 Cred_N = -0.3 
-                Cred_Z1=-0.4;Cred_Z2=0;Cred_Z3=0.4 
-                Cred_Z4=0.8;Cred_Z5=1.2;Cred_Z6=1.6
+                Cred_Z1=-0.3;Cred_Z2=0;Cred_Z3=0.3 
+                Cred_Z4=0.6;Cred_Z5=0.9;Cred_Z6=1.2
                 N_ELE_adj1=0.37;Z_ELE_adj1=0.15
                 fontsize_set_1=9;fontsize_set_2=9;fontsize_set_3=8
-                N_adj=0.28;N_adj_r=0.28
+                N_adj=0.34;N_adj_r=0.28
                 Z_adj_1=-0.06;Z_adj_2=-0.3
                 
-            if Delta_N == 7 and Delta_Z == 7:
+            if Delta_N <= 7 and Delta_Z <= 7 and Delta_Z > 4 and Delta_Z > 4:
                 msize = 45
                 mew = 4.0;ms1=0.2;ms2=0
                 lw1 = '2.0';lw2 = '2.5'
@@ -950,17 +963,30 @@ def main():
                 N_adj=0.25;N_adj_r=0.25
                 Z_adj_1=0.05;Z_adj_2=-0.1;Z_adj_3=-0.25;Z_adj_4=-0.4
                 
-            if Delta_N == 4 and Delta_Z == 4:
+            if Delta_N <= 4 and Delta_Z <= 4:
                 msize = 70
                 mew = 5.0;ms1=0.1;ms2=0
                 lw1 = '3.0';lw2 = '3.5'
-                Cred_N = -0.1 
-                Cred_Z1=0.2;Cred_Z2=0.4;Cred_Z3=0.6
-                Cred_Z4=0.8;Cred_Z5=1.0;Cred_Z6=1.2
-                N_ELE_adj1=0.3;Z_ELE_adj1=0.3
+                Cred_N = -0.15 
+                Cred_Z1=0.2;Cred_Z2=0.35;Cred_Z3=0.5
+                Cred_Z4=0.65;Cred_Z5=0.8;Cred_Z6=0.95
+                N_ELE_adj1=0.3;Z_ELE_adj1=0.28
                 fontsize_set_1=12;fontsize_set_2=11;fontsize_set_3=8.5
                 N_adj=0.4;N_adj_i=0;N_adj_r=0.25
                 Z_adj_1=0.15;Z_adj_2=0.05;Z_adj_3=-0.05;Z_adj_4=-0.16
+
+            if Delta_N == 0 and Delta_Z == 0:
+                msize = 200
+                mew = 5.0;ms1=0.05;ms2=0
+                lw1 = '3.0';lw2 = '3.5'
+                Cred_N = -0.1 
+                Cred_Z1=0.9;Cred_Z2=0.95;Cred_Z3=1
+                Cred_Z4=1.05;Cred_Z5=1.1;Cred_Z6=1.15
+                N_ELE_adj1=0.1;Z_ELE_adj1=0.3
+                fontsize_set_1=20;fontsize_set_2=18;fontsize_set_3=18
+                N_adj=0.3;N_adj_i=0;N_adj_r=0.1
+                Z_adj_1=0.2;Z_adj_2=0.1;Z_adj_3=0;Z_adj_4=-0.1
+                ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
 
             if len(N_user) != 0:
                 plt.plot(N_user,Z_user,marker='s',color='0.8',markersize=msize,linestyle='')
@@ -1047,22 +1073,22 @@ def main():
                 if len(N_P1n_user_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                     for i in xrange(0,len(N_P1n_user_iso1)):
                         str_ratio="{0:.2f}".format(P1n_user_iso1[i])
-                        plt.text(N_P1n_user_iso1[i]-N_adj_i,Z_P1n_user_iso1[i]+Z_adj_1,': '+str_ratio+'%',fontsize=fontsize_set_3)
+                        plt.text(N_P1n_user_iso1[i]-N_adj_i,Z_P1n_user_iso1[i]+Z_adj_1,'| '+str_ratio+'%',fontsize=fontsize_set_3)
                         
                 if len(N_P2n_user_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                     for i in xrange(0,len(N_P2n_user_iso1)):
                         str_ratio="{0:.2f}".format(P2n_user_iso1[i])
-                        plt.text(N_P2n_user_iso1[i]-N_adj_i,Z_P2n_user_iso1[i]+Z_adj_2,': '+str_ratio+'%',fontsize=fontsize_set_3)
+                        plt.text(N_P2n_user_iso1[i]-N_adj_i,Z_P2n_user_iso1[i]+Z_adj_2,'| '+str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P1n_user_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                     for i in xrange(0,len(N_P1n_user_iso2)):
                         str_ratio="{0:.2f}".format(P1n_user_iso2[i])
-                        plt.text(N_P1n_user_iso2[i]-N_adj_i,Z_P1n_user_iso2[i]+Z_adj_3,': '+str_ratio+'%',fontsize=fontsize_set_3)
+                        plt.text(N_P1n_user_iso2[i]-N_adj_i,Z_P1n_user_iso2[i]+Z_adj_3,'| '+str_ratio+'%',fontsize=fontsize_set_3)
 
                 if len(N_P2n_user_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                     for i in xrange(0,len(N_P2n_user_iso2)):
                         str_ratio="{0:.2f}".format(P2n_user_iso2[i])
-                        plt.text(N_P2n_user_iso2[i]-N_adj_i,Z_P2n_user_iso2[i]+Z_adj_4,': '+str_ratio+'%',fontsize=fontsize_set_3)
+                        plt.text(N_P2n_user_iso2[i]-N_adj_i,Z_P2n_user_iso2[i]+Z_adj_4,'| '+str_ratio+'%',fontsize=fontsize_set_3)
                 
             plt.axis('scaled')
             g=plt.gca()
@@ -1127,19 +1153,20 @@ def main():
                 plt.plot(N_user_magic,Z_user_magic*0.+126.5,color=color1,linewidth=lw2)
                 plt.plot(N_user_magic,Z_user_magic*0.+125.5,color=color1,linewidth=lw2)
 
-            if Delta_N <= 10 and Delta_Z <= 10:
+            if Delta_N == 10 and Delta_Z == 10 or Delta_N == 7 and Delta_Z == 7 or Delta_N == 4 and Delta_Z == 4:
                 plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie',fontsize=10)
-                plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'               TRIUMF/McMaster University',fontsize=10)
+                plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'    TRIUMF/McMaster University',fontsize=10)
                 plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,'Masses: AME 2012 (Wang et al.)',fontsize=10)
 
                 if ratio_user == 1:
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Pxn-emitters: ENSDF(June 2011), MIERNIK(2013)',fontsize=10)
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,'               HOSMER(2010), PADGETT(2010), ',fontsize=10)
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z6,'               MOELLER(2003)',fontsize=10) 
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Exp.: ENSDF(June 2011), Miernik(2013)',fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,'        Hosmer(2010), Padgett(2010)',fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z6,'Theo.: Moeller(2003)',fontsize=10) 
 
                 if ratio_user != 1:
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Pxn-emitters: ENSDF(June 2011), MIERNIK(2013)',fontsize=10)
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,'               HOSMER(2010), PADGETT(2010)',fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Exp.: ENSDF(June 2011)',fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,'        Hosmer(2010),Padgett(2010)',fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z6,'        Miernik(2013)',fontsize=10)
 
             if c1 == 1:
                 leg_list = np.append(leg_list,leg_text[0])
@@ -1165,21 +1192,21 @@ def main():
 
             if Delta_N <= 10 and Delta_Z <= 10:
                 l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
-                if ratio_user == 1 and Delta_Z == 10 and Delta_N == 10:
+                if ratio_user == 1 and Delta_Z <= 10 and Delta_N <= 10  and Delta_N > 7 and Delta_Z > 7:
                     l2 = plt.legend(('      Isotope','(P1n Exp./P1n Theory)','(P2n Exp./P2n Theory)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
                 if ratio_user == 1 and Delta_Z <= 7 and Delta_N <= 7:
                     l2 = plt.legend(('      Isotope','(P1n Exp./P1n Theory)','(P2n Exp./P2n Theory)','(P3n Exp./P3n Theory)','(P4n Exp./P4n Theory)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
 
-                if ratio_user != 1 and Delta_Z == 10 and Delta_N == 10:
+                if ratio_user != 1 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
                     l2 = plt.legend(('  Isotope  ','  P1n','  P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
-                if ratio_user != 1 and Delta_Z == 7 and Delta_N == 7:
+                if ratio_user != 1 and Delta_Z <= 7 and Delta_N <= 7  and Delta_Z > 4 and Delta_Z > 4:
                     l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n','  P4n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
-                if ratio_user != 1 and Delta_Z == 4 and Delta_N == 4:
-                    l2 = plt.legend(('     Isotope  ','  P1n : iso1-P1n','  P2n : iso1-P2n','  P3n : iso2-P1n','  P4n : iso2-P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                if ratio_user != 1 and Delta_Z <= 4 and Delta_N <= 4:
+                    l2 = plt.legend(('     Isotope  ','  P1n-gs | P1n-iso1','  P2n-gs | P2n-iso1','  P3n-gs | P1n-iso2','  P4n-gs | P2n-iso2'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                     g.add_artist(l1)
             else:
                 l1 = plt.legend(leg_list,loc=4,markerscale=ms1,numpoints=1)
