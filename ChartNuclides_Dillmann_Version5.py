@@ -7,9 +7,9 @@
 import gc
 import os
 import csv
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+import numpy as np 
+import matplotlib.pyplot as plt 
+import matplotlib as mpl 
 
 # function to display Chart with theoretical data from the MOELLER(2003) paper
 def MOELLER():
@@ -603,7 +603,7 @@ def MOELLER():
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0): 
                     #xyouts,N_spec-0.35,Z_spec+0.28,Special_user,charsize=1,color=color1
                     for i in xrange(0,len(N_ELE)):
-                        if size_P_USER == 'none': # if no user uploaded files, only use basic data files
+                        if user_P == 0: # if no user uploaded files, only use basic data files
                             ELE_info = ' '.join([ELE_name[i].rstrip('\n'),str(int(A_ELE[i]))])
                             plt.text(N_ELE[i]-N_ELE_adj1,Z_ELE[i]+Z_ELE_adj1,ELE_info,fontsize=fontsize_set_1)
                         else: # if user uploaded files exist, give priority to user uploaded files over basic files in what is displayed
@@ -619,7 +619,7 @@ def MOELLER():
 
                     if len(N_P1n_Bound) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                         for i in xrange(0,len(N_P1n_Bound)):
-                            if size_P_USER == 'none':
+                            if user_P == 0:
                                 str_P1n="{0:.1f}".format(P1n_Bound[i])
                                 plt.text(N_P1n_Bound[i]-N_adj,Z_P1n_Bound[i]+Z_adj_1,str_P1n+'%',fontsize=fontsize_set_3)
                             else:
@@ -635,7 +635,7 @@ def MOELLER():
                                     
                     if len(N_P2n_Bound) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                         for i in xrange(0,len(N_P2n_Bound)):
-                            if size_P_USER == 'none':
+                            if user_P == 0:
                                 str_P2n="{0:.1f}".format(P2n_Bound[i])
                                 plt.text(N_P2n_Bound[i]-N_adj,Z_P2n_Bound[i]+Z_adj_2,str_P2n+'%',fontsize=fontsize_set_3)
                             else:
@@ -651,7 +651,7 @@ def MOELLER():
 
                     if len(N_P3n_Bound) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                         for i in xrange(0,len(N_P3n_Bound)):
-                            if size_P_USER == 'none':
+                            if user_P == 0:
                                 str_P3n="{0:.1f}".format(P3n_Bound[i])
                                 plt.text(N_P3n_Bound[i]-N_adj,Z_P3n_Bound[i]+Z_adj_3,str_P3n+'%',fontsize=fontsize_set_3)
                             else:
