@@ -27,7 +27,6 @@ import matplotlib as mpl
 ##        GUI.Box(Rect(200, 20, 100, 50), "");
 ##    }
 ##}
-
 def main():
     # will be altered to GUI in future
     r = 0
@@ -2172,4 +2171,4 @@ def main():
             # user choice to continue or quit program
             r=input("If r = 1, the program will stop. If r = 0, the program continues. Enter r: ")
                             
-main() #runs program
+main(r) #runs program

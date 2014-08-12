@@ -25,7 +25,7 @@ https://github.com/ciccons/TRIUMF-BDNE-Chart
 
 ----
 
-An iPython Notebook Version is available with a Text-Based Interface. 
+An iPython Notebook Version is available. 
 Install the Anaconda Python distribution, which provides Python 2.7, IPython and all of its dependencies 
 as well as a complete set of open source packages for scientific computing and data science.
 Anaconda Download: http://continuum.io/downloads
