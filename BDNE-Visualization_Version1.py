@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------
 # Author: Stephanie Ciccone
-# BDNE-Visualization_Version1 (Graphical User Interface Version)
-# Consult Chart_Program_INFO.txt for instruction on how to ensure this program properly runs on your machine
+# BDNE-Visualization_Version1.py
+# Consult README.txt for instruction on how to ensure this software properly runs on your machine.
 #-----------------------------------------------------------------------------
 
 # imports all necessary libraries and functions
@@ -35,25 +35,14 @@ class BDNE_GUI(Tkinter.Tk):
                             This program takes data about Beta-Delayed Neutron Emission and uses it to visualize the information in a useful and insightful manner.
 
                             Users first choose which database they wish to work with.
-                                1. Experimental Database: Contains Pxn values taken from ENSDF 2011
+                                1. Experimental Database: Contains Pxn values taken from ENSDF 2011 and
+                                                        Qbxn values taken from AME 2012.
 
                                 2. Theoretical Database: Contains Pxn values taken from the MOELLER
                                                          2003 paper.
 
-                            If you wish to include additional data, you can upload your own data file. All data files must be placed in the Text_Files folder!
-                            Data files must be in the format shown.
-
-                            Formats available for User Files in the Experimental Database.
-                                ---------- HEADER COLUMN TITLES ----------
-                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Nuclei Name --
-                                    ------------ OR ------------
-                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Qbn -- Qb2n -- Qb3n -- Qb4n -- Nuclei Name --
-                                    ------------ OR ------------
-                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Qbn -- Qb2n -- Qb3n -- Qb4n -- P1n_iso1 -- P2n_iso1 -- P1n_iso2 -- P2n_iso2 -- Nuclei Name --
-
-                            Formats available for User Files in the Theoretical Database.
-                                ----------HEADER COLUMN TITLES----------
-                                -- N -- Z -- P1n -- P2n -- P3n -- Nuclei Name --
+                            If you wish to include additional data, you can upload your own data file. All data files must be placed in the Data_Files folder!
+                            Available file formats can be found by clicking the 'User File Formats' button.
 
                             Users then choose what range of N and Z values they wish to visualize.
 
@@ -63,17 +52,46 @@ class BDNE_GUI(Tkinter.Tk):
                                 3. An N range with a difference equal to 7 and a Z range with a difference equal to 7.
                                 4. An N range with a difference equal to 10 and a Z range with a difference equal to 10.
                                 
-                            The Chart will output normally if BOTH ranges are different to these limits.
+                            The Chart will output normally if EITHER ranges are different to these limits.
                             Click the 'NEXT' button after entering your chosen N and Z values to see which display options are available.
+
+                            Certain ranges may cause aspects of the visualization to be placed in an incorrect position.
+                            Settings have been optimized for the best possible output in as many possible scenarios.
 
                             Once the display options are highlighted, choose ONE and click the 'PLOT' button. You will be able to save the visualization if desired."""
             
-            toplevel = Tkinter.Toplevel()
-            line1 = Tkinter.Label(toplevel,text=ABOUT_TEXT) # initializes window containing program info
+            toplevel1 = Tkinter.Toplevel()
+            lines = Tkinter.Label(toplevel1,text=ABOUT_TEXT) # initializes window containing program info
+            lines.grid(column=0,row=0)
+
+        def OnButtonUFF():
+            ABOUT_TEXT = """Data files must be in the format shown. If a Pxn or Qbxn value is unknown in your data, set it to 0.
+                            All data files must be placed in the Data_Files folder!
+
+                            Formats available for User Files in the Experimental Database.
+                            Only the FIRST format is available when uploading either experimental or theoretical Pxn values for the Ratio display option.
+                            
+                                ---------- HEADER COLUMN TITLES ----------
+                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Nuclei Name --
+                                    ------------ OR ------------
+                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Qbn -- Qb2n -- Qb3n -- Qb4n -- Nuclei Name --
+                                    ------------ OR ------------
+                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Qbn -- Qb2n -- Qb3n -- Qb4n -- P1n_iso1 -- P2n_iso1 -- P1n_iso2 -- P2n_iso2 -- Nuclei Name --
+
+                            Formats available for User Files in the Theoretical Database.
+                            
+                                ----------HEADER COLUMN TITLES----------
+                                -- N -- Z -- P1n -- P2n -- P3n -- Nuclei Name --"""
+            
+            toplevel2 = Tkinter.Toplevel()
+            line1 = Tkinter.Label(toplevel2,text=ABOUT_TEXT) # initializes window containing program info
             line1.grid(column=0,row=0)
 
         buttonINFO = Tkinter.Button(self,text=u"Program Information",command=OnButtonProgramINFO) #add button widget
         buttonINFO.grid(column=1,row=0) #place button in grid
+
+        buttonINFO2 = Tkinter.Button(self,text=u"User File Formats",command=OnButtonUFF)
+        buttonINFO2.grid(column=2,row=0)
 
         labelCRED = Tkinter.Label(self,text=u"    Author: Stephanie Ciccone  [2014]",anchor='w') # add author credit
         labelCRED.grid(column=3,row=0)
@@ -189,7 +207,7 @@ class BDNE_GUI(Tkinter.Tk):
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
                 
-                if (Delta_N != 10 and Delta_Z != 10) and (Delta_N != 7 and Delta_Z != 7) and (Delta_N != 4 and Delta_Z != 4) and (Delta_N != 0 and Delta_Z != 0):
+                if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='normal');cR.configure(state='disabled')
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
@@ -200,7 +218,7 @@ class BDNE_GUI(Tkinter.Tk):
                     cP1nC.configure(state='normal');cP2nC.configure(state='normal');cP3nC.configure(state='normal')
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='disabled');cR.configure(state='disabled')
                     
-                if (Delta_N != 10 and Delta_Z != 10) and (Delta_N != 7 and Delta_Z != 7) and (Delta_N != 4 and Delta_Z != 4) and (Delta_N != 0 and Delta_Z != 0):
+                if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='normal')
                     cP1nC.configure(state='normal');cP2nC.configure(state='normal');cP3nC.configure(state='normal')                
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='disabled');cR.configure(state='disabled')
@@ -360,11 +378,11 @@ class BDNE_GUI(Tkinter.Tk):
                 
             if choice_user_THEO == 1 and choice_user_EXP == 0: #theoretical database
                 # reads in values from text files and stores all of the data columns into arrays
-                filename_MOE = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_MOELLER.txt"        
+                filename_MOE = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_MOELLER.txt"        
                 user_P = 0
                     
                 if choice_USERFILE_THEO == 1:
-                    filename_THEORY_USER = os.getcwd() + dirDelim + "Text_Files" + dirDelim + userFile_THEO
+                    filename_THEORY_USER = os.getcwd() + dirDelim + "Data_Files" + dirDelim + userFile_THEO
 
                     ELE_names_THEORY = np.genfromtxt(filename_THEORY_USER,skip_header=1,usecols=(5),dtype=str,unpack=True)
                     N_P_USER,Z_P_USER,P1n_USER,P2n_USER,P3n_USER = np.loadtxt(filename_THEORY_USER,skiprows=1,usecols=(0, 1, 2, 3, 4),unpack=True)
@@ -733,13 +751,14 @@ class BDNE_GUI(Tkinter.Tk):
                 color3='DeepSkyBlue'
                 color4='orange'
                 # all variables necessary to tweak the plots for optimal viewing
-                if (Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0):
+                #if (Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0):
+                if (Delta_N > 10) or (Delta_Z > 10):
                     msize = 9
                     mew = 1.0;ms1=1
                     lw1 = '0.5';lw2 = '1'
                     ax1_1=0.93;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
 
-                if Delta_N <= 10 and Delta_Z <= 10 and Delta_N > 7 and Delta_Z > 7:
+                if ((Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
                     msize = 35
                     mew = 1.5;ms1=0.2;ms2=0
                     lw1 = '2.0';lw2 = '2.5'
@@ -752,7 +771,7 @@ class BDNE_GUI(Tkinter.Tk):
                     Z_adj_1=-0.06;Z_adj_2=-0.3
                     ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
 
-                if Delta_N <= 7 and Delta_Z <= 7 and Delta_N > 4 and Delta_Z > 4:
+                if (Delta_N == 7 and Delta_Z == 7):
                     msize = 45
                     mew = 3.0;ms1=0.2;ms2=0
                     lw1 = '2.0';lw2 = '2.5'
@@ -765,7 +784,7 @@ class BDNE_GUI(Tkinter.Tk):
                     Z_adj_1=0.05;Z_adj_2=-0.1;Z_adj_3=-0.25;Z_adj_4=-0.4
                     ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
 
-                if Delta_N <= 4 and Delta_Z <= 4  and Delta_N > 0 and Delta_Z > 0:
+                if (Delta_N == 4 and Delta_Z == 4):
                     msize = 70
                     mew = 4.0;ms1=0.1;ms2=0
                     lw1 = '3.0';lw2 = '3.5'
@@ -1374,11 +1393,11 @@ class BDNE_GUI(Tkinter.Tk):
                         
             if choice_user_EXP == 1 and choice_user_THEO == 0: #experimental database      
                 #reads in values from text files and stores all of the data columns into arrays
-                filename_ENSDF = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF.txt"
+                filename_ENSDF = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF.txt"
 
                 user_P = 0 ; user_Q = 0 ; user_i = 0
                 if choice_USERFILE_EXP == 1:
-                    filename_EXP_USER = os.getcwd() + dirDelim + "Text_Files" + dirDelim + userFile_EXP
+                    filename_EXP_USER = os.getcwd() + dirDelim + "Data_Files" + dirDelim + userFile_EXP
 
                     # checks # of columns in uploaded data files
                     with open(filename_EXP_USER) as ColCheck:
@@ -1410,8 +1429,8 @@ class BDNE_GUI(Tkinter.Tk):
 
                 N,Z = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(2, 3),unpack=True)
                 s1 = len(N)
-
-                Qbn,Qb2n,Qb3n,Qb4n = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(4, 5, 6, 7),unpack=True)
+                
+                Qbn,Qb2n,Qb3n,Qb4n = np.genfromtxt(filename_ENSDF,skip_header=1,usecols=(4,5,6,7),dtype=str,unpack=True)
 
                 ELE_names_EXP = np.genfromtxt(filename_ENSDF,skip_header=1,usecols=(8),dtype=str,unpack=True)
                 N_P,Z_P,P1n,P2n,P3n,P4n = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(9, 10, 11, 12, 13, 14),unpack=True)
@@ -1453,7 +1472,7 @@ class BDNE_GUI(Tkinter.Tk):
 
                         if Ratio_USER_EXP == 1 and Ratio_ENSDF_EXP == 0: #for USER EXP data for Ratio
                             user_EXPR = 0;
-                            filename_EXPR_USER = os.getcwd() + dirDelim + "Text_Files" + dirDelim + Ratio_USERFILE_EXP
+                            filename_EXPR_USER = os.getcwd() + dirDelim + "Data_Files" + dirDelim + Ratio_USERFILE_EXP
 
                             # checks # of columns in uploaded data files
                             with open(filename_EXPR_USER) as ColCheck:
@@ -1468,7 +1487,7 @@ class BDNE_GUI(Tkinter.Tk):
 
                         if Ratio_USER_THEO == 1 and Ratio_MOE_THEO == 0: # for USER THEO data for Ratio
                             user_THEOR = 0;
-                            filename_THEOR_USER = os.getcwd() + dirDelim + "Text_Files" + dirDelim + Ratio_USERFILE_THEO
+                            filename_THEOR_USER = os.getcwd() + dirDelim + "Data_Files" + dirDelim + Ratio_USERFILE_THEO
 
                             # checks # of columns in uploaded data files
                             with open(filename_THEOR_USER) as ColCheck:
@@ -1519,7 +1538,7 @@ class BDNE_GUI(Tkinter.Tk):
 
 
                         if Ratio_MOE_THEO == 1 and Ratio_USER_THEO == 0:
-                            filename_MOE = os.getcwd() + dirDelim + "Text_Files" + dirDelim + "ChartNuclides_DataTable_MOELLER.txt"
+                            filename_MOE = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_MOELLER.txt"
 
                             N_P_MOE,Z_P_MOE,P1n_MOE_full,P2n_MOE_full,P3n_MOE_full = np.loadtxt(filename_MOE,skiprows=1,usecols=(4, 5, 6, 7, 8),unpack=True)
                             size_P_MOE = len(N_P_MOE)
@@ -1581,24 +1600,28 @@ class BDNE_GUI(Tkinter.Tk):
                         Z_Bound_magic = np.append(Z_Bound_magic,Z[i])
                         N_Bound_magic = np.append(N_Bound_magic,N[i])
 
-                    # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 and the Qbxn value is not equal to '1010'
+                    # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 and the Qbxn value is not equal to '--------'
                     #(a random number denoting isotopes with unknown Qbxn values) at that N and Z value using the basic data files
 
-                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qbn[i] > 0 and Qbn[i] != 1010: 
-                        N_Qbn_Bound = np.append(N_Qbn_Bound,N[i])
-                        Z_Qbn_Bound = np.append(Z_Qbn_Bound,Z[i])
+                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qbn[i] != '--------':
+                        if float(Qbn[i]) > 0:
+                            N_Qbn_Bound = np.append(N_Qbn_Bound,N[i])
+                            Z_Qbn_Bound = np.append(Z_Qbn_Bound,Z[i])
 
-                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qb2n[i] > 0 and Qb2n[i] != 1010: 
-                        N_Qb2n_Bound = np.append(N_Qb2n_Bound,N[i])
-                        Z_Qb2n_Bound = np.append(Z_Qb2n_Bound,Z[i])
+                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qb2n[i] != '--------':
+                        if float(Qb2n[i]) > 0:
+                            N_Qb2n_Bound = np.append(N_Qb2n_Bound,N[i])
+                            Z_Qb2n_Bound = np.append(Z_Qb2n_Bound,Z[i])
 
-                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qb3n[i] > 0 and Qb3n[i] != 1010:  
-                        N_Qb3n_Bound = np.append(N_Qb3n_Bound,N[i])
-                        Z_Qb3n_Bound = np.append(Z_Qb3n_Bound,Z[i])
+                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qb3n[i] != '--------':
+                        if float(Qb3n[i]) > 0:
+                            N_Qb3n_Bound = np.append(N_Qb3n_Bound,N[i])
+                            Z_Qb3n_Bound = np.append(Z_Qb3n_Bound,Z[i])
 
-                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qb4n[i] > 0 and Qb4n[i] != 1010:  
-                        N_Qb4n_Bound = np.append(N_Qb4n_Bound,N[i]) 
-                        Z_Qb4n_Bound = np.append(Z_Qb4n_Bound,Z[i])
+                    if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user and Qb4n[i] != '--------':
+                        if float(Qb4n[i]) > 0:
+                            N_Qb4n_Bound = np.append(N_Qb4n_Bound,N[i]) 
+                            Z_Qb4n_Bound = np.append(Z_Qb4n_Bound,Z[i])
 
                 # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 using user files
                 if user_Q == 1 or user_i == 1:
@@ -1855,7 +1878,7 @@ class BDNE_GUI(Tkinter.Tk):
                 plt.figure(figsize=(16.5,8))
 
                 # declares all necessary variables that tweak the chart for optimal viewing
-                if (Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delat_Z != 4) or (Delta_N != 0 and Delta_Z != 0):
+                if Delta_N > 10 or Delta_Z > 10:
                     msize = 9
                     mew = 2.0;ms1=1
                     lw1 = '0.5';lw2 = '1'
@@ -1863,7 +1886,7 @@ class BDNE_GUI(Tkinter.Tk):
                     Cred_Z1=-0.8;Cred_Z2=0;Cred_Z3=0.8 
                     Cred_Z4=1.6;Cred_Z5=2.4;Cred_Z6=3.2
 
-                if Delta_N <= 10 and Delta_Z <= 10  and Delta_N > 7 and Delta_Z > 7:
+                if ((Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delat_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
                     msize = 35
                     mew = 3.0;ms1=0.2;ms2=0
                     lw1 = '2.0';lw2 = '2.5'
@@ -1876,7 +1899,7 @@ class BDNE_GUI(Tkinter.Tk):
                     Z_adj_1=-0.06;Z_adj_2=-0.3
                     Z_adj_5=-0.08;Z_adj_6=-0.34
 
-                if Delta_N <= 7 and Delta_Z <= 7 and Delta_N > 4 and Delta_Z > 4:
+                if (Delta_N == 7 and Delta_Z == 7):
                     msize = 45
                     mew = 4.0;ms1=0.2;ms2=0
                     lw1 = '2.0';lw2 = '2.5'
@@ -1889,7 +1912,7 @@ class BDNE_GUI(Tkinter.Tk):
                     Z_adj_1=0.05;Z_adj_2=-0.1;Z_adj_3=-0.25;Z_adj_4=-0.4
                     Z_adj_5=0.04;Z_adj_6=-0.12;Z_adj_7=-0.28;Z_adj_8=-0.44
 
-                if Delta_N <= 4 and Delta_Z <= 4:
+                if (Delta_N == 4 and Delta_Z == 4):
                     msize = 70
                     mew = 5.0;ms1=0.1;ms2=0
                     lw1 = '3.0';lw2 = '3.5'
