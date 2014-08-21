@@ -40,5 +40,20 @@ And so, Anaconda would be the recommended option.
 
 This BDNE Visualization program has been optimized to provide the best possible output in as many possible scenarios. 
 Some problems/issues still may occur.
-Please email me at ciccons@mcmaster.ca if any problems require a fix or update to the software.
+Please email me if any problems require a fix or update to the software.
+
+------------------------
+
+Data References
+Masses: Atomic Mass Evaluation 2012 (Wang et al.)
+Experimental Data: Evaluated Nuclear Structure Data File (June 2011)
+Experiemental Data from Papers: Miernik(2013), Hosmer(2010), Padgett(2010)
+Theoretical Model: MOELLER (2003)
+
+Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
+Contact Email: ciccons1928@gmail.com
+
+------------------------
+
+Acknowledgements: I would like to thank Dr. Iris Dillmann, William Mills, and TRIUMF for contributing to this software project.
 

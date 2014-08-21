@@ -29,63 +29,78 @@ class BDNE_GUI(Tkinter.Tk):
         def OnButtonProgramINFO():
             # text found in Program Information Button
             ABOUT_TEXT = """Beta-Delayed Neutron Chart Program
-                            Author: Stephanie Ciccone, TRIUMF/McMaster University
-                            -------------------------------------------------------------
+Author: Stephanie Ciccone, TRIUMF/McMaster University
+-------------------------------------------------------------
+This program takes data about Beta-Delayed Neutron Emission and uses it to visualize the information in a useful and insightful manner.
+It was created at TRIUMF by Stephanie Ciccone, a Co-op student from McMaster University with the guidence of Dr. Iris Dillmann.
 
-                            This program takes data about Beta-Delayed Neutron Emission and uses it to visualize the information in a useful and insightful manner.
+Users first choose which database they wish to work with.
+    1. Experimental Database: Contains P(xn) values taken from ENSDF 2011 and
+                            Q(bxn) values taken from AME 2012.
 
-                            Users first choose which database they wish to work with.
-                                1. Experimental Database: Contains Pxn values taken from ENSDF 2011 and
-                                                        Qbxn values taken from AME 2012.
+    2. Theoretical Database: Contains P(xn) values taken from the MOELLER
+                             2003 paper.
 
-                                2. Theoretical Database: Contains Pxn values taken from the MOELLER
-                                                         2003 paper.
+If you want to include additional data, you can upload your own data file. All data files must be placed in the Data_Files folder!
+Available file formats can be found by clicking the 'User File Formats' button.
 
-                            If you wish to include additional data, you can upload your own data file. All data files must be placed in the Data_Files folder!
-                            Available file formats can be found by clicking the 'User File Formats' button.
+Users then choose what range of N and Z values they wish to visualize.
 
-                            Users then choose what range of N and Z values they wish to visualize.
+The Chart will zoom in and allow for displaying P(xn) or Ratio values only if the user inputs: 
+    1. An N range with a difference equal to 0 and a Z range with a difference equal to 0.
+    2. An N range with a difference equal to 4 and a Z range with a difference equal to 4.
+    3. An N range with a difference equal to 7 and a Z range with a difference equal to 7.
+    4. An N range with a difference equal to 10 and a Z range with a difference equal to 10.
 
-                            The Chart will zoom in and allow for certain display options only if the user inputs: 
-                                1. An N range with a difference equal to 0 and a Z range with a difference equal to 0.
-                                2. An N range with a difference equal to 4 and a Z range with a difference equal to 4.
-                                3. An N range with a difference equal to 7 and a Z range with a difference equal to 7.
-                                4. An N range with a difference equal to 10 and a Z range with a difference equal to 10.
-                                
-                            The Chart will output normally if EITHER ranges are different to these limits.
-                            Click the 'NEXT' button after entering your chosen N and Z values to see which display options are available.
+There are 4 checkboxes that quickly set the N(max) and Z(max) to one of the 4 zoom-in ranges.
+    
+The Chart will output normally if EITHER ranges are different to these limits.
+Click the 'NEXT' button after entering your chosen N and Z values to see which display options are available.
 
-                            Certain ranges may cause aspects of the visualization to be placed in an incorrect position.
-                            Settings have been optimized for the best possible output in as many possible scenarios.
+Certain ranges may cause aspects of the visualization to be placed in an incorrect position.
+Settings have been optimized for the best possible output in as many possible scenarios.
 
-                            Once the display options are highlighted, choose ONE and click the 'PLOT' button. You will be able to save the visualization if desired."""
+Once the display options are highlighted, choose ONE and click the 'PLOT' button. You will be able to save the visualization if desired.
+----------------------------------------------------------------
+Data References
+Masses: Atomic Mass Evaluation 2012 (Wang et al.)
+Experimental Data: Evaluated Nuclear Structure Data File (June 2011)
+Experiemental Data from Papers: Miernik(2013), Hosmer(2010), Padgett(2010)
+Theoretical Model: MOELLER (2003)
+
+Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
+Contact Email: ciccons1928@gmail.com
+----------------------------------------------------------------
+Acknowledgements: I would like to thank Dr. Iris Dillmann, William Mills, and TRIUMF for contributing to this software project."""
             
             toplevel1 = Tkinter.Toplevel()
-            lines = Tkinter.Label(toplevel1,text=ABOUT_TEXT) # initializes window containing program info
+            lines = Tkinter.Label(toplevel1,text=ABOUT_TEXT,justify='left') # initializes window containing program info
             lines.grid(column=0,row=0)
+            toplevel1.resizable(0,0)
 
         def OnButtonUFF():
-            ABOUT_TEXT = """Data files must be in the format shown. If a Pxn or Qbxn value is unknown in your data, set it to 0.
-                            All data files must be placed in the Data_Files folder!
+            ABOUT_TEXT = """Data files must be in the format shown. If a P(xn) or Q(bxn) value is unknown in your data, set it to 0.
+All data files must be placed in the Data_Files folder!
 
-                            Formats available for User Files in the Experimental Database.
-                            Only the FIRST format is available when uploading either experimental or theoretical Pxn values for the Ratio display option.
-                            
-                                ---------- HEADER COLUMN TITLES ----------
-                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Nuclei Name --
-                                    ------------ OR ------------
-                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Qbn -- Qb2n -- Qb3n -- Qb4n -- Nuclei Name --
-                                    ------------ OR ------------
-                                -- N -- Z -- P1n -- P2n -- P3n -- P4n -- Qbn -- Qb2n -- Qb3n -- Qb4n -- P1n_iso1 -- P2n_iso1 -- P1n_iso2 -- P2n_iso2 -- Nuclei Name --
+Formats available for User Files in the Experimental Database.
+Only the FIRST format is available when uploading either experimental or theoretical P(xn) values for the Ratio display option.
 
-                            Formats available for User Files in the Theoretical Database.
+HEADER COLUMN TITLES (Each column TAB separated, TAB marked by a -)
+N - Z - P(1n) - P(2n) - P(3n) - P(4n) - Nuclei Name  [*Format to upload P(xn) values for the Ratio Display]
+    ------------ OR ------------
+N - Z - P(1n) - P(2n) - P(3n) - P(4n) - Q(b1n) - Q(b2n) - Q(b3n) - Q(b4n) - Nuclei Name
+    ------------ OR ------------
+N - Z - P(1n) - P(2n) - P(3n) - P(4n) - Q(b1n) - Q(b2n) - Q(b3n) - Q(b4n) - P(1n)_iso1 - P(2n)_iso1 - P(1n)_iso2 - P(2n)_iso2 - Nuclei Name
+
+Formats available for User Files in the Theoretical Database.
                             
-                                ----------HEADER COLUMN TITLES----------
-                                -- N -- Z -- P1n -- P2n -- P3n -- Nuclei Name --"""
+HEADER COLUMN TITLES (Each column TAB separated, TAB marked by a -)
+N - Z - P1n - P2n - P3n - Nuclei Name"""
             
             toplevel2 = Tkinter.Toplevel()
-            line1 = Tkinter.Label(toplevel2,text=ABOUT_TEXT) # initializes window containing program info
+            line1 = Tkinter.Label(toplevel2,text=ABOUT_TEXT,justify='left') # initializes window containing program info
             line1.grid(column=0,row=0)
+            toplevel2.resizable(0,0)
 
         buttonINFO = Tkinter.Button(self,text=u"Program Information",command=OnButtonProgramINFO) #add button widget
         buttonINFO.grid(column=1,row=0) #place button in grid
@@ -93,8 +108,9 @@ class BDNE_GUI(Tkinter.Tk):
         buttonINFO2 = Tkinter.Button(self,text=u"User File Formats",command=OnButtonUFF)
         buttonINFO2.grid(column=2,row=0)
 
-        labelCRED = Tkinter.Label(self,text=u"    Author: Stephanie Ciccone  [2014]",anchor='w') # add author credit
-        labelCRED.grid(column=3,row=0)
+        labelCRED1 = Tkinter.Label(self,text=u"""    Author: Stephanie Ciccone  [2014]
+    Email: ciccons1928@gmail.com""",anchor='w') # add author credit
+        labelCRED1.grid(column=3,row=0)
 
         label1 = Tkinter.Label(self,text=u"Select Database:",anchor='w')
         label1.grid(column=0,row=2,columnspan=5,sticky='EW') #label widget
@@ -157,15 +173,106 @@ class BDNE_GUI(Tkinter.Tk):
         label2 = Tkinter.Label(self,anchor='w')
         label2.grid(column=0,row=7,columnspan=5,sticky='EW')
         
-        label3 = Tkinter.Label(self,anchor='w',text=u"Plot Range and Zoom Options: ")
+        label3 = Tkinter.Label(self,anchor='w',text=u"Plot Range Options: (Click NEXT to proceed when done)")
         label3.grid(column=0,row=8,columnspan=5,sticky='EW') #label widget
-        label4 = Tkinter.Label(self,anchor='w',text=u"                  --Zoom Display Possible--")
-        label4.grid(column=0,row=9,columnspan=5,sticky='EW') 
-        label5 = Tkinter.Label(self,anchor='w',text=u"        if [Delta N = 0 & Delta Z = 0] or [Delta N = 4 & Delta Z = 4]")
-        label5.grid(column=0,row=10,columnspan=5,sticky='EW') 
-        label6 = Tkinter.Label(self,anchor='w',text=u"        or [Delta N = 7 & Delta Z = 7] or [Delta N = 10 & Delta Z = 10]")
-        label6.grid(column=0,row=11,columnspan=5,sticky='EW') #label widget
 
+        Delta = u"\N{GREEK CAPITAL LETTER DELTA}"
+
+        def OncheckButton0():
+            if checkButton0.get() == 1:
+                c4.configure(state='disabled');c4.deselect()
+                c7.configure(state='disabled');c7.deselect()
+                c10.configure(state='disabled');c10.deselect()
+
+                TextEntry3.delete(0,8)
+                TextEntry3.insert(0,entryVariable1.get())
+                TextEntry4.delete(0,8)
+                TextEntry4.insert(0,entryVariable2.get())
+                
+            if checkButton0.get() == 0:
+                c4.configure(state='normal');c4.deselect()
+                c7.configure(state='normal');c7.deselect()
+                c10.configure(state='normal');c10.deselect()
+                TextEntry3.delete(0,8);TextEntry4.delete(0,8)
+
+        def OncheckButton4():
+            if checkButton4.get() == 1:
+                c0.configure(state='disabled');c0.deselect()
+                c7.configure(state='disabled');c7.deselect()
+                c10.configure(state='disabled');c10.deselect()
+
+                TextEntry3.delete(0,8)
+                TextEntry3.insert(0,entryVariable1.get()+4)
+                TextEntry4.delete(0,8)
+                TextEntry4.insert(0,entryVariable2.get()+4)
+                
+            if checkButton4.get() == 0:
+                c0.configure(state='normal');c0.deselect()
+                c7.configure(state='normal');c7.deselect()
+                c10.configure(state='normal');c10.deselect()
+                TextEntry3.delete(0,8);TextEntry4.delete(0,8)
+
+        def OncheckButton7():
+            if checkButton7.get() == 1:
+                c4.configure(state='disabled');c4.deselect()
+                c0.configure(state='disabled');c0.deselect()
+                c10.configure(state='disabled');c10.deselect()
+
+                TextEntry3.delete(0,8)
+                TextEntry3.insert(0,entryVariable1.get()+7)
+                TextEntry4.delete(0,8)
+                TextEntry4.insert(0,entryVariable2.get()+7)
+                
+            if checkButton7.get() == 0:
+                c4.configure(state='normal');c4.deselect()
+                c0.configure(state='normal');c0.deselect()
+                c10.configure(state='normal');c10.deselect()
+                TextEntry3.delete(0,8);TextEntry4.delete(0,8)
+
+        def OncheckButton10():
+            if checkButton10.get() == 1:
+                c4.configure(state='disabled');c4.deselect()
+                c7.configure(state='disabled');c7.deselect()
+                c0.configure(state='disabled');c0.deselect()
+
+                TextEntry3.delete(0,8)
+                TextEntry3.insert(0,entryVariable1.get()+10)
+                TextEntry4.delete(0,8)
+                TextEntry4.insert(0,entryVariable2.get()+10)
+                
+            if checkButton10.get() == 0:
+                c4.configure(state='normal');c4.deselect()
+                c7.configure(state='normal');c7.deselect()
+                c0.configure(state='normal');c0.deselect()
+                TextEntry3.delete(0,8);TextEntry4.delete(0,8)
+            
+        #label4 = Tkinter.Label(self,anchor='w',text=u"""Input N(min) and Z(min).
+        #These options will fill N(max) and Z(max).""")
+        #label4.grid(column=0,row=9,sticky='EW') #label widget
+        #label5 = Tkinter.Label(self,anchor='w',text=u"")
+        #label5.grid(column=0,row=10,sticky='EW')
+
+        checkButton0 = Tkinter.IntVar()
+        c0 = Tkinter.Checkbutton(self,text=Delta + "N = 0, " + Delta + "Z = 0",variable=checkButton0,command=OncheckButton0)
+        c0.grid(column=1,row=9,sticky='EW')
+
+        checkButton4 = Tkinter.IntVar()
+        c4 = Tkinter.Checkbutton(self,text=Delta + "N = 4, " + Delta + "Z = 4",variable=checkButton4,command=OncheckButton4)
+        c4.grid(column=1,row=10,sticky='EW')
+
+        checkButton7 = Tkinter.IntVar()
+        c7 = Tkinter.Checkbutton(self,text=Delta + "N = 7, " + Delta + "Z = 7",variable=checkButton7,command=OncheckButton7)
+        c7.grid(column=2,row=9,sticky='EW')
+
+        checkButton10 = Tkinter.IntVar()
+        c10 = Tkinter.Checkbutton(self,text=Delta + "N = 10, " + Delta + "Z = 10 *",variable=checkButton10,command=OncheckButton10)
+        c10.grid(column=2,row=10,sticky='EW')
+
+        labelZoom1 = Tkinter.Label(self,anchor='w',text=u"These set N and Z to a zoomed in range.")
+        labelZoom1.grid(column=3,row=9,sticky='EW')
+        labelZoom2 = Tkinter.Label(self,anchor='w',text=u"Can show P(xn) or Ratio values when zoomed in.")
+        labelZoom2.grid(column=3,row=10,sticky='EW')
+        
         # buttons for inputting N and Z plot range
         button1 = Tkinter.Button(self,text=u"N (minimum)") #add button widget
         button1.grid(column=0,row=12) #place button in grid
@@ -173,14 +280,14 @@ class BDNE_GUI(Tkinter.Tk):
         TextEntry1 = Tkinter.Entry(self,textvariable=entryVariable1) 
         TextEntry1.grid(column=1,row=12,sticky='EW') #add to grid layout
 
-        button2 = Tkinter.Button(self,text=u"N (maximum)") #add button widget
-        button2.grid(column=2,row=12) #place button in grid   
+        button2 = Tkinter.Button(self,text=u"Z (minimum)") #add button widget
+        button2.grid(column=2,row=12) #place button in grid
         entryVariable2 = Tkinter.IntVar()
         TextEntry2 = Tkinter.Entry(self,textvariable=entryVariable2) #create first widget, an Entry widget
         TextEntry2.grid(column=3,row=12,sticky='EW')
 
-        button3 = Tkinter.Button(self,text=u"Z (minimum)") #add button widget
-        button3.grid(column=0,row=13) #place button in grid
+        button3 = Tkinter.Button(self,text=u"N (maximum)") #add button widget
+        button3.grid(column=0,row=13) #place button in grid   
         entryVariable3 = Tkinter.IntVar()
         TextEntry3 = Tkinter.Entry(self,textvariable=entryVariable3) #create first widget, an Entry widget
         TextEntry3.grid(column=1,row=13,sticky='EW')
@@ -193,8 +300,8 @@ class BDNE_GUI(Tkinter.Tk):
 
         def NextButton(): #event for when Next button clicked to highlight display options
             N_low_user = entryVariable1.get()
-            N_high_user = entryVariable2.get()
-            Z_low_user = entryVariable3.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
             Z_high_user = entryVariable4.get()
 
             Delta_N = N_high_user-N_low_user
@@ -206,53 +313,103 @@ class BDNE_GUI(Tkinter.Tk):
                     cPxnEXP.configure(state='normal');cNORMEXP.configure(state='normal');cR.configure(state='normal')          
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
+                    
+                    cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()    
                 
                 if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='normal');cR.configure(state='disabled')
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
+                    
+                    cNORMEXP.select();cPxnEXP.deselect();cR.deselect()
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
 
             if (checkButtonCHOICE_THEO.get() == 1 and checkButtonCHOICE_EXP.get() == 0):
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnTHEO.configure(state='normal');cNORMTHEO.configure(state='normal')
                     cP1nC.configure(state='normal');cP2nC.configure(state='normal');cP3nC.configure(state='normal')
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='disabled');cR.configure(state='disabled')
+
+                    cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
                     
                 if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='normal')
                     cP1nC.configure(state='normal');cP2nC.configure(state='normal');cP3nC.configure(state='normal')                
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='disabled');cR.configure(state='disabled')
 
-        NextButton = Tkinter.Button(self,text=u"Next",command=NextButton)
+                    cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+
+        NextButton = Tkinter.Button(self,text=u"NEXT",command=NextButton)
         NextButton.grid(column=5,row=13)
+
+        label6 = Tkinter.Label(self,anchor='w',text=u"*This option might not show all information due to space constraints.")
+        label6.grid(column=0,row=14,sticky='EW',columnspan=5)
 
         # display options for Experimental Database
         label7 = Tkinter.Label(self,anchor='w',text=u"")
-        label7.grid(column=0,row=16,columnspan=5,sticky='EW') #label widget
+        label7.grid(column=0,row=15,columnspan=5,sticky='EW') #label widget
 
         label8 = Tkinter.Label(self,anchor='w',text=u"Experimental Database (Only check ONE box before proceeding): ")
-        label8.grid(column=0,row=17,columnspan=5,sticky='EW') #label widget
+        label8.grid(column=0,row=16,columnspan=5,sticky='EW') #label widget
+
+        def OncheckButtonPxn_EXP():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonPxn_EXP.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cNORMEXP.configure(state='disabled')
+                cR.configure(state='disabled')
+            if checkButtonPxn_EXP.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cNORMEXP.configure(state='normal')
+                cR.configure(state='normal')
 
         checkButtonPxn_EXP = Tkinter.IntVar()
-        cPxnEXP = Tkinter.Checkbutton(self,text="Show Pxn-Values",variable=checkButtonPxn_EXP,state='disabled')
-        cPxnEXP.grid(column=1,row=18,sticky='EW')
+        cPxnEXP = Tkinter.Checkbutton(self,text="Show P(xn)-Values",variable=checkButtonPxn_EXP,state='disabled',command=OncheckButtonPxn_EXP)
+        cPxnEXP.grid(column=1,row=17,sticky='EW')
+
+        def OncheckButtonNORM_EXP():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonNORM_EXP.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cPxnEXP.configure(state='disabled')
+                cR.configure(state='disabled')
+            if checkButtonNORM_EXP.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cPxnEXP.configure(state='normal')
+                cR.configure(state='normal')
 
         checkButtonNORM_EXP = Tkinter.IntVar()
-        cNORMEXP = Tkinter.Checkbutton(self,text="Normal with No Values Displayed",variable=checkButtonNORM_EXP,state='disabled')
-        cNORMEXP.grid(column=2,row=18,sticky='EW')
+        cNORMEXP = Tkinter.Checkbutton(self,text="Normal",variable=checkButtonNORM_EXP,state='disabled',
+                                       command=OncheckButtonNORM_EXP)
+        cNORMEXP.grid(column=2,row=17,sticky='EW')
 
         def OncheckButtonRatio(): #event when Ratio button is clicked
             choice_user_Ratio = checkButtonRatio.get()
 
             if choice_user_Ratio == 1:
                 cREEXP.configure(state='normal')
-                cRUEXP.configure(state='normal')
+                cRUEXP.configure(state='disabled')
                 TextEntryRUE.configure(state='normal')
                 cRMTHEO.configure(state='normal')
-                cRUTHEO.configure(state='normal')
+                cRUTHEO.configure(state='disabled')
                 TextEntryRUT.configure(state='normal')
                 cPxnEXP.configure(state='disabled')
                 cNORMEXP.configure(state='disabled')
+
+                cREEXP.select();cRMTHEO.select()
                 
             if choice_user_Ratio == 0:
                 cREEXP.configure(state='disabled')
@@ -264,65 +421,200 @@ class BDNE_GUI(Tkinter.Tk):
                 cPxnEXP.configure(state='normal')
                 cNORMEXP.configure(state='normal')
 
+                cREEXP.deselect();cRMTHEO.deselect()
+                cRUEXP.deselect();cRUTHEO.deselect()
+
         # buttons for displaying options for Ratio
         checkButtonRatio = Tkinter.IntVar()
         cR = Tkinter.Checkbutton(self,text="Show Ratio [Pxn(Exp.)/Pxn(Theo.)]",variable=checkButtonRatio,state='disabled',
                                  command=OncheckButtonRatio)
-        cR.grid(column=1,row=19,sticky='EW')
+        cR.grid(column=1,row=18,sticky='EW')
 
-        label9 = Tkinter.Label(self,anchor='w',text=u"            Pxn Values for Ratio (Exp.): ")
-        label9.grid(column=1,row=20,columnspan=5,sticky='EW') #label widget
+        label9 = Tkinter.Label(self,anchor='w',text=u"            P(xn) Values for Ratio (Exp.): ")
+        label9.grid(column=1,row=19,columnspan=5,sticky='EW') #label widget
+
+        def OncheckButtonREEXP():
+            if checkButtonRatio_ENSDF_EXP.get() == 0:
+                cRUEXP.configure(state='normal');cRUEXP.select();cREEXP.configure(state='disabled')
 
         checkButtonRatio_ENSDF_EXP = Tkinter.IntVar()
-        cREEXP = Tkinter.Checkbutton(self,text="ENSDF 2011",variable=checkButtonRatio_ENSDF_EXP,state='disabled')
-        cREEXP.grid(column=2,row=20,sticky='EW')
+        cREEXP = Tkinter.Checkbutton(self,text="ENSDF 2011",variable=checkButtonRatio_ENSDF_EXP,state='disabled',
+                                     command=OncheckButtonREEXP)
+        cREEXP.grid(column=2,row=19,sticky='EW')
+
+        def OncheckButtonRUEXP():
+            if checkButtonRatio_USER_EXP.get() == 0:
+                cREEXP.configure(state='normal');cREEXP.select();cRUEXP.configure(state='disabled')
 
         checkButtonRatio_USER_EXP = Tkinter.IntVar()
-        cRUEXP = Tkinter.Checkbutton(self,text="Upload Experimental Pxn Data",variable=checkButtonRatio_USER_EXP,state='disabled')
-        cRUEXP.grid(column=2,row=21,sticky='EW')
+        cRUEXP = Tkinter.Checkbutton(self,text="Upload Experimental P(xn) Data",variable=checkButtonRatio_USER_EXP,state='disabled',
+                                     command=OncheckButtonRUEXP)
+        cRUEXP.grid(column=2,row=20,sticky='EW')
 
         ratioUSERFILEEXP = Tkinter.StringVar()
         TextEntryRUE = Tkinter.Entry(self,textvariable=ratioUSERFILEEXP,state='disabled') #create first widget, an Entry widget
-        TextEntryRUE.grid(column=3,row=21,sticky='EW')
+        TextEntryRUE.grid(column=3,row=20,sticky='EW')
 
-        label10 = Tkinter.Label(self,anchor='w',text=u"            Pxn Values for Ratio (Theo.): ")
-        label10.grid(column=1,row=22,columnspan=5,sticky='EW') #label widget
+        label10 = Tkinter.Label(self,anchor='w',text=u"            P(xn) Values for Ratio (Theo.): ")
+        label10.grid(column=1,row=21,columnspan=5,sticky='EW') #label widget
+
+        def OncheckButtonRMTHEO():
+            if checkButtonRatio_MOE_THEO.get() == 0:
+                cRUTHEO.configure(state='normal');cRUTHEO.select();cRMTHEO.configure(state='disabled')
 
         checkButtonRatio_MOE_THEO = Tkinter.IntVar()
-        cRMTHEO = Tkinter.Checkbutton(self,text="MOELLER 2003",variable=checkButtonRatio_MOE_THEO,state='disabled')
-        cRMTHEO.grid(column=2,row=22,sticky='EW')
+        cRMTHEO = Tkinter.Checkbutton(self,text="MOELLER 2003",variable=checkButtonRatio_MOE_THEO,state='disabled',
+                                      command=OncheckButtonRMTHEO)
+        cRMTHEO.grid(column=2,row=21,sticky='EW')
+
+        def OncheckButtonRUTHEO():
+            if checkButtonRatio_USER_THEO.get() == 0:
+                cRMTHEO.configure(state='normal');cRMTHEO.select();cRUTHEO.configure(state='disabled')
 
         checkButtonRatio_USER_THEO = Tkinter.IntVar()
-        cRUTHEO = Tkinter.Checkbutton(self,text="Upload Theoretical Pxn Data",variable=checkButtonRatio_USER_THEO,state='disabled')
-        cRUTHEO.grid(column=2,row=23,sticky='EW')
+        cRUTHEO = Tkinter.Checkbutton(self,text="Upload Theoretical P(xn) Data",variable=checkButtonRatio_USER_THEO,state='disabled',
+                                      command=OncheckButtonRUTHEO)
+        cRUTHEO.grid(column=2,row=22,sticky='EW')
 
         ratioUSERFILETHEO = Tkinter.StringVar()
         TextEntryRUT = Tkinter.Entry(self,textvariable=ratioUSERFILETHEO,state='disabled') #create first widget, an Entry widget
-        TextEntryRUT.grid(column=3,row=23,sticky='EW')
+        TextEntryRUT.grid(column=3,row=22,sticky='EW')
 
         # display options for theoretical database
         label11 = Tkinter.Label(self,anchor='w',text=u"Theoretical Database (Only check ONE box before proceeding): ")
-        label11.grid(column=0,row=24,columnspan=5,sticky='EW') #label widget
+        label11.grid(column=0,row=23,columnspan=5,sticky='EW') #label widget
+
+        def OncheckButtonPxn_THEO():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonPxn_THEO.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cNORMTHEO.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
+            if checkButtonPxn_THEO.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cNORMTHEO.configure(state='normal')
+                cP1nC.configure(state='normal')
+                cP2nC.configure(state='normal')
+                cP3nC.configure(state='normal')
 
         checkButtonPxn_THEO = Tkinter.IntVar()
-        cPxnTHEO = Tkinter.Checkbutton(self,text="Show Pxn-Values",variable=checkButtonPxn_THEO,state='disabled')
-        cPxnTHEO.grid(column=1,row=25,sticky='EW')
+        cPxnTHEO = Tkinter.Checkbutton(self,text="Show P(xn)-Values",variable=checkButtonPxn_THEO,state='disabled',command=OncheckButtonPxn_THEO)
+        cPxnTHEO.grid(column=1,row=24,sticky='EW')
+
+        def OncheckButtonNORM_THEO():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonNORM_THEO.get() == 1:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
+            if checkButtonNORM_THEO.get() == 0:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='normal')
+                cP1nC.configure(state='normal')
+                cP2nC.configure(state='normal')
+                cP3nC.configure(state='normal')
 
         checkButtonNORM_THEO = Tkinter.IntVar()
-        cNORMTHEO = Tkinter.Checkbutton(self,text="Normal with No Values Displayed",variable=checkButtonNORM_THEO,state='disabled')
-        cNORMTHEO.grid(column=2,row=25,sticky='EW')
+        cNORMTHEO = Tkinter.Checkbutton(self,text="Normal",variable=checkButtonNORM_THEO,state='disabled',
+                                        command=OncheckButtonNORM_THEO)
+        cNORMTHEO.grid(column=2,row=24,sticky='EW')
+
+        def OncheckButtonP1nC_THEO():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonP1nC_THEO.get() == 1:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='disabled')
+                cNORMTHEO.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
+            if checkButtonP1nC_THEO.get() == 0:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='normal')
+                cNORMTHEO.configure(state='normal')
+                cP2nC.configure(state='normal')
+                cP3nC.configure(state='normal')
 
         checkButtonP1nC_THEO = Tkinter.IntVar()
-        cP1nC = Tkinter.Checkbutton(self,text="Show P1n Color Bar Gradient",variable=checkButtonP1nC_THEO,state='disabled')
-        cP1nC.grid(column=1,row=26,sticky='EW')
+        cP1nC = Tkinter.Checkbutton(self,text="Show P(1n) Color Bar Gradient",variable=checkButtonP1nC_THEO,state='disabled',
+                                    command=OncheckButtonP1nC_THEO)
+        cP1nC.grid(column=1,row=25,sticky='EW')
+
+        def OncheckButtonP2nC_THEO():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonP2nC_THEO.get() == 1:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='disabled')
+                cNORMTHEO.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
+            if checkButtonP2nC_THEO.get() == 0:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='normal')
+                cNORMTHEO.configure(state='normal')
+                cP1nC.configure(state='normal')
+                cP3nC.configure(state='normal')
 
         checkButtonP2nC_THEO = Tkinter.IntVar()
-        cP2nC = Tkinter.Checkbutton(self,text="Show P2n Color Bar Gradient",variable=checkButtonP2nC_THEO,state='disabled')
-        cP2nC.grid(column=2,row=26,sticky='EW')
+        cP2nC = Tkinter.Checkbutton(self,text="Show P(2n) Color Bar Gradient",variable=checkButtonP2nC_THEO,state='disabled',
+                                    command=OncheckButtonP2nC_THEO)
+        cP2nC.grid(column=2,row=25,sticky='EW')
+
+        def OncheckButtonP3nC_THEO():
+            N_low_user = entryVariable1.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
+            Z_high_user = entryVariable4.get()
+
+            Delta_N = N_high_user-N_low_user
+            Delta_Z = Z_high_user-Z_low_user
+            
+            if checkButtonP3nC_THEO.get() == 1:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='disabled')
+                cNORMTHEO.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+            if checkButtonP3nC_THEO.get() == 0:
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    cPxnTHEO.configure(state='normal')
+                cNORMTHEO.configure(state='normal')
+                cP2nC.configure(state='normal')
+                cP1nC.configure(state='normal')
 
         checkButtonP3nC_THEO = Tkinter.IntVar()
-        cP3nC = Tkinter.Checkbutton(self,text="Show P3n Color Bar Gradient",variable=checkButtonP3nC_THEO,state='disabled')
-        cP3nC.grid(column=1,row=27,sticky='EW')
+        cP3nC = Tkinter.Checkbutton(self,text="Show P(3n) Color Bar Gradient",variable=checkButtonP3nC_THEO,state='disabled',
+                                    command=OncheckButtonP3nC_THEO)
+        cP3nC.grid(column=1,row=26,sticky='EW')
 
         def PLOT(): # event when PLOT button clicked; will display the visualization based on user options
             # obtains all relevant variable values from GUI
@@ -330,8 +622,8 @@ class BDNE_GUI(Tkinter.Tk):
             choice_user_THEO = checkButtonCHOICE_THEO.get()
             
             N_low_user = entryVariable1.get()
-            N_high_user = entryVariable2.get()
-            Z_low_user = entryVariable3.get()
+            N_high_user = entryVariable3.get()
+            Z_low_user = entryVariable2.get()
             Z_high_user = entryVariable4.get()
             Delta_N = N_high_user-N_low_user
             Delta_Z = Z_high_user-Z_low_user
@@ -757,6 +1049,7 @@ class BDNE_GUI(Tkinter.Tk):
                     mew = 1.0;ms1=1
                     lw1 = '0.5';lw2 = '1'
                     ax1_1=0.93;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
+                    Cred_N = -0.3;Cred_Z1=-0.4;Cred_Z2=0
 
                 if ((Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
                     msize = 35
@@ -765,6 +1058,9 @@ class BDNE_GUI(Tkinter.Tk):
                     Cred_N = -0.3 
                     Cred_Z1=-0.4;Cred_Z2=0;Cred_Z3=0.4 
                     Cred_Z4=0.8;Cred_Z5=1.2;Cred_Z6=1.6
+                    if (P1nC_THEO == 1 or P2nC_THEO == 1 or P3nC_THEO == 1):
+                        Cred_N = 2
+                        Cred_Z1=1.8;Cred_Z2=2.2
                     N_ELE_adj1=0.37;Z_ELE_adj1=0.15
                     fontsize_set_1=9;fontsize_set_2=9;fontsize_set_3=8
                     N_adj=0.28;N_adj_r=0.28
@@ -778,6 +1074,9 @@ class BDNE_GUI(Tkinter.Tk):
                     Cred_N = -0.2
                     Cred_Z1=0.2;Cred_Z2=0.4;Cred_Z3=0.6 
                     Cred_Z4=0.8;Cred_Z5=1;Cred_Z6=1.2
+                    if (P1nC_THEO == 1 or P2nC_THEO == 1 or P3nC_THEO == 1):
+                        Cred_N = 1.5
+                        Cred_Z1=1.6;Cred_Z2=1.8
                     N_ELE_adj1=0.3;Z_ELE_adj1=0.2
                     fontsize_set_1=10;fontsize_set_2=9;fontsize_set_3=8
                     N_adj=0.25;N_adj_r=0.25
@@ -791,6 +1090,9 @@ class BDNE_GUI(Tkinter.Tk):
                     Cred_N = -0.1 
                     Cred_Z1=0.2;Cred_Z2=0.4;Cred_Z3=0.6
                     Cred_Z4=0.8;Cred_Z5=1.0;Cred_Z6=1.2
+                    if (P1nC_THEO == 1 or P2nC_THEO == 1 or P3nC_THEO == 1):
+                        Cred_N = 1
+                        Cred_Z1=1.3;Cred_Z2=1.5
                     N_ELE_adj1=0.3;Z_ELE_adj1=0.3
                     fontsize_set_1=12;fontsize_set_2=11;fontsize_set_3=8.5
                     N_adj=0.4;N_adj_i=0;N_adj_r=0.25
@@ -804,6 +1106,9 @@ class BDNE_GUI(Tkinter.Tk):
                     Cred_N = -0.1 
                     Cred_Z1=0.9;Cred_Z2=0.95;Cred_Z3=1
                     Cred_Z4=1.05;Cred_Z5=1.1;Cred_Z6=1.15
+                    if (P1nC_THEO == 1 or P2nC_THEO == 1 or P3nC_THEO == 1):
+                        Cred_N = 0.5
+                        Cred_Z1=1.1;Cred_Z2=1.15
                     N_ELE_adj1=0.1;Z_ELE_adj1=0.3
                     fontsize_set_1=20;fontsize_set_2=4;fontsize_set_3=18
                     N_adj=0.1;N_adj_i=0;N_adj_r=0.25
@@ -826,7 +1131,7 @@ class BDNE_GUI(Tkinter.Tk):
                         plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie',fontsize=10)
                         plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'               TRIUMF/McMaster University',fontsize=10)
                         plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,'Masses: AME 2012 (Wang et al.)',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'               MOELLER(2003)',fontsize=10) 
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Theo.:        MOELLER(2003)',fontsize=10) 
 
 
                         plt.title("Theoretically Known Beta-Delayed Neutron Emitters")          
@@ -930,10 +1235,10 @@ class BDNE_GUI(Tkinter.Tk):
                         if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                             l1 = plt.legend(leg_list,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
                             if NORM_THEO == 0 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
-                                l2 = plt.legend(('  Isotope  ','  P1n','  P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                                l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                                 g.add_artist(l1)
                             if NORM_THEO == 0 and Delta_Z <= 7 and Delta_N <= 7:
-                                l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                                l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)','  P(3n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                                 g.add_artist(l1)
                         else:
                             l1 = plt.legend(leg_list,loc=4,markerscale=ms1,numpoints=1)
@@ -1048,48 +1353,52 @@ class BDNE_GUI(Tkinter.Tk):
                             plt.plot(N_stable_Bound,Z_stable_Bound,marker='s',color=color1,markersize=msize,markeredgewidth=0,linestyle='')
                             c3=1
 
-                        if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:                           
+                        if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
+                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar")                           
                             if len(N_P1n_Color) != 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P1n Color Bar")
                                 for i in xrange(0,len(N_P1n_Color)):
                                     plt.plot(N_P1n_Color[i],Z_P1n_Color[i],marker='s',color=P1n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                                     c4=1
 
                         if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                            if len(N_P2n_Color) != 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P2n Color Bar") 
+                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(2n) Color Bar")
+                            if len(N_P2n_Color) != 0: 
                                 for i in xrange(0,len(N_P2n_Color)):
                                     plt.plot(N_P2n_Color[i],Z_P2n_Color[i],marker='s',color=P2n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                                     c5=1
 
                         if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
+                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(3n) Color Bar")
                             if len(N_P3n_Color) != 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P3n Color Bar")
                                 for i in xrange(0,len(N_P3n_Color)):
                                     plt.plot(N_P3n_Color[i],Z_P3n_Color[i],marker='s',color=P3n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                                     c6=1
                         # plots nuclei,stable nuclei, and color highlights the Pn values within user bounds using user uploaded data files
                         if user_P == 1:
                             if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
+                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar")
                                 if len(N_P1n_Color_USER) != 0:
-                                    plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P1n Color Bar")
                                     for i in xrange(0,len(N_P1n_Color_USER)):
                                         plt.plot(N_P1n_Color_USER[i],Z_P1n_Color_USER[i],marker='s',color=P1n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                                         c4=1
 
                             if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                                if len(N_P2n_Color_USER) != 0:
-                                    plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P2n Color Bar") 
+                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(2n) Color Bar")
+                                if len(N_P2n_Color_USER) != 0: 
                                     for i in xrange(0,len(N_P2n_Color_USER)):
                                         plt.plot(N_P2n_Color_USER[i],Z_P2n_Color_USER[i],marker='s',color=P2n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                                         c5=1
 
                             if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
+                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(3n) Color Bar")
                                 if len(N_P3n_Color_USER) != 0:
-                                    plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P3n Color Bar")
                                     for i in xrange(0,len(N_P3n_Color_USER)):
                                         plt.plot(N_P3n_Color_USER[i],Z_P3n_Color_USER[i],marker='s',color=P3n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                                         c6=1
+
+                        # Credits 
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie   |   Masses: AME 2012 (Wang et al.)',fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'               TRIUMF/McMaster University   |   Theo.:  MOELLER(2003)',fontsize=10)
 
                         # magic number lines
                         if N_high_user >= 8 and N_low_user <= 8:  
@@ -1159,7 +1468,9 @@ class BDNE_GUI(Tkinter.Tk):
                         plt.xlim(N_low_user,N_high_user)
                         plt.ylim(Z_low_user-1,Z_high_user+1)                                               
 
-                        plt.xlabel("N")
+                        plt.xlabel("""N
+Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                         plt.ylabel("Z")
 
                         plt.title("Theoretically Known Beta-Delayed Neutron Emitters")          
@@ -1275,7 +1586,9 @@ class BDNE_GUI(Tkinter.Tk):
                         plt.xlim(N_low_user,N_high_user)
                         plt.ylim(Z_low_user-1,Z_high_user+1)                                               
 
-                        plt.xlabel("N")
+                        plt.xlabel("""N
+Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                         plt.ylabel("Z")
 
                         # plots nuclei,stable nuclei, and color highlights the Pxn values within user bounds using basic data files
@@ -1289,48 +1602,49 @@ class BDNE_GUI(Tkinter.Tk):
                             plt.plot(N_stable_Bound,Z_stable_Bound,marker='s',color=color1,markersize=msize,markeredgewidth=0,linestyle='')
                             c3=1
 
-                        if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:            
+                        if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
+                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar")            
                             if len(N_P1n_Color) != 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P1n Color Bar")
                                 for i in xrange(0,len(N_P1n_Color)):
                                     plt.plot(N_P1n_Color[i],Z_P1n_Color[i],marker='s',color=P1n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                                     c4=1
 
                         if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                            if len(N_P2n_Color) != 0:
-                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P2n Color Bar") 
+                            plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(2n) Color Bar")
+                            if len(N_P2n_Color) != 0: 
                                 for i in xrange(0,len(N_P2n_Color)):
                                     plt.plot(N_P2n_Color[i],Z_P2n_Color[i],marker='s',color=P2n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                                     c5=1
 
                         if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
+                            plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(3n) Color Bar")
                             if len(N_P3n_Color) != 0:
-                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P3n Color Bar")
                                 for i in xrange(0,len(N_P3n_Color)):
                                     plt.plot(N_P3n_Color[i],Z_P3n_Color[i],marker='s',color=P3n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                                     c6=1
                         # plots nuclei,stable nuclei, and color highlights the Pxn values within user bounds using user uploaded data files
                         if user_P == 1:
                             if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
+                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(1n) Color Bar")
                                 if len(N_P1n_Color_USER) != 0:
-                                    plt.title("Theoretically Known Beta-delayed Neutron Emitters: P1n Color Bar")
                                     for i in xrange(0,len(N_P1n_Color_USER)):
                                         plt.plot(N_P1n_Color_USER[i],Z_P1n_Color_USER[i],marker='s',color=P1n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                                         c4=1
 
                             if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                                if len(N_P2n_Color_USER) != 0:
-                                    plt.title("Theoretically Known Beta-delayed Neutron Emitters: P2n Color Bar") 
+                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(2n) Color Bar")
+                                if len(N_P2n_Color_USER) != 0: 
                                     for i in xrange(0,len(N_P2n_Color_USER)):
                                         plt.plot(N_P2n_Color_USER[i],Z_P2n_Color_USER[i],marker='s',color=P2n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                                         c5=1
 
                             if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
+                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(3n) Color Bar")
                                 if len(N_P3n_Color_USER) != 0:
-                                    plt.title("Theoretically Known Beta-delayed Neutron Emitters: P3n Color Bar")
                                     for i in xrange(0,len(N_P3n_Color_USER)):
                                         plt.plot(N_P3n_Color_USER[i],Z_P3n_Color_USER[i],marker='s',color=P3n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                                         c6=1
+                        
                         #magic number lines
                         if N_high_user >= 8 and N_low_user <= 8:  
                             plt.plot(N_Bound_magic*0.+8.5,Z_Bound_magic,color=color1,linewidth=lw1)  
@@ -1829,7 +2143,7 @@ class BDNE_GUI(Tkinter.Tk):
                                 if P1n_iso2[i] != 0:
                                     N_P1n_Bound_value_iso2 = np.append(N_P1n_Bound_value_iso2,N_P_iso2[i])
                                     Z_P1n_Bound_value_iso2 = np.append(Z_P1n_Bound_value_iso2,Z_P_iso2[i])
-                                    P1n_Bound_iso2 = np.append(P1n_Bound_iso2,P1n_iso2_USER[i])
+                                    P1n_Bound_iso2 = np.append(P1n_Bound_iso2,P1n_iso2[i])
 
                                 if P2n_iso2[i] != 0: 
                                     N_P2n_Bound_value_iso2 = np.append(N_P2n_Bound_value_iso2,N_P_iso2[i])
@@ -1882,9 +2196,6 @@ class BDNE_GUI(Tkinter.Tk):
                     msize = 9
                     mew = 2.0;ms1=1
                     lw1 = '0.5';lw2 = '1'
-                    Cred_N = -0.3
-                    Cred_Z1=-0.8;Cred_Z2=0;Cred_Z3=0.8 
-                    Cred_Z4=1.6;Cred_Z5=2.4;Cred_Z6=3.2
 
                 if ((Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delat_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
                     msize = 35
@@ -2143,7 +2454,7 @@ class BDNE_GUI(Tkinter.Tk):
                                         plt.text(N_P1n_Bound_value_iso1[i]-N_adj_i,Z_P1n_Bound_value_iso1[i]+Z_adj_1,'| '+str_ratio+'%',fontsize=fontsize_set_3)
 
                         if len(N_P2n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
-                            for i in xrange(0,len(N_P2n_Bound_iso1)):
+                            for i in xrange(0,len(N_P2n_Bound_value_iso1)):
                                 if user_i != 1:
                                     str_ratio="{0:.1f}".format(P2n_Bound_iso1[i])
                                     plt.text(N_P2n_Bound_value_iso1[i]-N_adj_i,Z_P2n_Bound_value_iso1[i]+Z_adj_2,'| '+str_ratio+'%',fontsize=fontsize_set_3)
@@ -2243,7 +2554,13 @@ class BDNE_GUI(Tkinter.Tk):
                 if Ratio == 0:
                     plt.title("Experimentally Known Beta-Delayed Neutron Emitters")
 
-                plt.xlabel("N")
+                if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
+                    plt.xlabel("N")
+                else:
+                    plt.xlabel("""N
+Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012(Wang et al.)   |   Exp.:  ENSDF(2011),Hosmer(2010),Padgett(2010),Miernik(2013)""")
+                    
                 plt.ylabel("Z")
 
                 # magic number lines
@@ -2347,13 +2664,13 @@ class BDNE_GUI(Tkinter.Tk):
                         g.add_artist(l1)
 
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend(('  Isotope  ','  P1n','  P2n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7  and Delta_N > 4 and Delta_Z > 4:
-                        l2 = plt.legend(('  Isotope  ','  P1n','  P2n','  P3n','  P4n'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)','  P(3n)','  P(4n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend(('     Isotope  ','  P1n-gs | P1n-iso1','  P2n-gs | P2n-iso1','  P3n-gs | P1n-iso2','  P4n-gs | P2n-iso2'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend(('     Isotope  ','  P(1n)-gs | P(1n)-iso1','  P(2n)-gs | P(2n)-iso1','  P(1n)-gs | P(1n)-iso2','  P(2n)-gs | P(2n)-iso2'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                 else:
                     l1 = plt.legend(leg_list,loc=4,markerscale=ms1,numpoints=1)
@@ -2361,7 +2678,7 @@ class BDNE_GUI(Tkinter.Tk):
                 plt.show()
 
         PLOT_Button = Tkinter.Button(self,text=u"PLOT",command=PLOT) # PLOT button
-        PLOT_Button.grid(column=2,row=28)
+        PLOT_Button.grid(column=2,row=27)
 
         self.grid_columnconfigure(0,weight=1) #resize columns when window is resized
         self.grid_columnconfigure(1,weight=1) #resize columns when window is resized
