@@ -309,13 +309,23 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
             # determines what display options are highlighted based on user choices
             if (checkButtonCHOICE_EXP.get() == 1 and checkButtonCHOICE_THEO.get() == 0):
+                check_PxnEXP = checkButtonPxn_EXP.get();check_NORMEXP = checkButtonNORM_EXP.get()
+                check_R = checkButtonRatio.get()
+                
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnEXP.configure(state='normal');cNORMEXP.configure(state='normal');cR.configure(state='normal')          
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
                     
                     cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
-                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()    
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+
+                    if check_PxnEXP == 1:
+                        cPxnEXP.select();cNORMEXP.deselect();cR.deselect()
+                    if check_NORMEXP == 1:
+                        cPxnEXP.deselect();cNORMEXP.select();cR.deselect()
+                    if check_R == 1:
+                        cPxnEXP.deselect();cNORMEXP.deselect();cR.select()
                 
                 if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='normal');cR.configure(state='disabled')
@@ -326,6 +336,9 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                     cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
 
             if (checkButtonCHOICE_THEO.get() == 1 and checkButtonCHOICE_EXP.get() == 0):
+                check_PxnTHEO = checkButtonPxn_THEO.get();check_NORMTHEO = checkButtonNORM_THEO.get()
+                check_P1nC = checkButtonP1nC_THEO.get();check_P2nC = checkButtonP2nC_THEO.get();check_P3nC = checkButtonP3nC_THEO.get()
+                
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnTHEO.configure(state='normal');cNORMTHEO.configure(state='normal')
                     cP1nC.configure(state='normal');cP2nC.configure(state='normal');cP3nC.configure(state='normal')
@@ -333,6 +346,22 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                     cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
                     cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+
+                    if check_PxnTHEO == 1:
+                        cPxnTHEO.select();cNORMTHEO.deselect()
+                        cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+                    if check_NORMTHEO == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.select()
+                        cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+                    if check_P1nC == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.deselect()
+                        cP1nC.select();cP2nC.deselect();cP3nC.deselect()
+                    if check_P2nC == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.deselect()
+                        cP1nC.deselect();cP2nC.select();cP3nC.deselect()
+                    if check_P3nC == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.deselect()
+                        cP1nC.deselect();cP2nC.deselect();cP3nC.select()
                     
                 if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='normal')
@@ -341,6 +370,19 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                     cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
                     cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+
+                    if check_NORMTHEO == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.select()
+                        cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
+                    if check_P1nC == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.deselect()
+                        cP1nC.select();cP2nC.deselect();cP3nC.deselect()
+                    if check_P2nC == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.deselect()
+                        cP1nC.deselect();cP2nC.select();cP3nC.deselect()
+                    if check_P3nC == 1:
+                        cPxnTHEO.deselect();cNORMTHEO.deselect()
+                        cP1nC.deselect();cP2nC.deselect();cP3nC.select()
 
         NextButton = Tkinter.Button(self,text=u"NEXT",command=NextButton)
         NextButton.grid(column=5,row=13)
@@ -2023,7 +2065,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                 # sets arrays for the nuclei with Pxn values within user bounds using the basic data files
                 for i in xrange(0,size_P):
                     if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user:
-                        if P1n[i] != 0: 
+                        if P1n[i] > 0: 
                             N_P1n_Bound = np.append(N_P1n_Bound,N_P[i]) 
                             Z_P1n_Bound = np.append(Z_P1n_Bound,Z_P[i])
 
@@ -2033,7 +2075,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                                     Z_P1n_Bound_value = np.append(Z_P1n_Bound_value,Z_P[i])
                                     P1n_Bound = np.append(P1n_Bound,P1n[i])
 
-                        if P2n[i] != 0: 
+                        if P2n[i] > 0: 
                             N_P2n_Bound = np.append(N_P2n_Bound,N_P[i])
                             Z_P2n_Bound = np.append(Z_P2n_Bound,Z_P[i])
 
@@ -2043,7 +2085,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                                     Z_P2n_Bound_value = np.append(Z_P2n_Bound_value,Z_P[i])
                                     P2n_Bound = np.append(P2n_Bound,P2n[i])
 
-                        if P3n[i] != 0: 
+                        if P3n[i] > 0: 
                             N_P3n_Bound = np.append(N_P3n_Bound,N_P[i])
                             Z_P3n_Bound = np.append(Z_P3n_Bound,Z_P[i])
 
@@ -2053,7 +2095,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                                     Z_P3n_Bound_value = np.append(Z_P3n_Bound_value,Z_P[i])
                                     P3n_Bound = np.append(P3n_Bound,P3n[i]) 
 
-                        if P4n[i] != 0: 
+                        if P4n[i] > 0: 
                             N_P4n_Bound = np.append(N_P4n_Bound,N_P[i])
                             Z_P4n_Bound = np.append(Z_P4n_Bound,Z_P[i])
 
@@ -2425,7 +2467,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                             for i in xrange(0,len(N_P4n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
                                     str_ratio="{0:.1f}".format(P4n_Bound[i])
-                                    plt.text(N_P4n_user_value[i]-N_adj,Z_P4n_user_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
+                                    plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P4n_Bound_USER_value)):
                                         if N_P4n_Bound_value[i] == N_P4n_Bound_USER_value[ii] and Z_P4n_Bound_value[i] == Z_P4n_Bound_USER_value[ii]:
@@ -2435,7 +2477,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""")
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
                                         str_ratio="{0:.1f}".format(P4n_Bound[i])
-                                        plt.text(N_P4n_user_value[i]-N_adj,Z_P4n_user_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
+                                        plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
 
                         if len(N_P1n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in xrange(0,len(N_P1n_Bound_value_iso1)):
@@ -2670,7 +2712,7 @@ Masses: AME 2012(Wang et al.)   |   Exp.:  ENSDF(2011),Hosmer(2010),Padgett(2010
                         l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)','  P(3n)','  P(4n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend(('     Isotope  ','  P(1n)-gs | P(1n)-iso1','  P(2n)-gs | P(2n)-iso1','  P(1n)-gs | P(1n)-iso2','  P(2n)-gs | P(2n)-iso2'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend(('     Isotope  ','  P(1n)-gs | P(1n)-iso1','  P(2n)-gs | P(2n)-iso1','  P(3n)-gs | P(1n)-iso2','  P(4n)-gs | P(2n)-iso2'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                 else:
                     l1 = plt.legend(leg_list,loc=4,markerscale=ms1,numpoints=1)
