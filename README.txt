@@ -46,7 +46,7 @@ Please email me if any problems require a fix or update to the software.
 
 Data References
 Masses: Atomic Mass Evaluation 2012 (Wang et al.)
-Experimental Data: Evaluated Nuclear Structure Data File (June 2011)
+Experimental Data: Evaluated Nuclear Structure Data File 
 Experiemental Data from Papers: Miernik(2013), Hosmer(2010), Padgett(2010)
 Theoretical Model: MOELLER (2003)
 
