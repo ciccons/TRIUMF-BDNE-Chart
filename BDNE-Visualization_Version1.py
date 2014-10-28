@@ -14,6 +14,75 @@ import matplotlib as mpl
 import sys
 import Tkinter
 
+# Plot Labels & Titles------------------------------------------------
+xlabel = "N"
+xlabel1 = """N
+Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)"""
+xlabel2 = """N
+Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012(Wang et al.)   |   Exp.:  ENSDF,Hosmer(2010),Padgett(2010),Miernik(2013)"""
+ylabel = "Z"
+                        
+CreditTextTHEO_1 = "Produced By: Ciccone, Stephanie"
+CreditTextTHEO_2 = "               TRIUMF/McMaster University"
+CreditTextTHEO_3 = "Masses: AME 2012 (Wang et al.)"
+CreditTextTHEO_4 = "Theo.:        MOELLER(2003)"
+CreditTextTHEO_ColorBar_1 = "Produced By: Ciccone, Stephanie   |   Masses: AME 2012 (Wang et al.)"
+CreditTextTHEO_ColorBar_2 = "               TRIUMF/McMaster University   |   Theo.:  MOELLER(2003)"
+
+CreditTextEXP_1 = "Produced By: Ciccone, Stephanie"
+CreditTextEXP_2 = "    TRIUMF/McMaster University"
+CreditTextEXP_3 = "Masses: AME 2012 (Wang et al.)"
+CreditTextEXP_4 = "Exp.: ENSDF, Miernik(2013)"
+CreditTextEXP_5 = "        Hosmer(2010), Padgett(2010)"
+CreditTextEXP_6 = "Theo.: Moeller(2003)"
+
+Title_Ratio = "Ratio between Theoretical & Experimental Data"
+Title_EXP = "Experimentally Known Beta-Delayed Neutron Emitters"
+
+Title_THEO = "Theoretically Known Beta-Delayed Neutron Emitters"
+THEO_ColorTitle_1 = "Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar"
+THEO_ColorTitle_2 = "Theoretically Known Beta-Delayed Neutron Emitters: P(2n) Color Bar"
+THEO_ColorTitle_3 = "Theoretically Known Beta-Delayed Neutron Emitters: P(3n) Color Bar"
+ColorBarLabel = "Beta-Delayed Neutron Emission Probability"
+
+leg_THEO_1 = "Identified Nuclei"
+leg_THEO_2 = "Stable"
+leg_THEO_3 = "P(1n) dominates"
+leg_THEO_4 = "P(2n) dominates"
+leg_THEO_5 = "P(3n) dominates"
+
+leg_EXP_1 = "Known"
+leg_EXP_2 = "Stable"
+leg_EXP_3 = "Q(b1n) > 0 keV"
+leg_EXP_4 = "Q(b2n) > 0 keV"
+leg_EXP_5 = "Q(b3n) > 0 keV"
+leg_EXP_6 = "Q(b4n) > 0 keV"
+leg_EXP_7 = "Measured P(1n)"
+leg_EXP_8 = "Measured P(2n)"
+leg_EXP_9 = "Measured P(3n)"
+leg_EXP_10 = "Measured P(4n)"
+
+leg_ValueLabels1_THEO = "  Isotope  "
+leg_ValueLabels2_THEO = "  P(1n)"
+leg_ValueLabels3_THEO = "  P(2n)"
+leg_ValueLabels4_THEO = "  P(3n)"
+leg_ValueLabels5_THEO = "  P(4n)"
+
+leg_ValueLabels1_EXP = "      Isotope"
+leg_ValueLabels2_EXP = "(P1n Exp./P1n Theory)"
+leg_ValueLabels3_EXP = "(P2n Exp./P2n Theory)"
+leg_ValueLabels4_EXP = "(P3n Exp./P3n Theory)"
+leg_ValueLabels5_EXP = "(P4n Exp./P4n Theory)"
+
+leg_ValueLabels1_iso = "     Isotope  "
+leg_ValueLabels2_iso = "  P(1n)-gs | P(1n)-iso1"
+leg_ValueLabels3_iso = "  P(2n)-gs | P(2n)-iso1"
+leg_ValueLabels4_iso = "  P(3n)-gs | P(1n)-iso2"
+leg_ValueLabels5_iso = "  P(4n)-gs | P(2n)-iso2"
+#-----------------------------------------------------------------
+
 class BDNE_GUI(Tkinter.Tk):
     def __init__(self,parent):
         # GUI a hierarchy of objects so each GUI element has a parent or a container
@@ -755,8 +824,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 # also makes an array for all nuclei found in the user bounds
                 N_P_Bound = [] ; Z_P_Bound = []
                 append_NPB = N_P_Bound.append;append_ZPB = Z_P_Bound.append
-                N_Bound_magic = [] ; Z_Bound_magic = []
-                append_NmagB = N_Bound_magic.append;append_ZmagB = Z_Bound_magic.append
+                N_Bound_magic_Vert = [] ; Z_Bound_magic_Vert = []
+                append_NmagBV = N_Bound_magic_Vert.append;append_ZmagBV = Z_Bound_magic_Vert.append
+                N_Bound_magic_Hor = [] ; Z_Bound_magic_Hor = []
+                append_NmagBH = N_Bound_magic_Hor.append;append_ZmagBH = Z_Bound_magic_Hor.append
 
                 for i in xrange(0,size_P):
 
@@ -764,11 +835,17 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         append_NPB(N_P[i])
                         append_ZPB(Z_P[i])
 
-                    if Z_P[i] >= 0 and Z_P[i] <= Z_high_user:
-                        append_NmagB(N_P[i])
-                        append_ZmagB(Z_P[i])
-                N_Bound_magic = np.array(N_Bound_magic)
-                Z_Bound_magic = np.array(Z_Bound_magic)
+                    if Z_P[i] >= 0 and Z_P[i] <= Z_high_user+1:
+                        append_ZmagBV(Z_P[i])
+                        append_NmagBV(N_P[i])
+                    if N_P[i] >= 0 and N_P[i] <= N_high_user+1:
+                        append_ZmagBH(Z_P[i])
+                        append_NmagBH(N_P[i])
+                        
+                N_Bound_magic_Vert = np.array(N_Bound_magic_Vert)
+                Z_Bound_magic_Vert = np.array(Z_Bound_magic_Vert)
+                N_Bound_magic_Hor = np.array(N_Bound_magic_Hor)
+                Z_Bound_magic_Hor = np.array(Z_Bound_magic_Hor)
 
                 #-----------------------------------------------------------------------------
                 #for loop that determines the size of an array based on isotopes that have probability of beta-delayed emission
@@ -1084,21 +1161,21 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 if (Delta_N > 80) or (Delta_Z > 80):
                     msize = 2.7
                     mew = 0.5;ms1=1
-                    lw1 = '0.5';lw2 = '1'
+                    lw1 = 0.5;lw2 = 1
                     ax1_1=0.93;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
                     Cred_N = -0.3;Cred_Z1=-0.4;Cred_Z2=0
                     
                 if ((Delta_N > 10) and Delta_N <= 80) and ((Delta_Z > 10) and Delta_Z <= 80):
                     msize = 9
                     mew = 1.0;ms1=1
-                    lw1 = '0.5';lw2 = '1'
+                    lw1 = 0.5;lw2 = 1
                     ax1_1=0.93;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
                     Cred_N = -0.3;Cred_Z1=-0.4;Cred_Z2=0
 
                 if ((Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
                     msize = 35
                     mew = 1.5;ms1=0.2;ms2=0
-                    lw1 = '2.0';lw2 = '2.5'
+                    lw1 = 2.0;lw2 = 2.5
                     Cred_N = -0.3 
                     Cred_Z1=-0.4;Cred_Z2=0;Cred_Z3=0.4 
                     Cred_Z4=0.8;Cred_Z5=1.2;Cred_Z6=1.6
@@ -1114,7 +1191,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 if (Delta_N == 7 and Delta_Z == 7):
                     msize = 45
                     mew = 3.0;ms1=0.2;ms2=0
-                    lw1 = '2.0';lw2 = '2.5'
+                    lw1 = 2.0;lw2 = 2.5
                     Cred_N = -0.2
                     Cred_Z1=0.2;Cred_Z2=0.4;Cred_Z3=0.6 
                     Cred_Z4=0.8;Cred_Z5=1;Cred_Z6=1.2
@@ -1130,7 +1207,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 if (Delta_N == 4 and Delta_Z == 4):
                     msize = 70
                     mew = 4.0;ms1=0.1;ms2=0
-                    lw1 = '3.0';lw2 = '3.5'
+                    lw1 = 3.0;lw2 = 3.5
                     Cred_N = -0.1 
                     Cred_Z1=0.2;Cred_Z2=0.4;Cred_Z3=0.6
                     Cred_Z4=0.8;Cred_Z5=1.0;Cred_Z6=1.2
@@ -1146,7 +1223,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 if Delta_N == 0 and Delta_Z == 0:
                     msize = 200
                     mew = 4.0;ms1=0.05;ms2=0
-                    lw1 = '3.0';lw2 = '3.5'
+                    lw1 = 3.0;lw2 = 3.5
                     Cred_N = -0.1 
                     Cred_Z1=0.9;Cred_Z2=0.95;Cred_Z3=1
                     Cred_Z4=1.05;Cred_Z5=1.1;Cred_Z6=1.15
@@ -1166,19 +1243,41 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         plt.axis('scaled')
                         g=plt.gca()
                         plt.xlim(N_low_user,N_high_user)
-                        plt.ylim(Z_low_user-1,Z_high_user+1)                                               
+                        plt.ylim(Z_low_user-1,Z_high_user+1)
 
-                        plt.xlabel("N")
-                        plt.ylabel("Z")
+                        Num_xticks = np.arange(N_low_user+1,N_high_user,1)
+                        label_xticks = [];append_lx = label_xticks.append
+                        for i in xrange(N_low_user+1,N_high_user):
+                            c = i%2
+                            if c == 0:
+                                label_xticks.append(i)
+                            else:
+                                label_xticks.append("")
+                        plt.xticks(Num_xticks,label_xticks)
+                        plt.xticks(size=8)
+                        
+                        Num_yticks = np.arange(Z_low_user,Z_high_user+1,1)
+                        label_yticks = [];append_ly = label_yticks.append
+                        for i in xrange(Z_low_user,Z_high_user+1):
+                            c = i%2
+                            if c == 0:
+                                label_yticks.append(i)
+                            else:
+                                label_yticks.append("")
+                        plt.yticks(Num_yticks,label_yticks)
+                        plt.yticks(size=8)
+
+                        plt.xlabel(xlabel)
+                        plt.ylabel(ylabel)
 
                         # Credits 
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'               TRIUMF/McMaster University',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,'Masses: AME 2012 (Wang et al.)',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Theo.:        MOELLER(2003)',fontsize=10) 
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,CreditTextTHEO_1,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,CreditTextTHEO_2,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,CreditTextTHEO_3,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,CreditTextTHEO_4,fontsize=10) 
 
 
-                        plt.title("Theoretically Known Beta-Delayed Neutron Emitters")
+                        plt.title(Title_THEO)
                         leg_entries = []
                         leg_text = []
 
@@ -1209,72 +1308,72 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                         # determines which magic number lines are necessary to display
                         if N_high_user >= 8 and N_low_user <= 8:  
-                            plt.plot(N_Bound_magic*0.+8.5,Z_Bound_magic,color=color1,linewidth=lw1)  
-                            plt.plot(N_Bound_magic*0.+7.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+8.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)  
+                            plt.plot(N_Bound_magic_Vert*0.+7.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 20 and N_low_user <= 20:
-                            plt.plot(N_Bound_magic*0.+20.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+19.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+20.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+19.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 28 and N_low_user <= 28:
-                            plt.plot(N_Bound_magic*0.+28.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+27.5,Z_Bound_magic,color=color1,linewidth=lw1)     
+                            plt.plot(N_Bound_magic_Vert*0.+28.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+27.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)     
 
                         if N_high_user >= 50 and N_low_user <= 50:
-                            plt.plot(N_Bound_magic*0.+50.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+49.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+50.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+49.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 82 and N_low_user <= 82:
-                            plt.plot(N_Bound_magic*0.+82.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+81.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+82.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+81.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 126 and N_low_user <= 126:
-                            plt.plot(N_Bound_magic*0.+126.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+125.5,Z_Bound_magic,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+126.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+125.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
 
                         if Z_high_user >= 8 and Z_low_user <= 8:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+8.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+7.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+8.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+7.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 20 and Z_low_user <= 20:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+20.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+19.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+20.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+19.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 28 and Z_low_user <= 28:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+28.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+27.5,color=color1,linewidth=lw2)             
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+28.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+27.5,color=color1,linewidth=lw1)             
 
                         if Z_high_user >= 50 and Z_low_user <= 50:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+50.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+49.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+50.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+49.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 82 and Z_low_user <= 82:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+82.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+81.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+82.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+81.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 126 and Z_low_user <= 126:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+126.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+125.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+126.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+125.5,color=color1,linewidth=lw1)
 
                         # builds legend
                         if c1 == 1:
-                            leg_entries.append(t0);leg_text.append('Identified Nuclei')
+                            leg_entries.append(t0);leg_text.append(leg_THEO_1)
                         if c2 == 1:
-                            leg_entries.append(t1);leg_text.append('Stable')
+                            leg_entries.append(t1);leg_text.append(leg_THEO_2)
                         if c3 == 1:
-                            leg_entries.append(t2);leg_text.append('P(1n) dominates')
+                            leg_entries.append(t2);leg_text.append(leg_THEO_3)
                         if c4 == 1:
-                            leg_entries.append(t3);leg_text.append('P(2n) dominates')
+                            leg_entries.append(t3);leg_text.append(leg_THEO_4)
                         if c5 == 1:
-                            leg_entries.append(t4);leg_text.append('P(3n) dominates')
+                            leg_entries.append(t4);leg_text.append(leg_THEO_5)
                             
                         if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                             l1 = plt.legend(leg_entries,leg_text,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
                             if NORM_THEO == 0 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
-                                l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                                l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                                 g.add_artist(l1)
                             if NORM_THEO == 0 and Delta_Z <= 7 and Delta_N <= 7:
-                                l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)','  P(3n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                                l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO,leg_ValueLabels4_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                                 g.add_artist(l1)
                         else:
                             l1 = plt.legend(leg_entries,leg_text,loc=4,markerscale=ms1,numpoints=1)
@@ -1373,10 +1472,32 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         plt.axis('scaled')
                         g=plt.gca()
                         plt.xlim(N_low_user,N_high_user)
-                        plt.ylim(Z_low_user-1,Z_high_user+1)                                               
+                        plt.ylim(Z_low_user-1,Z_high_user+1)
 
-                        plt.xlabel("N")
-                        plt.ylabel("Z")
+                        Num_xticks = np.arange(N_low_user+1,N_high_user,1)
+                        label_xticks = [];append_lx = label_xticks.append
+                        for i in xrange(N_low_user+1,N_high_user):
+                            c = i%2
+                            if c == 0:
+                                label_xticks.append(i)
+                            else:
+                                label_xticks.append("")
+                        plt.xticks(Num_xticks,label_xticks)
+                        plt.xticks(size=8)
+                        
+                        Num_yticks = np.arange(Z_low_user,Z_high_user+1,1)
+                        label_yticks = [];append_ly = label_yticks.append
+                        for i in xrange(Z_low_user,Z_high_user+1):
+                            c = i%2
+                            if c == 0:
+                                label_yticks.append(i)
+                            else:
+                                label_yticks.append("")
+                        plt.yticks(Num_yticks,label_yticks)
+                        plt.yticks(size=8)
+
+                        plt.xlabel(xlabel)
+                        plt.ylabel(ylabel)
 
                         # plots nuclei, stable nuclei, and color highlights the Pxn values within user bounds using basic data files
                         if len(N_P_Bound) != 0:
@@ -1387,94 +1508,94 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                             plt.plot(N_stable_Bound,Z_stable_Bound,marker='s',color=color1,markersize=msize,markeredgewidth=0,linestyle='')
 
                         if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
-                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar")                           
+                            plt.title(THEO_ColorTitle_1)                           
                             if len(N_P1n_Color) != 0:
                                 for i in xrange(0,len(N_P1n_Color)):
                                     plt.plot(N_P1n_Color[i],Z_P1n_Color[i],marker='s',color=P1n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                         if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(2n) Color Bar")
+                            plt.title(THEO_ColorTitle_2)
                             if len(N_P2n_Color) != 0: 
                                 for i in xrange(0,len(N_P2n_Color)):
                                     plt.plot(N_P2n_Color[i],Z_P2n_Color[i],marker='s',color=P2n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                         if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
-                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(3n) Color Bar")
+                            plt.title(THEO_ColorTitle_3)
                             if len(N_P3n_Color) != 0:
                                 for i in xrange(0,len(N_P3n_Color)):
                                     plt.plot(N_P3n_Color[i],Z_P3n_Color[i],marker='s',color=P3n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                         # plots nuclei,stable nuclei, and color highlights the Pn values within user bounds using user uploaded data files
                         if user_P == 1:
                             if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar")
+                                plt.title(THEO_ColorTitle_1)
                                 if len(N_P1n_Color_USER) != 0:
                                     for i in xrange(0,len(N_P1n_Color_USER)):
                                         plt.plot(N_P1n_Color_USER[i],Z_P1n_Color_USER[i],marker='s',color=P1n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                             if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(2n) Color Bar")
+                                plt.title(THEO_ColorTitle_2)
                                 if len(N_P2n_Color_USER) != 0: 
                                     for i in xrange(0,len(N_P2n_Color_USER)):
                                         plt.plot(N_P2n_Color_USER[i],Z_P2n_Color_USER[i],marker='s',color=P2n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                             if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
-                                plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(3n) Color Bar")
+                                plt.title(THEO_ColorTitle_3)
                                 if len(N_P3n_Color_USER) != 0:
                                     for i in xrange(0,len(N_P3n_Color_USER)):
                                         plt.plot(N_P3n_Color_USER[i],Z_P3n_Color_USER[i],marker='s',color=P3n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                         # Credits 
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie   |   Masses: AME 2012 (Wang et al.)',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'               TRIUMF/McMaster University   |   Theo.:  MOELLER(2003)',fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,CreditTextTHEO_ColorBar_1,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,CreditTextTHEO_ColorBar_2,fontsize=10)
 
-                        # magic number lines
+                        # determines which magic number lines are necessary to display
                         if N_high_user >= 8 and N_low_user <= 8:  
-                            plt.plot(N_Bound_magic*0.+8.5,Z_Bound_magic,color=color1,linewidth=lw1)  
-                            plt.plot(N_Bound_magic*0.+7.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+8.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)  
+                            plt.plot(N_Bound_magic_Vert*0.+7.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 20 and N_low_user <= 20:
-                            plt.plot(N_Bound_magic*0.+20.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+19.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+20.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+19.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 28 and N_low_user <= 28:
-                            plt.plot(N_Bound_magic*0.+28.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+27.5,Z_Bound_magic,color=color1,linewidth=lw1)     
+                            plt.plot(N_Bound_magic_Vert*0.+28.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+27.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)     
 
                         if N_high_user >= 50 and N_low_user <= 50:
-                            plt.plot(N_Bound_magic*0.+50.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+49.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+50.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+49.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 82 and N_low_user <= 82:
-                            plt.plot(N_Bound_magic*0.+82.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+81.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+82.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+81.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 126 and N_low_user <= 126:
-                            plt.plot(N_Bound_magic*0.+126.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+125.5,Z_Bound_magic,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+126.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+125.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
 
                         if Z_high_user >= 8 and Z_low_user <= 8:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+8.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+7.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+8.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+7.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 20 and Z_low_user <= 20:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+20.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+19.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+20.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+19.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 28 and Z_low_user <= 28:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+28.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+27.5,color=color1,linewidth=lw2)             
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+28.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+27.5,color=color1,linewidth=lw1)             
 
                         if Z_high_user >= 50 and Z_low_user <= 50:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+50.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+49.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+50.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+49.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 82 and Z_low_user <= 82:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+82.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+81.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+82.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+81.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 126 and Z_low_user <= 126:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+126.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+125.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+126.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+125.5,color=color1,linewidth=lw1)
 
                         # outputs color bar
                         ax1 = fig.add_axes([ax1_1,ax1_2,ax1_3,ax1_4])
@@ -1483,7 +1604,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         bounds = [0,10,20,30,40,50,60,70,80,90,100]
                         norm = mpl.colors.BoundaryNorm(bounds,cmap.N)
                         cb1 = mpl.colorbar.ColorbarBase(ax1,cmap=cmap,norm=norm,boundaries=bounds,ticks=bounds,orientation='vertical')
-                        cb1.set_label('Beta-Delayed Neutron Emission Probability')
+                        cb1.set_label(ColorBarLabel)
 
                         plt.show(block=False)
                         
@@ -1493,14 +1614,38 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         plt.axis('scaled')
                         g=plt.gca()
                         plt.xlim(N_low_user,N_high_user)
-                        plt.ylim(Z_low_user-1,Z_high_user+1)                                               
+                        plt.ylim(Z_low_user-1,Z_high_user+1)
 
-                        plt.xlabel("""N
-Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
-                        plt.ylabel("Z",fontsize=8)
+                        Num_xticks = np.arange(N_low_user+1,N_high_user,1)
+                        label_xticks = [];append_lx = label_xticks.append
+                        for i in xrange(N_low_user+1,N_high_user):
+                            c = i%2
+                            if c == 0:
+                                label_xticks.append(i)
+                            else:
+                                label_xticks.append("")
+                        if Delta_N >= 100:
+                            label_xticks = []
+                        plt.xticks(Num_xticks,label_xticks)
+                        plt.xticks(size=8)
+                        
+                        Num_yticks = np.arange(Z_low_user,Z_high_user+1,1)
+                        label_yticks = [];append_ly = label_yticks.append
+                        for i in xrange(Z_low_user,Z_high_user+1):
+                            c = i%2
+                            if c == 0:
+                                label_yticks.append(i)
+                            else:
+                                label_yticks.append("")
+                        if Delta_Z >= 100:
+                            label_yticks = []
+                        plt.yticks(Num_yticks,label_yticks)
+                        plt.yticks(size=8)
+                        
+                        plt.xlabel(xlabel1,fontsize=8)
+                        plt.ylabel(ylabel,fontsize=8)
 
-                        plt.title("Theoretically Known Beta-Delayed Neutron Emitters")          
+                        plt.title(Title_THEO)          
                         leg_entries = []
                         leg_text = []
 
@@ -1530,64 +1675,64 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
 
                         # determines which magic number lines are necessary to display
                         if N_high_user >= 8 and N_low_user <= 8:  
-                            plt.plot(N_Bound_magic*0.+8.5,Z_Bound_magic,color=color1,linewidth=lw1)  
-                            plt.plot(N_Bound_magic*0.+7.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+8.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)  
+                            plt.plot(N_Bound_magic_Vert*0.+7.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 20 and N_low_user <= 20:
-                            plt.plot(N_Bound_magic*0.+20.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+19.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+20.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+19.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 28 and N_low_user <= 28:
-                            plt.plot(N_Bound_magic*0.+28.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+27.5,Z_Bound_magic,color=color1,linewidth=lw1)     
+                            plt.plot(N_Bound_magic_Vert*0.+28.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+27.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)     
 
                         if N_high_user >= 50 and N_low_user <= 50:
-                            plt.plot(N_Bound_magic*0.+50.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+49.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+50.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+49.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 82 and N_low_user <= 82:
-                            plt.plot(N_Bound_magic*0.+82.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+81.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+82.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+81.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 126 and N_low_user <= 126:
-                            plt.plot(N_Bound_magic*0.+126.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+125.5,Z_Bound_magic,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+126.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+125.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
 
                         if Z_high_user >= 8 and Z_low_user <= 8:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+8.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+7.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+8.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+7.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 20 and Z_low_user <= 20:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+20.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+19.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+20.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+19.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 28 and Z_low_user <= 28:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+28.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+27.5,color=color1,linewidth=lw2)             
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+28.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+27.5,color=color1,linewidth=lw1)             
 
                         if Z_high_user >= 50 and Z_low_user <= 50:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+50.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+49.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+50.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+49.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 82 and Z_low_user <= 82:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+82.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+81.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+82.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+81.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 126 and Z_low_user <= 126:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+126.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+125.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+126.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+125.5,color=color1,linewidth=lw1)
 
                         # builds legend
                         if c1 == 1:
-                            leg_entries.append(t0);leg_text.append('Identified Nuclei')
+                            leg_entries.append(t0);leg_text.append(leg_THEO_1)
                         if c2 == 1:
-                            leg_entries.append(t1);leg_text.append('Stable')
+                            leg_entries.append(t1);leg_text.append(leg_THEO_2)
                         if c3 == 1:
-                            leg_entries.append(t2);leg_text.append('P(1n) dominates')
+                            leg_entries.append(t2);leg_text.append(leg_THEO_3)
                         if c4 == 1:
-                            leg_entries.append(t3);leg_text.append('P(2n) dominates')
+                            leg_entries.append(t3);leg_text.append(leg_THEO_4)
                         if c5 == 1:
-                            leg_entries.append(t4);leg_text.append('P(3n) dominates')
+                            leg_entries.append(t4);leg_text.append(leg_THEO_5)
                         
                         if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                             l1 = plt.legend(leg_entries,leg_text,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
@@ -1602,12 +1747,36 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                         plt.axis('scaled')
                         g=plt.gca()
                         plt.xlim(N_low_user,N_high_user)
-                        plt.ylim(Z_low_user-1,Z_high_user+1)                                               
+                        plt.ylim(Z_low_user-1,Z_high_user+1)
 
-                        plt.xlabel("""N
-Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
-                        plt.ylabel("Z",fontsize=8)
+                        Num_xticks = np.arange(N_low_user+1,N_high_user,1)
+                        label_xticks = [];append_lx = label_xticks.append
+                        for i in xrange(N_low_user+1,N_high_user):
+                            c = i%2
+                            if c == 0:
+                                label_xticks.append(i)
+                            else:
+                                label_xticks.append("")
+                        if Delta_N >= 100:
+                            label_xticks = []
+                        plt.xticks(Num_xticks,label_xticks)
+                        plt.xticks(size=8)
+                        
+                        Num_yticks = np.arange(Z_low_user,Z_high_user+1,1)
+                        label_yticks = [];append_ly = label_yticks.append
+                        for i in xrange(Z_low_user,Z_high_user+1):
+                            c = i%2
+                            if c == 0:
+                                label_yticks.append(i)
+                            else:
+                                label_yticks.append("")
+                        if Delta_Z >= 100:
+                            label_yticks = []
+                        plt.yticks(Num_yticks,label_yticks)
+                        plt.yticks(size=8)
+
+                        plt.xlabel(xlabel1,fontsize=8)
+                        plt.ylabel(ylabel,fontsize=8)
 
                         # plots nuclei,stable nuclei, and color highlights the Pxn values within user bounds using basic data files
                         if len(N_P_Bound) != 0:
@@ -1618,90 +1787,90 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                             plt.plot(N_stable_Bound,Z_stable_Bound,marker='s',color=color1,markersize=msize,markeredgewidth=0,linestyle='')
 
                         if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
-                            plt.title("Theoretically Known Beta-Delayed Neutron Emitters: P(1n) Color Bar")            
+                            plt.title(THEO_ColorTitle_1)            
                             if len(N_P1n_Color) != 0:
                                 for i in xrange(0,len(N_P1n_Color)):
                                     plt.plot(N_P1n_Color[i],Z_P1n_Color[i],marker='s',color=P1n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                         if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                            plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(2n) Color Bar")
+                            plt.title(THEO_ColorTitle_2)
                             if len(N_P2n_Color) != 0: 
                                 for i in xrange(0,len(N_P2n_Color)):
                                     plt.plot(N_P2n_Color[i],Z_P2n_Color[i],marker='s',color=P2n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                         if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
-                            plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(3n) Color Bar")
+                            plt.title(THEO_ColorTitle_3)
                             if len(N_P3n_Color) != 0:
                                 for i in xrange(0,len(N_P3n_Color)):
                                     plt.plot(N_P3n_Color[i],Z_P3n_Color[i],marker='s',color=P3n_Color[i],markersize=msize,markeredgewidth=0,linestyle='')
                         # plots nuclei,stable nuclei, and color highlights the Pxn values within user bounds using user uploaded data files
                         if user_P == 1:
                             if P1nC_THEO == 1 and P2nC_THEO == 0 and P3nC_THEO == 0:
-                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(1n) Color Bar")
+                                plt.title(THEO_ColorTitle_1)
                                 if len(N_P1n_Color_USER) != 0:
                                     for i in xrange(0,len(N_P1n_Color_USER)):
                                         plt.plot(N_P1n_Color_USER[i],Z_P1n_Color_USER[i],marker='s',color=P1n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                             if P2nC_THEO == 1 and P1nC_THEO == 0 and P3nC_THEO == 0:
-                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(2n) Color Bar")
+                                plt.title(THEO_ColorTitle_2)
                                 if len(N_P2n_Color_USER) != 0: 
                                     for i in xrange(0,len(N_P2n_Color_USER)):
                                         plt.plot(N_P2n_Color_USER[i],Z_P2n_Color_USER[i],marker='s',color=P2n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
 
                             if P3nC_THEO == 1 and P1nC_THEO == 0 and P2nC_THEO == 0:
-                                plt.title("Theoretically Known Beta-delayed Neutron Emitters: P(3n) Color Bar")
+                                plt.title(THEO_ColorTitle_3)
                                 if len(N_P3n_Color_USER) != 0:
                                     for i in xrange(0,len(N_P3n_Color_USER)):
                                         plt.plot(N_P3n_Color_USER[i],Z_P3n_Color_USER[i],marker='s',color=P3n_Color_USER[i],markersize=msize,markeredgewidth=0,linestyle='')
                         
-                        #magic number lines
+                        # determines which magic number lines are necessary to display
                         if N_high_user >= 8 and N_low_user <= 8:  
-                            plt.plot(N_Bound_magic*0.+8.5,Z_Bound_magic,color=color1,linewidth=lw1)  
-                            plt.plot(N_Bound_magic*0.+7.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+8.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)  
+                            plt.plot(N_Bound_magic_Vert*0.+7.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 20 and N_low_user <= 20:
-                            plt.plot(N_Bound_magic*0.+20.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+19.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+20.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+19.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 28 and N_low_user <= 28:
-                            plt.plot(N_Bound_magic*0.+28.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+27.5,Z_Bound_magic,color=color1,linewidth=lw1)     
+                            plt.plot(N_Bound_magic_Vert*0.+28.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+27.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)     
 
                         if N_high_user >= 50 and N_low_user <= 50:
-                            plt.plot(N_Bound_magic*0.+50.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+49.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+50.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+49.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 82 and N_low_user <= 82:
-                            plt.plot(N_Bound_magic*0.+82.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                            plt.plot(N_Bound_magic*0.+81.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+82.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Vert*0.+81.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                         if N_high_user >= 126 and N_low_user <= 126:
-                            plt.plot(N_Bound_magic*0.+126.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                            plt.plot(N_Bound_magic*0.+125.5,Z_Bound_magic,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+126.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Vert*0.+125.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
 
                         if Z_high_user >= 8 and Z_low_user <= 8:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+8.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+7.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+8.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+7.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 20 and Z_low_user <= 20:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+20.5,color=color1,linewidth=lw2) 
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+19.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+20.5,color=color1,linewidth=lw1) 
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+19.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 28 and Z_low_user <= 28:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+28.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+27.5,color=color1,linewidth=lw2)             
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+28.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+27.5,color=color1,linewidth=lw1)             
 
                         if Z_high_user >= 50 and Z_low_user <= 50:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+50.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+49.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+50.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+49.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 82 and Z_low_user <= 82:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+82.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+81.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+82.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+81.5,color=color1,linewidth=lw1)
 
                         if Z_high_user >= 126 and Z_low_user <= 126:
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+126.5,color=color1,linewidth=lw2)
-                            plt.plot(N_Bound_magic,Z_Bound_magic*0.+125.5,color=color1,linewidth=lw2)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+126.5,color=color1,linewidth=lw1)
+                            plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+125.5,color=color1,linewidth=lw1)
 
                         # outputs color bar
                         ax1 = fig.add_axes([ax1_1,ax1_2,ax1_3,ax1_4])
@@ -1710,13 +1879,14 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                         bounds = [0,10,20,30,40,50,60,70,80,90,100]
                         norm = mpl.colors.BoundaryNorm(bounds,cmap.N)
                         cb1 = mpl.colorbar.ColorbarBase(ax1,cmap=cmap,norm=norm,boundaries=bounds,ticks=bounds,orientation='vertical')
-                        cb1.set_label('Beta-Delayed Neutron Emission Probability')
+                        cb1.set_label(ColorBarLabel)
 
                         plt.show(block=False)
                         
             if choice_user_EXP == 1 and choice_user_THEO == 0: #experimental database      
                 #reads in values from text files and stores all of the data columns into arrays
-                filename_ENSDF = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF.txt"
+                filename_ENSDF_1 = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF_Stable-QValues.txt"
+                filename_ENSDF_2 = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF_PValues.txt"
 
                 user_P = 0 ; user_Q = 0 ; user_i = 0
                 if choice_USERFILE_EXP == 1:
@@ -1747,19 +1917,19 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                         P1n_iso1_USER,P2n_iso1_USER,P1n_iso2_USER,P2n_iso2_USER = np.loadtxt(filename_EXP_USER,skiprows=1,usecols=(10,11,12,13),unpack=True)
                         size_iso_USER = len(P1n_iso1_USER); user_i = 1
 
-                N_stable,Z_stable = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(0, 1),unpack=True)
+                N_stable,Z_stable = np.loadtxt(filename_ENSDF_1,skiprows=1,usecols=(0, 1),unpack=True)
                 s2 = len(N_stable)
 
-                N,Z = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(2, 3),unpack=True)
+                N,Z = np.loadtxt(filename_ENSDF_1,skiprows=1,usecols=(2, 3),unpack=True)
                 s1 = len(N)
                 
-                Qbn,Qb2n,Qb3n,Qb4n = np.genfromtxt(filename_ENSDF,skip_header=1,usecols=(4,5,6,7),dtype=str,unpack=True)
+                Qbn,Qb2n,Qb3n,Qb4n = np.genfromtxt(filename_ENSDF_1,skip_header=1,usecols=(4,5,6,7),dtype=str,unpack=True)
 
-                ELE_names_EXP = np.genfromtxt(filename_ENSDF,skip_header=1,usecols=(8),dtype=str,unpack=True)
-                N_P,Z_P,P1n,P2n,P3n,P4n = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(9, 10, 11, 12, 13, 14),unpack=True)
+                ELE_names_EXP = np.genfromtxt(filename_ENSDF_2,skip_header=1,usecols=(0),dtype=str,unpack=True)
+                N_P,Z_P,P1n,P2n,P3n,P4n = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1, 2, 3, 4, 5, 6),unpack=True)
                 size_P = len(N_P)
 
-                N_P_iso1,Z_P_iso1,P1n_iso1,P2n_iso1,P3n_iso1,P4n_iso1,N_P_iso2,Z_P_iso2,P1n_iso2,P2n_iso2,P3n_iso2,P4n_iso2 = np.loadtxt(filename_ENSDF,skiprows=1,usecols=(15,16,17,18,19,20,21,22,23,24,25,26),unpack=True)
+                N_P_iso1,Z_P_iso1,P1n_iso1,P2n_iso1,P3n_iso1,P4n_iso1,N_P_iso2,Z_P_iso2,P1n_iso2,P2n_iso2,P3n_iso2,P4n_iso2 = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(7,8,9,10,11,12,13,14,15,16,17,18),unpack=True)
                 size_P_iso1 = len(N_P_iso1);size_P_iso2 = len(N_P_iso2)
             #----------------------------------------------------------------------------
 
@@ -1899,7 +2069,10 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
         #-----------------------------------------------------------------------------
 
                 N_Bound = [];Z_Bound = []
-                N_Bound_magic = [];Z_Bound_magic = []
+                N_Bound_magic_Vert = [] ; Z_Bound_magic_Vert = []
+                append_NmagBV = N_Bound_magic_Vert.append;append_ZmagBV = Z_Bound_magic_Vert.append
+                N_Bound_magic_Hor = [] ; Z_Bound_magic_Hor = []
+                append_NmagBH = N_Bound_magic_Hor.append;append_ZmagBH = Z_Bound_magic_Hor.append
 
                 N_Qbn_Bound = [];Z_Qbn_Bound = []
                 N_Qb2n_Bound = [];Z_Qb2n_Bound = []
@@ -1917,10 +2090,6 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                     if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user: 
                         N_Bound = np.append(N_Bound,N[i])
                         Z_Bound = np.append(Z_Bound,Z[i])
-
-                    if Z[i] >= 0 and Z[i] <= Z_high_user+1:
-                        Z_Bound_magic = np.append(Z_Bound_magic,Z[i])
-                        N_Bound_magic = np.append(N_Bound_magic,N[i])
 
                     # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 and the Qbxn value is not equal to '--------'
                     #(a random number denoting isotopes with unknown Qbxn values) at that N and Z value using the basic data files
@@ -1944,6 +2113,19 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                         if float(Qb4n[i]) > 0:
                             N_Qb4n_Bound = np.append(N_Qb4n_Bound,N[i]) 
                             Z_Qb4n_Bound = np.append(Z_Qb4n_Bound,Z[i])
+
+                for i in xrange(0,size_P):
+                    if Z_P[i] >= 0 and Z_P[i] <= Z_high_user+1:
+                        append_ZmagBV(Z_P[i])
+                        append_NmagBV(N_P[i])
+                    if N_P[i] >= 0 and N_P[i] <= N_high_user+1:
+                        append_ZmagBH(Z_P[i])
+                        append_NmagBH(N_P[i])
+                            
+                N_Bound_magic_Vert = np.array(N_Bound_magic_Vert)
+                Z_Bound_magic_Vert = np.array(Z_Bound_magic_Vert)
+                N_Bound_magic_Hor = np.array(N_Bound_magic_Hor)
+                Z_Bound_magic_Hor = np.array(Z_Bound_magic_Hor)
 
                 # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 using user files
                 if user_Q == 1 or user_i == 1:
@@ -2203,17 +2385,17 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                 if (Delta_N > 80) or (Delta_Z > 80):
                     msize = 4
                     mew = 1.5;ms1=1
-                    lw1 = '0.5';lw2 = '1'
+                    lw1 = 0.5;lw2 = 1
                     
                 if (Delta_N > 10 and Delta_N <= 80) and (Delta_Z > 10 and Delta_Z <= 80):
                     msize = 9
                     mew = 2.0;ms1=1
-                    lw1 = '0.5';lw2 = '1'
+                    lw1 = 0.5;lw2 = 1
 
-                if ((Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delat_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
+                if ((Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0)) and (Delta_N <= 10 and Delta_Z <= 10):
                     msize = 35
                     mew = 3.0;ms1=0.2;ms2=0
-                    lw1 = '2.0';lw2 = '2.5'
+                    lw1 = 2.0;lw2 = 2.5
                     Cred_N = -0.3 
                     Cred_Z1=-0.3;Cred_Z2=0;Cred_Z3=0.3 
                     Cred_Z4=0.6;Cred_Z5=0.9;Cred_Z6=1.2
@@ -2226,7 +2408,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                 if (Delta_N == 7 and Delta_Z == 7):
                     msize = 45
                     mew = 4.0;ms1=0.2;ms2=0
-                    lw1 = '2.0';lw2 = '2.5'
+                    lw1 = 2.0;lw2 = 2.5
                     Cred_N = -0.2
                     Cred_Z1=0.2;Cred_Z2=0.4;Cred_Z3=0.6 
                     Cred_Z4=0.8;Cred_Z5=1;Cred_Z6=1.2
@@ -2239,7 +2421,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                 if (Delta_N == 4 and Delta_Z == 4):
                     msize = 70
                     mew = 5.0;ms1=0.1;ms2=0
-                    lw1 = '3.0';lw2 = '3.5'
+                    lw1 = 3.0;lw2 = 3.5
                     Cred_N = -0.15 
                     Cred_Z1=0.2;Cred_Z2=0.35;Cred_Z3=0.5
                     Cred_Z4=0.65;Cred_Z5=0.8;Cred_Z6=0.95
@@ -2252,7 +2434,7 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                 if Delta_N == 0 and Delta_Z == 0:
                     msize = 200
                     mew = 5.0;ms1=0.05;ms2=0
-                    lw1 = '3.0';lw2 = '3.5'
+                    lw1 = 3.0;lw2 = 3.5
                     Cred_N = -0.1 
                     Cred_Z1=0.9;Cred_Z2=0.95;Cred_Z3=1
                     Cred_Z4=1.05;Cred_Z5=1.1;Cred_Z6=1.15
@@ -2262,7 +2444,6 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                     Z_adj_1=0.2;Z_adj_2=0.1;Z_adj_3=0;Z_adj_4=-0.1
                     Z_adj_5=0.18;Z_adj_6=0.06;Z_adj_7=-0.08;Z_adj_8=-0.22
                     ax1_1=0.75;ax1_2=0.1;ax1_3=0.02;ax1_4=0.8
-
 
                 leg_entries = []
                 leg_text = []
@@ -2547,126 +2728,150 @@ Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)""",fontsize=8)
                 plt.xlim(N_low_user,N_high_user)
                 plt.ylim(Z_low_user-1,Z_high_user+1)
 
+                Num_xticks = np.arange(N_low_user+1,N_high_user,1)
+                label_xticks = [];append_lx = label_xticks.append
+                for i in xrange(N_low_user+1,N_high_user):
+                    c = i%2
+                    if c == 0:
+                        label_xticks.append(i)
+                    else:
+                        label_xticks.append("")
+                if Delta_N >= 100:
+                    label_xticks = []
+                plt.xticks(Num_xticks,label_xticks)
+                plt.xticks(size=8)
+                    
+                Num_yticks = np.arange(Z_low_user,Z_high_user+1,1)
+                label_yticks = [];append_ly = label_yticks.append
+                for i in xrange(Z_low_user,Z_high_user+1):
+                    c = i%2
+                    if c == 0:
+                        label_yticks.append(i)
+                    else:
+                        label_yticks.append("")
+                if Delta_N >= 100:
+                    label_xticks = []
+                plt.yticks(Num_yticks,label_yticks)
+                plt.yticks(size=8)
+
                 if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0:
-                    plt.title("Ratio between Theoretical & Experimental Data")
+                    plt.title(Title_Ratio)
                 if Ratio == 0:
-                    plt.title("Experimentally Known Beta-Delayed Neutron Emitters")
+                    plt.title(Title_EXP)
 
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
-                    plt.xlabel("N")
-                    plt.ylabel("Z")
+                    plt.xlabel(xlabel)
+                    plt.ylabel(ylabel)          
                 else:
-                    plt.xlabel("""N
-Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012(Wang et al.)   |   Exp.:  ENSDF,Hosmer(2010),Padgett(2010),Miernik(2013)""",fontsize=8)
-                    plt.ylabel("Z",fontsize=8)
+                    plt.xlabel(xlabel2,fontsize=8)
+                    plt.ylabel(ylabel,fontsize=8)
 
-                # magic number lines
+                # determines which magic number lines are necessary to display
                 if N_high_user >= 8 and N_low_user <= 8:  
-                    plt.plot(N_Bound_magic*0.+8.5,Z_Bound_magic,color=color1,linewidth=lw1)  
-                    plt.plot(N_Bound_magic*0.+7.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+8.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)  
+                    plt.plot(N_Bound_magic_Vert*0.+7.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                 if N_high_user >= 20 and N_low_user <= 20:
-                    plt.plot(N_Bound_magic*0.+20.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                    plt.plot(N_Bound_magic*0.+19.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+20.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                    plt.plot(N_Bound_magic_Vert*0.+19.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                 if N_high_user >= 28 and N_low_user <= 28:
-                    plt.plot(N_Bound_magic*0.+28.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                    plt.plot(N_Bound_magic*0.+27.5,Z_Bound_magic,color=color1,linewidth=lw1)     
+                    plt.plot(N_Bound_magic_Vert*0.+28.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+27.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)     
 
                 if N_high_user >= 50 and N_low_user <= 50:
-                    plt.plot(N_Bound_magic*0.+50.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                    plt.plot(N_Bound_magic*0.+49.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+50.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+49.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                 if N_high_user >= 82 and N_low_user <= 82:
-                    plt.plot(N_Bound_magic*0.+82.5,Z_Bound_magic,color=color1,linewidth=lw1)
-                    plt.plot(N_Bound_magic*0.+81.5,Z_Bound_magic,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+82.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Vert*0.+81.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1)
 
                 if N_high_user >= 126 and N_low_user <= 126:
-                    plt.plot(N_Bound_magic*0.+126.5,Z_Bound_magic,color=color1,linewidth=lw1) 
-                    plt.plot(N_Bound_magic*0.+125.5,Z_Bound_magic,color=color1,linewidth=lw1) 
+                    plt.plot(N_Bound_magic_Vert*0.+126.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
+                    plt.plot(N_Bound_magic_Vert*0.+125.5,Z_Bound_magic_Vert,color=color1,linewidth=lw1) 
 
                 if Z_high_user >= 8 and Z_low_user <= 8:
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+8.5,color=color1,linewidth=lw2) 
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+7.5,color=color1,linewidth=lw2)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+8.5,color=color1,linewidth=lw1) 
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+7.5,color=color1,linewidth=lw1)
 
                 if Z_high_user >= 20 and Z_low_user <= 20:
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+20.5,color=color1,linewidth=lw2) 
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+19.5,color=color1,linewidth=lw2)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+20.5,color=color1,linewidth=lw1) 
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+19.5,color=color1,linewidth=lw1)
 
                 if Z_high_user >= 28 and Z_low_user <= 28:
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+28.5,color=color1,linewidth=lw2)
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+27.5,color=color1,linewidth=lw2)             
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+28.5,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+27.5,color=color1,linewidth=lw1)             
 
                 if Z_high_user >= 50 and Z_low_user <= 50:
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+50.5,color=color1,linewidth=lw2)
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+49.5,color=color1,linewidth=lw2)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+50.5,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+49.5,color=color1,linewidth=lw1)
 
                 if Z_high_user >= 82 and Z_low_user <= 82:
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+82.5,color=color1,linewidth=lw2)
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+81.5,color=color1,linewidth=lw2)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+82.5,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+81.5,color=color1,linewidth=lw1)
 
                 if Z_high_user >= 126 and Z_low_user <= 126:
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+126.5,color=color1,linewidth=lw2)
-                    plt.plot(N_Bound_magic,Z_Bound_magic*0.+125.5,color=color1,linewidth=lw2)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+126.5,color=color1,linewidth=lw1)
+                    plt.plot(N_Bound_magic_Hor,Z_Bound_magic_Hor*0.+125.5,color=color1,linewidth=lw1)
 
                 # credits
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,'Produced By: Ciccone, Stephanie',fontsize=10)
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,'    TRIUMF/McMaster University',fontsize=10)
-                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,'Masses: AME 2012 (Wang et al.)',fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z1,CreditTextEXP_1,fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z2,CreditTextEXP_2,fontsize=10)
+                    plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z3,CreditTextEXP_3,fontsize=10)
 
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0:
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Exp.: ENSDF, Miernik(2013)',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,'        Hosmer(2010), Padgett(2010)',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z6,'Theo.: Moeller(2003)',fontsize=10) 
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,CreditTextEXP_4,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,CreditTextEXP_5,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z6,CreditTextEXP_6,fontsize=10) 
 
                     if Ratio == 0:
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,'Exp.: ENSDF, Miernik(2013)',fontsize=10)
-                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,'        Hosmer(2010),Padgett(2010)',fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z4,CreditTextEXP_4,fontsize=10)
+                        plt.text(N_high_user-Cred_N,Z_low_user-Cred_Z5,CreditTextEXP_5,fontsize=10)
 
                 # builds legend
                 if c1 == 1:
-                    leg_entries.append(e0);leg_text.append('Known')
+                    leg_entries.append(e0);leg_text.append(leg_EXP_1)
                 if c2 == 1:
-                    leg_entries.append(e1);leg_text.append('Stable')
+                    leg_entries.append(e1);leg_text.append(leg_EXP_2)
                 if c3 == 1:
-                    leg_entries.append(e2);leg_text.append('Q(b1n) > 0 keV')
+                    leg_entries.append(e2);leg_text.append(leg_EXP_3)
                 if c4 == 1:
-                    leg_entries.append(e3);leg_text.append('Q(b2n) > 0 keV')
+                    leg_entries.append(e3);leg_text.append(leg_EXP_4)
                 if c5 == 1:
-                    leg_entries.append(e4);leg_text.append('Q(b3n) > 0 keV')
+                    leg_entries.append(e4);leg_text.append(leg_EXP_5)
                 if c6 == 1:
-                    leg_entries.append(e5);leg_text.append('Q(b4n) > 0 keV')
+                    leg_entries.append(e5);leg_text.append(leg_EXP_6)
                 if c7 == 1:
-                    leg_entries.append(e6);leg_text.append('Measured P(1n)')
+                    leg_entries.append(e6);leg_text.append(leg_EXP_7)
                 if c8 == 1:
-                    leg_entries.append(e7);leg_text.append('Measured P(2n)')
+                    leg_entries.append(e7);leg_text.append(leg_EXP_8)
                 if c9 == 1:
-                    leg_entries.append(e8);leg_text.append('Measured P(3n)')
+                    leg_entries.append(e8);leg_text.append(leg_EXP_9)
                 if c10 == 1:
-                    leg_entries.append(e9);leg_text.append('Measured P(4n)')
+                    leg_entries.append(e9);leg_text.append(leg_EXP_10)
                     
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     l1 = plt.legend(leg_entries,leg_text,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10  and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend(('      Isotope','(P1n Exp./P1n Theory)','(P2n Exp./P2n Theory)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7:
-                        l2 = plt.legend(('      Isotope','(P1n Exp./P1n Theory)','(P2n Exp./P2n Theory)','(P3n Exp./P3n Theory)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend(('      Isotope','(P1n Exp./P1n Theory)','(P2n Exp./P2n Theory)','(P3n Exp./P3n Theory)','(P4n Exp./P4n Theory)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP,leg_ValueLabels5_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
 
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7  and Delta_N > 4 and Delta_Z > 4:
-                        l2 = plt.legend(('  Isotope  ','  P(1n)','  P(2n)','  P(3n)','  P(4n)'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO,leg_ValueLabels4_THEO,leg_ValueLabels5_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend(('     Isotope  ','  P(1n)-gs | P(1n)-iso1','  P(2n)-gs | P(2n)-iso1','  P(3n)-gs | P(1n)-iso2','  P(4n)-gs | P(2n)-iso2'),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_iso,leg_ValueLabels2_iso,leg_ValueLabels3_iso,leg_ValueLabels4_iso,leg_ValueLabels5_iso),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                 else:
                     l1 = plt.legend(leg_entries,leg_text,loc=4,markerscale=ms1,numpoints=1)
