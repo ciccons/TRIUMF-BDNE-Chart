@@ -4,18 +4,18 @@
 # Consult README.txt for instruction on how to ensure this software properly runs on your machine.
 #-----------------------------------------------------------------------------
 
-#import matplotlib
-#print matplotlib.rcParams['backend']
-#matplotlib.rcParams['backend'] = "Qt4Agg"
-#import matplotlib.rcsetup as rcsetup
-#print(rcsetup.all_backends)
+
+
+
 
 # imports all necessary libraries and functions
 import gc
 import os
 import csv
 import numpy as np 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+import matplotlib.rcsetup as rcsetup
+#print(rcsetup.all_backends)
 import matplotlib as mpl
 import sys
 import Tkinter
@@ -71,7 +71,7 @@ leg_EXP_9 = "Measured P(2n)"
 leg_EXP_10 = "Measured P(3n)"
 leg_EXP_11 = "Measured P(4n)"
 
-leg_ValueLabels1_THEO = "  Isotope  "
+leg_ValueLabels1_THEO = "  Isotope [%] "
 leg_ValueLabels2_THEO = "  P(1n)"
 leg_ValueLabels3_THEO = "  P(2n)"
 leg_ValueLabels4_THEO = "  P(3n)"
@@ -83,7 +83,7 @@ leg_ValueLabels3_EXP = "(P2n Exp./P2n Theory)"
 leg_ValueLabels4_EXP = "(P3n Exp./P3n Theory)"
 leg_ValueLabels5_EXP = "(P4n Exp./P4n Theory)"
 
-leg_ValueLabels1_iso = "     Isotope  "
+leg_ValueLabels1_iso = "     Isotope [%] "
 leg_ValueLabels2_iso = "  P(1n)-gs | P(1n)-iso1"
 leg_ValueLabels3_iso = "  P(2n)-gs | P(2n)-iso1"
 leg_ValueLabels4_iso = "  P(3n)-gs | P(1n)-iso2"
@@ -323,19 +323,19 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 TextEntry3.delete(0,8);TextEntry4.delete(0,8)
 
         checkButton0 = Tkinter.IntVar()
-        c0 = Tkinter.Checkbutton(self,text=Delta + "N = 0, " + Delta + "Z = 0",variable=checkButton0,command=OncheckButton0)
+        c0 = Tkinter.Checkbutton(self,text=Delta + "N = 0, " + Delta + "Z = 0 [1x1 Isotopes]",variable=checkButton0,command=OncheckButton0)
         c0.grid(column=1,row=9,sticky='EW')
 
         checkButton4 = Tkinter.IntVar()
-        c4 = Tkinter.Checkbutton(self,text=Delta + "N = 4, " + Delta + "Z = 4",variable=checkButton4,command=OncheckButton4)
+        c4 = Tkinter.Checkbutton(self,text=Delta + "N = 4, " + Delta + "Z = 4 [5x5 Isotopes]",variable=checkButton4,command=OncheckButton4)
         c4.grid(column=1,row=10,sticky='EW')
 
         checkButton7 = Tkinter.IntVar()
-        c7 = Tkinter.Checkbutton(self,text=Delta + "N = 7, " + Delta + "Z = 7",variable=checkButton7,command=OncheckButton7)
+        c7 = Tkinter.Checkbutton(self,text=Delta + "N = 7, " + Delta + "Z = 7 [8x8 Isotopes]*",variable=checkButton7,command=OncheckButton7)
         c7.grid(column=2,row=9,sticky='EW')
 
         checkButton10 = Tkinter.IntVar()
-        c10 = Tkinter.Checkbutton(self,text=Delta + "N = 10, " + Delta + "Z = 10 *",variable=checkButton10,command=OncheckButton10)
+        c10 = Tkinter.Checkbutton(self,text=Delta + "N = 10, " + Delta + "Z = 10 [11x11 Isotopes]*",variable=checkButton10,command=OncheckButton10)
         c10.grid(column=2,row=10,sticky='EW')
 
         labelZoom1 = Tkinter.Label(self,anchor='w',text=u"These set N and Z to a zoomed in range.")
@@ -843,6 +843,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 dirDelim = "\\"
             else:
                 dirDelim = "/"
+                mpl.rcParams['backend'] = "TkAgg"
+            #print mpl.rcParams['backend']
                 
             if choice_user_THEO == 1 and choice_user_EXP == 0: #theoretical database
                 # reads in values from text files and stores all of the data columns into arrays
@@ -1470,8 +1472,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                 if (PxnTHEO1 == 1 or PxnTHEOA == 1) and len(N_P1n_Bound) != 0 and Delta_Z <= 10 and Delta_N <= 10: #for displaying P1n values
                                     for i in xrange(0,len(N_P1n_Bound)):
                                         if user_P == 0:
-                                            str_P1n="{0:.1f}".format(P1n_Bound[i])
-                                            plt.text(N_P1n_Bound[i]-N_adj,Z_P1n_Bound[i]+Z_adj_1,str_P1n+'%',fontsize=fontsize_set_3)
+                                            str_P1n="{0:.2f}".format(P1n_Bound[i])
+                                            plt.text(N_P1n_Bound[i]-N_adj,Z_P1n_Bound[i]+Z_adj_1,str_P1n,fontsize=fontsize_set_3)
                                         else:
                                             for ii in xrange(0,len(N_P1n_Bound_USER)):
                                                 if N_P1n_Bound[i] == N_P1n_Bound_USER[ii] and Z_P1n_Bound[i] == Z_P1n_Bound_USER[ii]:
@@ -1480,14 +1482,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                                 else:
                                                     PriorityCheck = 1
                                             if PriorityCheck == 1:
-                                                str_P1n="{0:.1f}".format(P1n_Bound[i])
-                                                plt.text(N_P1n_Bound[i]-N_adj,Z_P1n_Bound[i]+Z_adj_1,str_P1n+'%',fontsize=fontsize_set_3)
+                                                str_P1n="{0:.2f}".format(P1n_Bound[i])
+                                                plt.text(N_P1n_Bound[i]-N_adj,Z_P1n_Bound[i]+Z_adj_1,str_P1n,fontsize=fontsize_set_3)
 
                                 if (PxnTHEO2 == 1 or PxnTHEOA == 1) and len(N_P2n_Bound) != 0 and Delta_Z <= 10 and Delta_N <= 10: #for displaying P2n values
                                     for i in xrange(0,len(N_P2n_Bound)):
                                         if user_P == 0:
-                                            str_P2n="{0:.1f}".format(P2n_Bound[i])
-                                            plt.text(N_P2n_Bound[i]-N_adj,Z_P2n_Bound[i]+Z_adj_2,str_P2n+'%',fontsize=fontsize_set_3)
+                                            str_P2n="{0:.2f}".format(P2n_Bound[i])
+                                            plt.text(N_P2n_Bound[i]-N_adj,Z_P2n_Bound[i]+Z_adj_2,str_P2n,fontsize=fontsize_set_3)
                                         else:
                                             for ii in xrange(0,len(N_P2n_Bound_USER)):
                                                 if N_P2n_Bound[i] == N_P2n_Bound_USER[ii] and Z_P2n_Bound[i] == Z_P2n_Bound_USER[ii]:
@@ -1496,14 +1498,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                                 else:
                                                     PriorityCheck = 1
                                             if PriorityCheck == 1:
-                                                str_P2n="{0:.1f}".format(P2n_Bound[i])
-                                                plt.text(N_P2n_Bound[i]-N_adj,Z_P2n_Bound[i]+Z_adj_2,str_P2n+'%',fontsize=fontsize_set_3)
+                                                str_P2n="{0:.2f}".format(P2n_Bound[i])
+                                                plt.text(N_P2n_Bound[i]-N_adj,Z_P2n_Bound[i]+Z_adj_2,str_P2n,fontsize=fontsize_set_3)
 
                                 if (PxnTHEO3 == 1 or PxnTHEOA == 1) and len(N_P3n_Bound) != 0 and Delta_Z <= 7 and Delta_N <= 7: #for displaying P3n values
                                     for i in xrange(0,len(N_P3n_Bound)):
                                         if user_P == 0:
-                                            str_P3n="{0:.1f}".format(P3n_Bound[i])
-                                            plt.text(N_P3n_Bound[i]-N_adj,Z_P3n_Bound[i]+Z_adj_3,str_P3n+'%',fontsize=fontsize_set_3)
+                                            str_P3n="{0:.2f}".format(P3n_Bound[i])
+                                            plt.text(N_P3n_Bound[i]-N_adj,Z_P3n_Bound[i]+Z_adj_3,str_P3n,fontsize=fontsize_set_3)
                                         else:
                                             for ii in xrange(0,len(N_P3n_Bound_USER)):
                                                 if N_P3n_Bound[i] != N_P3n_Bound_USER[ii] and Z_P3n_Bound[i] != Z_P3n_Bound_USER[ii]:
@@ -1512,8 +1514,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                                     PriorityCheck = 0
                                                     break
                                             if PriorityCheck == 1:
-                                                str_P3n="{0:.1f}".format(P3n_Bound[i])
-                                                plt.text(N_P3n_Bound[i]-N_adj,Z_P3n_Bound[i]+Z_adj_3,str_P3n+'%',fontsize=fontsize_set_3)
+                                                str_P3n="{0:.2f}".format(P3n_Bound[i])
+                                                plt.text(N_P3n_Bound[i]-N_adj,Z_P3n_Bound[i]+Z_adj_3,str_P3n,fontsize=fontsize_set_3)
 
                             if user_P == 1: # displays all info about user uploaded data on nuclei
                                 for i in xrange(0,len(N_ELE_USER)):
@@ -1522,18 +1524,18 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                                 if (PxnTHEO1 == 1 or PxnTHEOA == 1) and len(N_P1n_Bound_USER) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                                     for i in xrange(0,len(N_P1n_Bound_USER)):
-                                        str_P1nU="{0:.1f}".format(P1n_Bound_USER[i])
-                                        plt.text(N_P1n_Bound_USER[i]-N_adj,Z_P1n_Bound_USER[i]+Z_adj_1,str_P1nU+'%',fontsize=fontsize_set_3)
+                                        str_P1nU="{0:.2f}".format(P1n_Bound_USER[i])
+                                        plt.text(N_P1n_Bound_USER[i]-N_adj,Z_P1n_Bound_USER[i]+Z_adj_1,str_P1nU,fontsize=fontsize_set_3)
 
                                 if (PxnTHEO2 == 1 or PxnTHEOA == 1) and len(N_P2n_Bound_USER) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                                     for i in xrange(0,len(N_P2n_Bound_USER)):
-                                        str_P2nU="{0:.1f}".format(P2n_Bound_USER[i])
-                                        plt.text(N_P2n_Bound_USER[i]-N_adj,Z_P2n_Bound_USER[i]+Z_adj_2,str_P2nU+'%',fontsize=fontsize_set_3)
+                                        str_P2nU="{0:.2f}".format(P2n_Bound_USER[i])
+                                        plt.text(N_P2n_Bound_USER[i]-N_adj,Z_P2n_Bound_USER[i]+Z_adj_2,str_P2nU,fontsize=fontsize_set_3)
 
                                 if (PxnTHEO3 == 1 or PxnTHEOA == 1) and len(N_P3n_Bound_USER) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                                     for i in xrange(0,len(N_P3n_Bound_USER)):
-                                        str_P3nU="{0:.1f}".format(P3n_Bound_USER[i])
-                                        plt.text(N_P3n_Bound_USER[i]-N_adj,Z_P3n_Bound_USER[i]+Z_adj_3,str_P3nU+'%',fontsize=fontsize_set_3)
+                                        str_P3nU="{0:.2f}".format(P3n_Bound_USER[i])
+                                        plt.text(N_P3n_Bound_USER[i]-N_adj,Z_P3n_Bound_USER[i]+Z_adj_3,str_P3nU,fontsize=fontsize_set_3)
 
                         plt.show(block=False)
                         
@@ -1997,10 +1999,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 Snlt0,Qbn,Qb2n,Qb3n,Qb4n = np.genfromtxt(filename_ENSDF_1,skip_header=1,usecols=(4,5,6,7,8),dtype=str,unpack=True)
 
                 ELE_names_EXP = np.genfromtxt(filename_ENSDF_2,skip_header=1,usecols=(0),dtype=str,unpack=True)
-                N_P,Z_P,P1n,P2n,P3n,P4n = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1, 2, 3, 4, 5, 6),unpack=True)
+                N_P,Z_P,P1n,P2n,P3n,P4n = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1, 2, 3, 6, 9, 10),unpack=True)
                 size_P = len(N_P)
 
-                N_P_iso1,Z_P_iso1,P1n_iso1,P2n_iso1,P3n_iso1,P4n_iso1,N_P_iso2,Z_P_iso2,P1n_iso2,P2n_iso2,P3n_iso2,P4n_iso2 = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(7,8,9,10,11,12,13,14,15,16,17,18),unpack=True)
+                N_P_iso1,Z_P_iso1,P1n_iso1,P2n_iso1,N_P_iso2,Z_P_iso2,P1n_iso2,P2n_iso2 = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1,2,4,7,1,2,5,8),unpack=True)
                 size_P_iso1 = len(N_P_iso1);size_P_iso2 = len(N_P_iso2)
             #----------------------------------------------------------------------------
 
@@ -2605,26 +2607,26 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                         if len(N_R1n_USER) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                             for i in xrange(0,len(N_R1n_USER)):
-                                str_ratio="{0:.1f}".format(R1n_USER[i])
+                                str_ratio="{0:.2f}".format(R1n_USER[i])
                                 plt.text(N_R1n_USER[i]-N_adj_r,Z_R1n_USER[i]+Z_adj_5,str_ratio,fontsize=fontsize_set_2)
                                 plt.plot(N_R1n_USER,Z_R1n_USER,marker='s',color=color1,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='')
 
                         if len(N_R2n_USER) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                             for i in xrange(0,len(N_R2n_USER)):
-                                str_ratio="{0:.1f}".format(R2n_USER[i])
+                                str_ratio="{0:.2f}".format(R2n_USER[i])
                                 plt.text(N_R2n_USER[i]-N_adj_r,Z_R2n_USER[i]+Z_adj_6,str_ratio,fontsize=fontsize_set_2)
                                 plt.plot(N_R2n_USER,Z_R2n_USER,marker='s',color=color6,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='')
 
                         if len(N_R3n_USER) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                             for i in xrange(0,len(N_R3n_USER)):
-                                str_ratio="{0:.1f}".format(R3n_USER[i])
+                                str_ratio="{0:.2f}".format(R3n_USER[i])
                                 plt.text(N_R3n_USER[i]-N_adj_r,Z_R3n_USER[i]+Z_adj_7,str_ratio,fontsize=fontsize_set_2)
                                 plt.plot(N_R3n_USER,Z_R3n_USER,marker='s',color=color7,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='')
 
                         if Ratio_USER_THEO == 1 and Ratio_MOE_THEO == 0:
                             if len(N_R4n_USER) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in xrange(0,len(N_R4n_USER)):
-                                    str_ratio="{0:.1f}".format(R4n_USER[i])
+                                    str_ratio="{0:.2f}".format(R4n_USER[i])
                                     plt.text(N_R4n_USER[i]-N_adj_r,Z_R4n_USER[i]+Z_adj_8,str_ratio,fontsize=fontsize_set_2)
                                     plt.plot(N_R4n_USER,Z_R4n_USER,marker='s',color=color8,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='')
 
@@ -2633,8 +2635,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                             for i in xrange(0,len(N_P1n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
-                                    str_ratio="{0:.1f}".format(P1n_Bound[i])
-                                    plt.text(N_P1n_Bound_value[i]-N_adj,Z_P1n_Bound_value[i]+Z_adj_1,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P1n_Bound[i])
+                                    plt.text(N_P1n_Bound_value[i]-N_adj,Z_P1n_Bound_value[i]+Z_adj_1,str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P1n_Bound_USER_value)):
                                         if N_P1n_Bound_value[i] == N_P1n_Bound_USER_value[ii] and Z_P1n_Bound_value[i] == Z_P1n_Bound_USER_value[ii]:
@@ -2643,14 +2645,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P1n_Bound[i])
-                                        plt.text(N_P1n_Bound_value[i]-N_adj,Z_P1n_Bound_value[i]+Z_adj_1,str_ratio+'%',fontsize=fontsize_set_3)        
+                                        str_ratio="{0:.2f}".format(P1n_Bound[i])
+                                        plt.text(N_P1n_Bound_value[i]-N_adj,Z_P1n_Bound_value[i]+Z_adj_1,str_ratio,fontsize=fontsize_set_3)        
 
                         if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                             for i in xrange(0,len(N_P2n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
-                                    str_ratio="{0:.1f}".format(P2n_Bound[i])
-                                    plt.text(N_P2n_Bound_value[i]-N_adj,Z_P2n_Bound_value[i]+Z_adj_2,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P2n_Bound[i])
+                                    plt.text(N_P2n_Bound_value[i]-N_adj,Z_P2n_Bound_value[i]+Z_adj_2,str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P2n_Bound_USER_value)):
                                         if N_P2n_Bound_value[i] == N_P2n_Bound_USER_value[ii] and Z_P2n_Bound_value[i] == Z_P2n_Bound_USER_value[ii]:
@@ -2659,14 +2661,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P2n_Bound[i])
-                                        plt.text(N_P2n_Bound_value[i]-N_adj,Z_P2n_Bound_value[i]+Z_adj_2,str_ratio+'%',fontsize=fontsize_set_3)
+                                        str_ratio="{0:.2f}".format(P2n_Bound[i])
+                                        plt.text(N_P2n_Bound_value[i]-N_adj,Z_P2n_Bound_value[i]+Z_adj_2,str_ratio,fontsize=fontsize_set_3)
 
                         if (PxnEXP3 == 1 or PxnEXPA == 1) and len(N_P3n_Bound_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                             for i in xrange(0,len(N_P3n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
-                                    str_ratio="{0:.1f}".format(P3n_Bound[i])
-                                    plt.text(N_P3n_Bound_value[i]-N_adj,Z_P3n_Bound_value[i]+Z_adj_3,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P3n_Bound[i])
+                                    plt.text(N_P3n_Bound_value[i]-N_adj,Z_P3n_Bound_value[i]+Z_adj_3,str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P3n_Bound_USER_value)):
                                         if N_P3n_Bound_value[i] == N_P3n_Bound_USER_value[ii] and Z_P3n_Bound_value[i] == Z_P3n_Bound_USER_value[ii]:
@@ -2675,14 +2677,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P3n_Bound[i])
-                                        plt.text(N_P3n_Bound_value[i]-N_adj,Z_P3n_Bound_value[i]+Z_adj_3,str_ratio+'%',fontsize=fontsize_set_3)    
+                                        str_ratio="{0:.2f}".format(P3n_Bound[i])
+                                        plt.text(N_P3n_Bound_value[i]-N_adj,Z_P3n_Bound_value[i]+Z_adj_3,str_ratio,fontsize=fontsize_set_3)    
 
                         if (PxnEXP4 == 1 or PxnEXPA == 1) and len(N_P4n_Bound_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                             for i in xrange(0,len(N_P4n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
-                                    str_ratio="{0:.1f}".format(P4n_Bound[i])
-                                    plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P4n_Bound[i])
+                                    plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P4n_Bound_USER_value)):
                                         if N_P4n_Bound_value[i] == N_P4n_Bound_USER_value[ii] and Z_P4n_Bound_value[i] == Z_P4n_Bound_USER_value[ii]:
@@ -2691,14 +2693,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P4n_Bound[i])
-                                        plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
+                                        str_ratio="{0:.2f}".format(P4n_Bound[i])
+                                        plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio,fontsize=fontsize_set_3)
 
                         if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in xrange(0,len(N_P1n_Bound_value_iso1)):
                                 if user_i != 1:
-                                    str_ratio="{0:.1f}".format(P1n_Bound_iso1[i])
-                                    plt.text(N_P1n_Bound_value_iso1[i]-N_adj_i,Z_P1n_Bound_value_iso1[i]+Z_adj_1,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P1n_Bound_iso1[i])
+                                    plt.text(N_P1n_Bound_value_iso1[i]-N_adj_i,Z_P1n_Bound_value_iso1[i]+Z_adj_1,'| '+str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P1n_Bound_USER_value_iso1)):
                                         if N_P1n_Bound_value_iso1[i] == N_P1n_Bound_USER_value_iso1[ii] and Z_P1n_Bound_value_iso1[i] == Z_P1n_Bound_USER_value_iso1[ii]:
@@ -2707,14 +2709,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P1n_Bound_iso1[i])
-                                        plt.text(N_P1n_Bound_value_iso1[i]-N_adj_i,Z_P1n_Bound_value_iso1[i]+Z_adj_1,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                        str_ratio="{0:.2f}".format(P1n_Bound_iso1[i])
+                                        plt.text(N_P1n_Bound_value_iso1[i]-N_adj_i,Z_P1n_Bound_value_iso1[i]+Z_adj_1,'| '+str_ratio,fontsize=fontsize_set_3)
 
                         if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in xrange(0,len(N_P2n_Bound_value_iso1)):
                                 if user_i != 1:
-                                    str_ratio="{0:.1f}".format(P2n_Bound_iso1[i])
-                                    plt.text(N_P2n_Bound_value_iso1[i]-N_adj_i,Z_P2n_Bound_value_iso1[i]+Z_adj_2,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P2n_Bound_iso1[i])
+                                    plt.text(N_P2n_Bound_value_iso1[i]-N_adj_i,Z_P2n_Bound_value_iso1[i]+Z_adj_2,'| '+str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P2n_Bound_USER_value_iso1)):
                                         if N_P2n_Bound_value_iso1[i] == N_P2n_Bound_USER_value_iso1[ii] and Z_P2n_Bound_value_iso1[i] == Z_P2n_Bound_USER_value_iso1[ii]:
@@ -2723,14 +2725,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P2n_Bound_iso1[i])
-                                        plt.text(N_P2n_Bound_value_iso1[i]-N_adj_i,Z_P2n_Bound_value_iso1[i]+Z_adj_2,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                        str_ratio="{0:.2f}".format(P2n_Bound_iso1[i])
+                                        plt.text(N_P2n_Bound_value_iso1[i]-N_adj_i,Z_P2n_Bound_value_iso1[i]+Z_adj_2,'| '+str_ratio,fontsize=fontsize_set_3)
 
                         if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in xrange(0,len(N_P1n_Bound_value_iso2)):
                                 if user_i != 1:
-                                    str_ratio="{0:.1f}".format(P1n_Bound_iso2[i])
-                                    plt.text(N_P1n_Bound_value_iso2[i]-N_adj_i,Z_P1n_Bound_value_iso2[i]+Z_adj_3,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P1n_Bound_iso2[i])
+                                    plt.text(N_P1n_Bound_value_iso2[i]-N_adj_i,Z_P1n_Bound_value_iso2[i]+Z_adj_3,'| '+str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P1n_Bound_USER_value_iso2)):
                                         if N_P1n_Bound_value_iso2[i] == N_P1n_Bound_USER_value_iso2[ii] and Z_P1n_Bound_value_iso2[i] == Z_P1n_Bound_USER_value_iso2[ii]:
@@ -2739,14 +2741,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P1n_Bound_iso2[i])
-                                        plt.text(N_P1n_Bound_value_iso2[i]-N_adj_i,Z_P1n_Bound_value_iso2[i]+Z_adj_3,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                        str_ratio="{0:.2f}".format(P1n_Bound_iso2[i])
+                                        plt.text(N_P1n_Bound_value_iso2[i]-N_adj_i,Z_P1n_Bound_value_iso2[i]+Z_adj_3,'| '+str_ratio,fontsize=fontsize_set_3)
 
                         if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in xrange(0,len(N_P2n_Bound_value_iso2)):
                                 if user_i != 1:
-                                    str_ratio="{0:.1f}".format(P2n_Bound_iso2[i])
-                                    plt.text(N_P2n_Bound_value_iso2[i]-N_adj_i,Z_P2n_Bound_value_iso2[i]+Z_adj_4,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P2n_Bound_iso2[i])
+                                    plt.text(N_P2n_Bound_value_iso2[i]-N_adj_i,Z_P2n_Bound_value_iso2[i]+Z_adj_4,'| '+str_ratio,fontsize=fontsize_set_3)
                                 else:
                                     for ii in xrange(0,len(N_P2n_Bound_USER_value_iso2)):
                                         if N_P2n_Bound_value_iso2[i] == N_P2n_Bound_USER_value_iso2[ii] and Z_P2n_Bound_value_iso2[i] == Z_P2n_Bound_USER_value_iso2[ii]:
@@ -2755,51 +2757,51 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         else:
                                             PriorityCheck = 1
                                     if PriorityCheck == 1:
-                                        str_ratio="{0:.1f}".format(P2n_Bound_iso2[i])
-                                        plt.text(N_P2n_Bound_value_iso2[i]-N_adj_i,Z_P2n_Bound_value_iso2[i]+Z_adj_4,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                        str_ratio="{0:.2f}".format(P2n_Bound_iso2[i])
+                                        plt.text(N_P2n_Bound_value_iso2[i]-N_adj_i,Z_P2n_Bound_value_iso2[i]+Z_adj_4,'| '+str_ratio,fontsize=fontsize_set_3)
 
                         # outputs Pxn values from user data files 
                         if user_P == 1 or user_Q == 1 or user_i == 1:
                             if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_USER_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                                 for i in xrange(0,len(N_P1n_Bound_USER_value)):
-                                    str_ratio="{0:.1f}".format(P1n_Bound_USER[i])
-                                    plt.text(N_P1n_Bound_USER_value[i]-N_adj,Z_P1n_Bound_USER_value[i]+Z_adj_1,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P1n_Bound_USER[i])
+                                    plt.text(N_P1n_Bound_USER_value[i]-N_adj,Z_P1n_Bound_USER_value[i]+Z_adj_1,str_ratio,fontsize=fontsize_set_3)
 
                             if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_USER_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                                 for i in xrange(0,len(N_P2n_Bound_USER_value)):
-                                    str_ratio="{0:.1f}".format(P2n_Bound_USER[i])
-                                    plt.text(N_P2n_Bound_USER_value[i]-N_adj,Z_P2n_Bound_USER_value[i]+Z_adj_2,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P2n_Bound_USER[i])
+                                    plt.text(N_P2n_Bound_USER_value[i]-N_adj,Z_P2n_Bound_USER_value[i]+Z_adj_2,str_ratio,fontsize=fontsize_set_3)
 
                             if (PxnEXP3 == 1 or PxnEXPA == 1) and len(N_P3n_Bound_USER_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                                 for i in xrange(0,len(N_P3n_Bound_USER_value)):
-                                    str_ratio="{0:.1f}".format(P3n_Bound_USER[i])
-                                    plt.text(N_P3n_Bound_USER_value[i]-N_adj,Z_P3n_Bound_USER_value[i]+Z_adj_3,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P3n_Bound_USER[i])
+                                    plt.text(N_P3n_Bound_USER_value[i]-N_adj,Z_P3n_Bound_USER_value[i]+Z_adj_3,str_ratio,fontsize=fontsize_set_3)
 
                             if (PxnEXP4 == 1 or PxnEXPA == 1) and len(N_P4n_Bound_USER_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                                 for i in xrange(0,len(N_P4n_Bound_USER_value)):
-                                    str_ratio="{0:.1f}".format(P4n_Bound_USER[i])
-                                    plt.text(N_P4n_Bound_USER_value[i]-N_adj,Z_P4n_Bound_USER_value[i]+Z_adj_4,str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P4n_Bound_USER[i])
+                                    plt.text(N_P4n_Bound_USER_value[i]-N_adj,Z_P4n_Bound_USER_value[i]+Z_adj_4,str_ratio,fontsize=fontsize_set_3)
 
                         if user_i == 1:    
                             if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_USER_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in xrange(0,len(N_P1n_Bound_USER_value_iso1)):
-                                    str_ratio="{0:.1f}".format(P1n_Bound_USER_iso1[i])
-                                    plt.text(N_P1n_Bound_USER_value_iso1[i]-N_adj_i,Z_P1n_Bound_USER_value_iso1[i]+Z_adj_1,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P1n_Bound_USER_iso1[i])
+                                    plt.text(N_P1n_Bound_USER_value_iso1[i]-N_adj_i,Z_P1n_Bound_USER_value_iso1[i]+Z_adj_1,'| '+str_ratio,fontsize=fontsize_set_3)
 
                             if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_USER_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in xrange(0,len(N_P2n_Bound_USER_value_iso1)):
-                                    str_ratio="{0:.1f}".format(P2n_Bound_USER_iso1[i])
-                                    plt.text(N_P2n_Bound_USER_value_iso1[i]-N_adj_i,Z_P2n_Bound_USER_value_iso1[i]+Z_adj_2,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P2n_Bound_USER_iso1[i])
+                                    plt.text(N_P2n_Bound_USER_value_iso1[i]-N_adj_i,Z_P2n_Bound_USER_value_iso1[i]+Z_adj_2,'| '+str_ratio,fontsize=fontsize_set_3)
 
                             if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_USER_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in xrange(0,len(N_P1n_Bound_USER_value_iso2)):
-                                    str_ratio="{0:.1f}".format(P1n_Bound_USER_iso2[i])
-                                    plt.text(N_P1n_Bound_USER_value_iso2[i]-N_adj_i,Z_P1n_Bound_USER_value_iso2[i]+Z_adj_3,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P1n_Bound_USER_iso2[i])
+                                    plt.text(N_P1n_Bound_USER_value_iso2[i]-N_adj_i,Z_P1n_Bound_USER_value_iso2[i]+Z_adj_3,'| '+str_ratio,fontsize=fontsize_set_3)
 
                             if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_USER_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in xrange(0,len(N_P2n_Bound_USER_value_iso2)):
-                                    str_ratio="{0:.1f}".format(P2n_Bound_USER_iso2[i])
-                                    plt.text(N_P2n_Bound_USER_value_iso2[i]-N_adj_i,Z_P2n_Bound_USER_value_iso2[i]+Z_adj_4,'| '+str_ratio+'%',fontsize=fontsize_set_3)
+                                    str_ratio="{0:.2f}".format(P2n_Bound_USER_iso2[i])
+                                    plt.text(N_P2n_Bound_USER_value_iso2[i]-N_adj_i,Z_P2n_Bound_USER_value_iso2[i]+Z_adj_4,'| '+str_ratio,fontsize=fontsize_set_3)
                                     
                 plt.axis('scaled')
                 g=plt.gca()
