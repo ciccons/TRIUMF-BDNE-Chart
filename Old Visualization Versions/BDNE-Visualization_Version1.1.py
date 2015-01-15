@@ -1,12 +1,8 @@
 #-----------------------------------------------------------------------------
 # Author: Stephanie Ciccone
-# BDNE-Visualization_Version1.py
+# BDNE-Visualization_Version1.1.py
 # Consult README.txt for instruction on how to ensure this software properly runs on your machine.
 #-----------------------------------------------------------------------------
-
-
-
-
 
 # imports all necessary libraries and functions
 import gc
@@ -23,26 +19,26 @@ import Tkinter
 # Plot Labels & Titles------------------------------------------------
 xlabel = "N"
 xlabel1 = """N
-Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012 (Wang et al.)   |   Theo.:  MOELLER(2003)"""
+Program Written By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012 (Wang et al.)   |   Theory:  MOELLER(2003)"""
 xlabel2 = """N
-Produced By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012(Wang et al.)   |   Exp.:  ENSDF,Hosmer(2010),Padgett(2010),Miernik(2013),Birch(2014)"""
+Program Written By: Ciccone, Stephanie   |   TRIUMF/McMaster University
+Masses: AME 2012(Wang et al.)   |   Exp.:  ENSDF,Hosmer(2010),Padgett(2010),Miernik(2013),Birch(2015)"""
 ylabel = "Z"
                         
-CreditTextTHEO_1 = "Produced By: Ciccone, Stephanie"
+CreditTextTHEO_1 = "Program Written By: Ciccone, Stephanie"
 CreditTextTHEO_2 = "               TRIUMF/McMaster University"
 CreditTextTHEO_3 = "Masses: AME 2012 (Wang et al.)"
-CreditTextTHEO_4 = "Theo.:        MOELLER(2003)"
-CreditTextTHEO_ColorBar_1 = "Produced By: Ciccone, Stephanie   |   Masses: AME 2012 (Wang et al.)"
-CreditTextTHEO_ColorBar_2 = "               TRIUMF/McMaster University   |   Theo.:  MOELLER(2003)"
+CreditTextTHEO_4 = "Theory:        MOELLER(2003)"
+CreditTextTHEO_ColorBar_1 = "Program Written By: Ciccone, Stephanie   |   Masses: AME 2012 (Wang et al.)"
+CreditTextTHEO_ColorBar_2 = "               TRIUMF/McMaster University   |   Theory:  MOELLER(2003)"
 
-CreditTextEXP_1 = "Produced By: Ciccone, Stephanie"
+CreditTextEXP_1 = "Program Written By: Ciccone, Stephanie"
 CreditTextEXP_2 = "    TRIUMF/McMaster University"
 CreditTextEXP_3 = "Masses: AME 2012 (Wang et al.)"
-CreditTextEXP_4 = "Exp.: ENSDF, Miernik(2013), Birch(2014)"
+CreditTextEXP_4 = "Exp.: ENSDF, Miernik(2013), Birch(2015)"
 CreditTextEXP_5 = "        Hosmer(2010), Padgett(2010)"
-CreditTextEXP_6 = "Theo.: Moeller(2003)"
+CreditTextEXP_6 = "Theory: Moeller(2003)"
 
 Title_Ratio = "Ratio between Theoretical & Experimental Data"
 Title_EXP = "Experimentally Known Beta-Delayed Neutron Emitters"
@@ -109,6 +105,7 @@ Author: Stephanie Ciccone, TRIUMF/McMaster University
 -------------------------------------------------------------
 This program takes data about Beta-Delayed Neutron Emission and uses it to visualize the information in a useful and insightful manner.
 It was created at TRIUMF by Stephanie Ciccone, a Co-op student from McMaster University with the guidence of Dr. Iris Dillmann.
+It was written using the programming lanquage, Python.
 
 Users first choose which database they wish to work with.
     1. Evaluated Database: Contains P(xn) values taken from ENSDF and
@@ -141,7 +138,8 @@ Once the display options are highlighted, choose ONE and click the 'PLOT' button
 Data References
 Masses: Atomic Mass Evaluation 2012 (Wang et al.)
 Experimental Data: Evaluated Nuclear Structure Data File 
-Experiemental Data from Papers: Miernik(2013), Hosmer(2010), Padgett(2010), Birch(2014)
+Experimental Data from Papers: Miernik(2013), Hosmer(2010), Padgett(2010)
+Experimental Data: Z<28 values based on Birch et al. evaluation (NDS 2015)
 Theoretical Model: MOELLER (2003)
 
 Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
@@ -874,22 +872,28 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 N_low_user=N_low_user-1
                 #-----------------------------------------------------------------------------           
                 # this part of the code makes an array for only the N and Z values that denote a stable nuclei from the basic data files
-                N_stable_Bound = [];Z_stable_Bound = []
+                N_stable_Bound = [];Z_stable_Bound = [];blank = 0
                 append_NstableB = N_stable_Bound.append;append_ZstableB = Z_stable_Bound.append
 
                 for i in xrange(0,s1):
                     if Z_stable[i] >= Z_low_user and Z_stable[i] <= Z_high_user:
-                        append_NstableB(N_stable[i])
-                        append_ZstableB(Z_stable[i])
+                        if Z_stable[i] == 0 and N_stable[i] == 0:
+                            blank = 1
+                        else:
+                            append_NstableB(N_stable[i])
+                            append_ZstableB(Z_stable[i])
                 #------------------------------------------------------------------------------
                 # makes an array of the nuclei that are within the user bounds from the basic data files
-                N_Bound = []; Z_Bound = []
+                N_Bound = []; Z_Bound = [] ; blank = 0
                 append_NB = N_Bound.append;append_ZB = Z_Bound.append
 
                 for i in xrange(0,len(N)):
                     if Z[i] >= Z_low_user and Z[i] <= Z_high_user:
-                        append_NB(N[i])
-                        append_ZB(Z[i])
+                        if Z[i] == 0 and N[i] == 0:
+                            blank == 1
+                        else:
+                            append_NB(N[i])
+                            append_ZB(Z[i])
 
                 #------------------------------------------------------------------------------
 
@@ -2141,7 +2145,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                                     append_R3nUSER(P3n_EXPR[ii]/P3n_MOE_full[i]);append_NR3nUSER(N_P_MOE[i]);append_ZR3nUSER(Z_P_MOE[i])
         #-----------------------------------------------------------------------------
 
-                N_Bound = [];Z_Bound = []
+                N_Bound = [];Z_Bound = [];blank = 0
                 Snlt0_N = [];Snlt0_Z = []
                 N_Bound_magic_Vert = [] ; Z_Bound_magic_Vert = []
                 append_NmagBV = N_Bound_magic_Vert.append;append_ZmagBV = Z_Bound_magic_Vert.append
@@ -2162,8 +2166,11 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 # for loop that assigns the values of N and Z to each array within user bounds using the basic data files
                 for i in xrange(0,s1):
                     if Z[i] >= Z_low_user and Z[i] <= Z_high_user and N[i] >= N_low_user and N[i] <= N_high_user:
-                        N_Bound = np.append(N_Bound,N[i])
-                        Z_Bound = np.append(Z_Bound,Z[i])
+                        if N[i] == 0 and Z[i] == 0:
+                            blank = 1
+                        else:
+                            N_Bound = np.append(N_Bound,N[i])
+                            Z_Bound = np.append(Z_Bound,Z[i])
                         if Snlt0[i] == str(1):
                             Snlt0_N = np.append(Snlt0_N,N[i])
                             Snlt0_Z = np.append(Snlt0_Z,Z[i])
@@ -2224,12 +2231,15 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                 Z_Qb4n_Bound_USER = np.append(Z_Qb4n_Bound_USER,Z_USER[i])
         #----------------------------------------------------------------------------
                 # this part of the code makes an array for only the N and Z values that denote a stable nuclei using basic data files
-                N_stable_Bound = [];Z_stable_Bound = []
+                N_stable_Bound = [];Z_stable_Bound = [];blank = 0
 
                 for i in xrange(0,s2):
                     if Z_stable[i] >= Z_low_user and Z_stable[i] <= Z_high_user and N_stable[i] >= N_low_user and N_stable[i] <= N_high_user:
-                        N_stable_Bound = np.append(N_stable_Bound,N_stable[i])
-                        Z_stable_Bound = np.append(Z_stable_Bound,Z_stable[i])
+                        if Z_stable[i] == 0 and N_stable[i] == 0:
+                            blank = 1
+                        else:
+                            N_stable_Bound = np.append(N_stable_Bound,N_stable[i])
+                            Z_stable_Bound = np.append(Z_stable_Bound,Z_stable[i])
         #----------------------------------------------------------------------------    
 
                 # assigns the N and Z values of the isotopes with probability > 0
@@ -2452,7 +2462,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 color6='Lime'
                 color7='Red'
                 color8='Magenta'
-                color9='Yellow'
+                color9='Green'
                 leg_list = []
                 c1=0;c2=0;c3=0;c4=0;c5=0
                 c6=0;c7=0;c8=0;c9=0;c10=0;c11=0
