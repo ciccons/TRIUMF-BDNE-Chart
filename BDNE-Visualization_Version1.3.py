@@ -395,8 +395,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='normal');cR.configure(state='disabled')
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
-                    cPxnEXPA.configure(state='normal');cPxnEXP1.configure(state='normal');cPxnEXP2.configure(state='normal')
-                    cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
+                    cPxnEXPA.configure(state='normal');cPxnEXPA.select();cPxnEXP1.configure(state='normal')
+                    cPxnEXP2.configure(state='normal');cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
                     
                     cNORMEXP.select();cPxnEXP.deselect();cR.deselect()
                     cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
@@ -406,6 +406,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 check_P1nC = checkButtonP1nC_THEO.get();check_P2nC = checkButtonP2nC_THEO.get();check_P3nC = checkButtonP3nC_THEO.get()
                 cPxnEXPA.configure(state='disabled');cPxnEXP1.configure(state='disabled');cPxnEXP2.configure(state='disabled')
                 cPxnEXP3.configure(state='disabled');cPxnEXP4.configure(state='disabled')
+                cREEXP.configure(state='disabled');cRUEXP.configure(state='disabled');cREEXP.deselect();cRUEXP.deselect()
+                TextEntryRUE.configure(state='disabled')
+                cRMTHEO.configure(state='disabled');cRUTHEO.configure(state='disabled');cRMTHEO.deselect();cRUTHEO.deselect()
+                TextEntryRUT.configure(state='disabled')
                 checkButtonPxn_EXP_ALL.set(0);checkButtonPxn_EXP_1n.set(0)
                 checkButtonPxn_EXP_2n.set(0);checkButtonPxn_EXP_3n.set(0);checkButtonPxn_EXP_4n.set(0)
                 
@@ -2212,6 +2216,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         if float(Qb4n[i]) > 0:
                             N_Qb4n_Bound = np.append(N_Qb4n_Bound,N[i]) 
                             Z_Qb4n_Bound = np.append(Z_Qb4n_Bound,Z[i])
+                #print np.size(N_Qbn_Bound),np.size(Z_Qbn_Bound)
+                #print np.size(N_Qb2n_Bound),np.size(Z_Qb2n_Bound)
+                #print np.size(N_Qb3n_Bound),np.size(Z_Qb3n_Bound)
+                #print np.size(N_Qb4n_Bound),np.size(Z_Qb4n_Bound)
 
                 # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 using user files
                 if user_Q == 1 or user_i == 1:
@@ -2341,6 +2349,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                     N_P4n_Bound_value = np.append(N_P4n_Bound_value,N_P[i])
                                     Z_P4n_Bound_value = np.append(Z_P4n_Bound_value,Z_P[i])
                                     P4n_Bound = np.append(P4n_Bound,P4n[i])
+                        
 
                     if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                         if (Pxn_EXP == 1 or Ratio == 1) and NORM_EXP == 0 and Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user and (P1n[i] != 0 or P2n[i] != 0 or P3n[i] != 0 or P4n[i] != 0): 
@@ -2349,7 +2358,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                             A_calc = N_P[i] + Z_P[i]
                             ELE_name = np.append(ELE_name,ELE_names_EXP[i])
                             A_ELE = np.append(A_ELE,A_calc)
-                            
+                #print np.size(N_P1n_Bound),np.size(N_P2n_Bound)
+                #print np.size(N_P3n_Bound),np.size(N_P4n_Bound) 
                 # sets arrays for the nuclei with Pxn values within user bounds using the user data files
                 if user_P == 1 or user_Q == 1 or user_i == 1:
                     for i in xrange(0,size_P_USER):
@@ -2554,13 +2564,13 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 if len(Snlt0_N) != 0:
                     e6, = plt.plot(Snlt0_N,Snlt0_Z,marker='s',color=color9,markersize=msize,linestyle='');c7=1
 
-                if len(N_P1n_Bound) != 0 and (PxnEXP1 == 1 or PxnEXPA == 1):
+                if len(N_P1n_Bound) != 0 and (PxnEXP1 == 1 or PxnEXPA == 1 or Ratio == 1):
                     e7, = plt.plot(N_P1n_Bound,Z_P1n_Bound,marker='s',color=color1,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c8=1
-                if len(N_P2n_Bound) != 0 and (PxnEXP2 == 1 or PxnEXPA == 1):
+                if len(N_P2n_Bound) != 0 and (PxnEXP2 == 1 or PxnEXPA == 1 or Ratio == 1):
                     e8, = plt.plot(N_P2n_Bound,Z_P2n_Bound,marker='s',color=color6,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c9=1
-                if len(N_P3n_Bound) != 0 and (PxnEXP3 == 1 or PxnEXPA == 1):
+                if len(N_P3n_Bound) != 0 and (PxnEXP3 == 1 or PxnEXPA == 1 or Ratio == 1):
                     e9, = plt.plot(N_P3n_Bound,Z_P3n_Bound,marker='s',color=color7,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c10=1
-                if len(N_P4n_Bound) != 0 and (PxnEXP4 == 1 or PxnEXPA == 1):
+                if len(N_P4n_Bound) != 0 and (PxnEXP4 == 1 or PxnEXPA == 1 or Ratio == 1):
                     e10, = plt.plot(N_P4n_Bound,Z_P4n_Bound,marker='s',color=color8,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c11=1
 
                 # if user uploaded data files, output is analyzed here
@@ -2575,13 +2585,13 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         plt.plot(N_Qb4n_Bound_USER,Z_Qb4n_Bound_USER,marker='s',color=color5,markersize=msize,linestyle='');c6=1
 
                 if user_P == 1 or user_Q == 1 or user_i == 1:
-                    if len(N_P1n_Bound_USER) != 0 and (PxnEXP1 == 1 or PxnEXPA == 1):
+                    if len(N_P1n_Bound_USER) != 0 and (PxnEXP1 == 1 or PxnEXPA == 1 or Ratio == 1):
                         plt.plot(N_P1n_Bound_USER,Z_P1n_Bound_USER,marker='s',color=color1,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c8=1
-                    if len(N_P2n_Bound_USER) != 0 and (PxnEXP2 == 1 or PxnEXPA == 1):
+                    if len(N_P2n_Bound_USER) != 0 and (PxnEXP2 == 1 or PxnEXPA == 1 or Ratio == 1):
                         plt.plot(N_P2n_Bound_USER,Z_P2n_Bound_USER,marker='s',color=color6,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c9=1
-                    if len(N_P3n_Bound_USER) != 0 and (PxnEXP3 == 1 or PxnEXPA == 1):
+                    if len(N_P3n_Bound_USER) != 0 and (PxnEXP3 == 1 or PxnEXPA == 1 or Ratio == 1):
                         plt.plot(N_P3n_Bound_USER,Z_P3n_Bound_USER,marker='s',color=color7,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c10=1
-                    if len(N_P4n_Bound_USER) != 0 and (PxnEXP4 == 1 or PxnEXPA == 1):
+                    if len(N_P4n_Bound_USER) != 0 and (PxnEXP4 == 1 or PxnEXPA == 1 or Ratio == 1):
                         plt.plot(N_P4n_Bound_USER,Z_P4n_Bound_USER,marker='s',color=color8,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c11=1
                         
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
@@ -2949,23 +2959,23 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     l1 = plt.legend(leg_entries,leg_text,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10  and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7:
-                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP,leg_ValueLabels5_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP,leg_ValueLabels5_EXP),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
 
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7  and Delta_N > 4 and Delta_Z > 4:
-                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO,leg_ValueLabels4_THEO,leg_ValueLabels5_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO,leg_ValueLabels4_THEO,leg_ValueLabels5_THEO),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend((leg_ValueLabels1_iso,leg_ValueLabels2_iso,leg_ValueLabels3_iso,leg_ValueLabels4_iso,leg_ValueLabels5_iso),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_iso,leg_ValueLabels2_iso,leg_ValueLabels3_iso,leg_ValueLabels4_iso,leg_ValueLabels5_iso),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                 else:
                     l1 = plt.legend(leg_entries,leg_text,loc=4,markerscale=ms1,numpoints=1)
