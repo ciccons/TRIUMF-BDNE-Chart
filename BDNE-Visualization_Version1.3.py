@@ -143,7 +143,7 @@ Experimental Data: Z<28 values based on Birch et al. evaluation (NDS 2015)
 Theoretical Model: MOELLER (2003)
 
 Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
-Contact Email: ciccons1928@gmail.com
+Contact Email: ciccons1928@gmail.com or ciccons@mcmaster.ca
 ----------------------------------------------------------------
 Acknowledgements: I would like to thank Dr. Iris Dillmann, William Mills, and TRIUMF for contributing to this software project."""
             
@@ -2998,5 +2998,5 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 # opens and starts GUI for visualization
 if __name__ == "__main__":
     app = BDNE_GUI(None) #first GUI element so no parent, 'None'
-    app.title('Beta-Delayed Neutron Emission Visualization Program - Version 1.2')
+    app.title('Beta-Delayed Neutron Emission Visualization Program - Version 1.3')
     app.mainloop() #program loops indefinitely, waiting for events, until user closes window

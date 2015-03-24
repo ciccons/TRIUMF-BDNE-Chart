@@ -47,11 +47,13 @@ Please email me if any problems require a fix or update to the software.
 Data References
 Masses: Atomic Mass Evaluation 2012 (Wang et al.)
 Experimental Data: Evaluated Nuclear Structure Data File 
+Experimental Data: Z<28 values based on Birch et al. evaluation (NDS 2015)
 Experiemental Data from Papers: Miernik(2013), Hosmer(2010), Padgett(2010)
 Theoretical Model: MOELLER (2003)
+Theoretical Model: MARKETIN 
 
 Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
-Contact Email: ciccons1928@gmail.com
+Contact Email: ciccons1928@gmail.com or ciccons@mcmaster.ca
 
 ------------------------
 
