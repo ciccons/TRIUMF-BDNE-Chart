@@ -1,6 +1,6 @@
 #-----------------------------------------------------------------------------
 # Author: Stephanie Ciccone
-# BDNE-Visualization_Version1.3.py
+# BDNE-Visualization_Version1.4.py
 # Consult README.txt for instruction on how to ensure this software properly runs on your machine.
 #-----------------------------------------------------------------------------
 
@@ -14,6 +14,7 @@ import matplotlib.rcsetup as rcsetup
 #print(rcsetup.all_backends)
 import matplotlib as mpl
 import sys
+from Tkinter import *
 import Tkinter
 
 # Plot Labels & Titles------------------------------------------------
@@ -92,11 +93,32 @@ class BDNE_GUI(Tkinter.Tk):
         # ex. button contained in a window
         Tkinter.Tk.__init__(self,parent)
         self.parent = parent #references the parent
+        
         self.initialize() #creates GUI element
 
+    def onFrameConfigure(self, event):
+        "Reset the scroll region to encompass inner frame"
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
     def initialize(self): #can create all GUI elements
+
+##        self.canvas = Canvas(self.parent,borderwidth=0, background="#ffffff")
+##        self.frame = Frame(self.canvas,background="#ffffff")
+##        self.vsb = Scrollbar(self.parent, orient="vertical", command=self.canvas.yview)
+##        self.canvas.configure(yscrollcommand=self.vsb.set)
+##
+##        self.vsb.pack(side=RIGHT,fill=Y)
+##        self.canvas.pack(side="left", fill="both", expand=True)
+##        self.canvas.create_window((4,4), window=self.parent, anchor="nw", tags="self.frame")
+##
+##        self.bind("<Configure>", self.onFrameConfigure)
         
         self.grid() #how to place widgets in the window (put button at column 2, row 1)
+##        text = Text(self.parent)
+##        text.grid()
+##        vsb = Scrollbar(self.parent,command=text.yview)
+##        text.config(yscrollcommand=vsb.set)
+##        vsb.grid(row=1,column=6)
 
         def OnButtonProgramINFO():
             # text found in Program Information Button
@@ -186,8 +208,8 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
     Email: ciccons1928@gmail.com""",anchor='w') # add author credit
         labelCRED1.grid(column=3,row=0)
 
-        label1 = Tkinter.Label(self,text=u"Select Database:",anchor='w')
-        label1.grid(column=0,row=2,columnspan=5,sticky='EW') #label widget
+        label1 = Tkinter.Label(self,text=u"Select Database: ",anchor='w')
+        label1.grid(column=0,row=1,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonCHOICE_EXP(): #event for when Experimental Database clicked
             choice_user_EXP = checkButtonCHOICE_EXP.get()
@@ -220,36 +242,36 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         cCEXP = Tkinter.Checkbutton(self,text="Evaluated (ENSDF)",variable=checkButtonCHOICE_EXP,
                                 command = OncheckButtonCHOICE_EXP)
         checkButtonCHOICE_EXP.set(1)
-        cCEXP.grid(column=1,row=3,sticky='EW')
+        cCEXP.grid(column=1,row=2,sticky='EW')
 
         checkButtonUSER_EXP = Tkinter.IntVar()
         cUFEXP = Tkinter.Checkbutton(self,text="Upload experiment data:",variable=checkButtonUSER_EXP)
-        cUFEXP.grid(column=1,row=4,sticky='EW')
+        cUFEXP.grid(column=2,row=2,sticky='EW')
 
         userFileEXP = Tkinter.StringVar() 
-        TextEntryEXP = Tkinter.Entry(self,textvariable=userFileEXP,state='disabled') 
-        TextEntryEXP.grid(column=2,row=4,sticky='EW') #add to grid layout
+        TextEntryEXP = Tkinter.Entry(self,textvariable=userFileEXP,state='normal') 
+        TextEntryEXP.grid(column=3,row=2,sticky='EW') #add to grid layout
 
         checkButtonCHOICE_THEO = Tkinter.IntVar()
         cCTHEO = Tkinter.Checkbutton(self,text="Theoretical (MOELLER 2003)",variable=checkButtonCHOICE_THEO,
                                 command = OncheckButtonCHOICE_THEO,state='disabled')
-        cCTHEO.grid(column=1,row=5,sticky='EW')
+        cCTHEO.grid(column=1,row=3,sticky='EW')
 
         checkButtonUSER_THEO = Tkinter.IntVar()
         cUFTHEO = Tkinter.Checkbutton(self,text="Upload theoretical data:",variable=checkButtonUSER_THEO,
                                       state='disabled')
-        cUFTHEO.grid(column=1,row=6,sticky='EW')
+        cUFTHEO.grid(column=2,row=3,sticky='EW')
 
         userFileTHEO = Tkinter.StringVar() 
         TextEntryTHEO = Tkinter.Entry(self,textvariable=userFileTHEO,state='disabled') 
-        TextEntryTHEO.grid(column=2,row=6,sticky='EW') #add to grid layout
+        TextEntryTHEO.grid(column=3,row=3,sticky='EW') #add to grid layout
 
         # labels for plot range information
-        label2 = Tkinter.Label(self,anchor='w')
-        label2.grid(column=0,row=7,columnspan=5,sticky='EW')
+        label2 = Tkinter.Label(self,anchor='w',text=u"                                                                                                    ---------------------------------------------")
+        label2.grid(column=0,row=4,columnspan=5,sticky='EW')
         
         label3 = Tkinter.Label(self,anchor='w',text=u"Plot Range Options: (Click NEXT to proceed when done)")
-        label3.grid(column=0,row=8,columnspan=5,sticky='EW') #label widget
+        label3.grid(column=0,row=5,columnspan=5,sticky='EW') #label widget
 
         Delta = u"\N{GREEK CAPITAL LETTER DELTA}"
 
@@ -323,49 +345,49 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
         checkButton0 = Tkinter.IntVar()
         c0 = Tkinter.Checkbutton(self,text=Delta + "N = 0, " + Delta + "Z = 0 [1x1 Isotopes]",variable=checkButton0,command=OncheckButton0)
-        c0.grid(column=1,row=9,sticky='EW')
+        c0.grid(column=1,row=6,sticky='EW')
 
         checkButton4 = Tkinter.IntVar()
         c4 = Tkinter.Checkbutton(self,text=Delta + "N = 4, " + Delta + "Z = 4 [5x5 Isotopes]",variable=checkButton4,command=OncheckButton4)
-        c4.grid(column=1,row=10,sticky='EW')
+        c4.grid(column=1,row=7,sticky='EW')
 
         checkButton7 = Tkinter.IntVar()
         c7 = Tkinter.Checkbutton(self,text=Delta + "N = 7, " + Delta + "Z = 7 [8x8 Isotopes]*",variable=checkButton7,command=OncheckButton7)
-        c7.grid(column=2,row=9,sticky='EW')
+        c7.grid(column=2,row=6,sticky='EW')
 
         checkButton10 = Tkinter.IntVar()
         c10 = Tkinter.Checkbutton(self,text=Delta + "N = 10, " + Delta + "Z = 10 [11x11 Isotopes]*",variable=checkButton10,command=OncheckButton10)
-        c10.grid(column=2,row=10,sticky='EW')
+        c10.grid(column=2,row=7,sticky='EW')
 
-        labelZoom1 = Tkinter.Label(self,anchor='w',text=u"These set N and Z to a zoomed in range.")
-        labelZoom1.grid(column=3,row=9,sticky='EW')
+        labelZoom1 = Tkinter.Label(self,anchor='w',text=u"Note: These set N and Z to a zoomed in range.")
+        labelZoom1.grid(column=3,row=6,sticky='EW')
         labelZoom2 = Tkinter.Label(self,anchor='w',text=u"Can show P(xn) or Ratio values when zoomed in.")
-        labelZoom2.grid(column=3,row=10,sticky='EW')
+        labelZoom2.grid(column=3,row=7,sticky='EW')
         
         # buttons for inputting N and Z plot range
         button1 = Tkinter.Button(self,text=u"N (minimum)") #add button widget
-        button1.grid(column=0,row=12) #place button in grid
+        button1.grid(column=0,row=8) #place button in grid
         entryVariable1 = Tkinter.IntVar() #sets variable for N min
         TextEntry1 = Tkinter.Entry(self,textvariable=entryVariable1) 
-        TextEntry1.grid(column=1,row=12,sticky='EW') #add to grid layout
+        TextEntry1.grid(column=1,row=8,sticky='EW') #add to grid layout
 
         button2 = Tkinter.Button(self,text=u"Z (minimum)") #add button widget
-        button2.grid(column=2,row=12) #place button in grid
+        button2.grid(column=2,row=8) #place button in grid
         entryVariable2 = Tkinter.IntVar()
         TextEntry2 = Tkinter.Entry(self,textvariable=entryVariable2) #create first widget, an Entry widget
-        TextEntry2.grid(column=3,row=12,sticky='EW')
+        TextEntry2.grid(column=3,row=8,sticky='EW')
 
         button3 = Tkinter.Button(self,text=u"N (maximum)") #add button widget
-        button3.grid(column=0,row=13) #place button in grid   
+        button3.grid(column=0,row=9) #place button in grid   
         entryVariable3 = Tkinter.IntVar()
         TextEntry3 = Tkinter.Entry(self,textvariable=entryVariable3) #create first widget, an Entry widget
-        TextEntry3.grid(column=1,row=13,sticky='EW')
+        TextEntry3.grid(column=1,row=9,sticky='EW')
 
         button4 = Tkinter.Button(self,text=u"Z (maximum)") #add button widget
-        button4.grid(column=2,row=13) #place button in grid
+        button4.grid(column=2,row=9) #place button in grid
         entryVariable4 = Tkinter.IntVar()
         TextEntry4 = Tkinter.Entry(self,textvariable=entryVariable4) #create first widget, an Entry widget
-        TextEntry4.grid(column=3,row=13,sticky='EW')
+        TextEntry4.grid(column=3,row=9,sticky='EW')
 
         def NextButton(): #event for when Next button clicked to highlight display options
             N_low_user = entryVariable1.get()
@@ -430,17 +452,17 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                     cPxnTHEO.deselect()
 
         NextButton = Tkinter.Button(self,text=u"NEXT",command=NextButton)
-        NextButton.grid(column=5,row=13)
+        NextButton.grid(column=5,row=9)
 
         label6 = Tkinter.Label(self,anchor='w',text=u"*This option might not show all information due to space constraints.")
-        label6.grid(column=0,row=14,sticky='EW',columnspan=5)
+        label6.grid(column=0,row=10,sticky='EW',columnspan=5)
 
         # display options for Experimental Database
-        label7 = Tkinter.Label(self,anchor='w',text=u"")
-        label7.grid(column=0,row=15,columnspan=5,sticky='EW') #label widget
+        label7 = Tkinter.Label(self,anchor='w',text=u"                                                                                                    ---------------------------------------------")
+        label7.grid(column=0,row=11,columnspan=5,sticky='EW') #label widget
 
         label8 = Tkinter.Label(self,anchor='w',text=u"Evaluated Database (Only check ONE box before proceeding): ")
-        label8.grid(column=0,row=16,columnspan=5,sticky='EW') #label widget
+        label8.grid(column=0,row=12,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonPxn_EXP():
             N_low_user = entryVariable1.get()
@@ -468,7 +490,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
         checkButtonPxn_EXP = Tkinter.IntVar()
         cPxnEXP = Tkinter.Checkbutton(self,text="Show P(xn)-Values",variable=checkButtonPxn_EXP,state='disabled',command=OncheckButtonPxn_EXP)
-        cPxnEXP.grid(column=1,row=18,sticky='EW')
+        cPxnEXP.grid(column=1,row=14,sticky='EW')
 
         def OncheckButtonPxn_EXP_ALL():
             if checkButtonPxn_EXP_ALL.get() == 1:
@@ -486,19 +508,19 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
     
         checkButtonPxn_EXP_ALL = Tkinter.IntVar()
         cPxnEXPA = Tkinter.Checkbutton(self,text="ALL",variable=checkButtonPxn_EXP_ALL,state='disabled',command=OncheckButtonPxn_EXP_ALL)
-        cPxnEXPA.grid(column=2,row=17,sticky='EW')
+        cPxnEXPA.grid(column=2,row=13,sticky='EW')
         checkButtonPxn_EXP_1n = Tkinter.IntVar()
         cPxnEXP1 = Tkinter.Checkbutton(self,text="P(1n)",variable=checkButtonPxn_EXP_1n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP1.grid(column=3,row=17,sticky='EW')
+        cPxnEXP1.grid(column=3,row=13,sticky='EW')
         checkButtonPxn_EXP_2n = Tkinter.IntVar()
         cPxnEXP2 = Tkinter.Checkbutton(self,text="P(2n)",variable=checkButtonPxn_EXP_2n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP2.grid(column=4,row=17,sticky='EW')
+        cPxnEXP2.grid(column=4,row=13,sticky='EW')
         checkButtonPxn_EXP_3n = Tkinter.IntVar()
         cPxnEXP3 = Tkinter.Checkbutton(self,text="P(3n)",variable=checkButtonPxn_EXP_3n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP3.grid(column=2,row=18,sticky='EW')
+        cPxnEXP3.grid(column=2,row=14,sticky='EW')
         checkButtonPxn_EXP_4n = Tkinter.IntVar()
         cPxnEXP4 = Tkinter.Checkbutton(self,text="P(4n)",variable=checkButtonPxn_EXP_4n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP4.grid(column=3,row=18,sticky='EW')
+        cPxnEXP4.grid(column=3,row=14,sticky='EW')
 
         def OncheckButtonNORM_EXP():
             N_low_user = entryVariable1.get()
@@ -537,7 +559,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonNORM_EXP = Tkinter.IntVar()
         cNORMEXP = Tkinter.Checkbutton(self,text="Color-Only Plot (No Values)",variable=checkButtonNORM_EXP,state='disabled',
                                        command=OncheckButtonNORM_EXP)
-        cNORMEXP.grid(column=1,row=17,sticky='EW')
+        cNORMEXP.grid(column=1,row=13,sticky='EW')
 
         def OncheckButtonRatio(): #event when Ratio button is clicked
             choice_user_Ratio = checkButtonRatio.get()
@@ -571,10 +593,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio = Tkinter.IntVar()
         cR = Tkinter.Checkbutton(self,text="Show Ratio [Pxn(Exp.)/Pxn(Theo.)]",variable=checkButtonRatio,state='disabled',
                                  command=OncheckButtonRatio)
-        cR.grid(column=1,row=19,sticky='EW')
+        cR.grid(column=1,row=15,sticky='EW')
 
         label9 = Tkinter.Label(self,anchor='w',text=u"            P(xn) Values for Ratio (Exp.): ")
-        label9.grid(column=1,row=20,columnspan=5,sticky='EW') #label widget
+        label9.grid(column=1,row=16,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonREEXP():
             if checkButtonRatio_ENSDF_EXP.get() == 0:
@@ -583,7 +605,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_ENSDF_EXP = Tkinter.IntVar()
         cREEXP = Tkinter.Checkbutton(self,text="ENSDF",variable=checkButtonRatio_ENSDF_EXP,state='disabled',
                                      command=OncheckButtonREEXP)
-        cREEXP.grid(column=2,row=20,sticky='EW')
+        cREEXP.grid(column=2,row=16,sticky='EW')
 
         def OncheckButtonRUEXP():
             if checkButtonRatio_USER_EXP.get() == 0:
@@ -592,14 +614,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_USER_EXP = Tkinter.IntVar()
         cRUEXP = Tkinter.Checkbutton(self,text="Upload Experimental P(xn) Data",variable=checkButtonRatio_USER_EXP,state='disabled',
                                      command=OncheckButtonRUEXP)
-        cRUEXP.grid(column=2,row=21,sticky='EW')
+        cRUEXP.grid(column=2,row=17,sticky='EW')
 
         ratioUSERFILEEXP = Tkinter.StringVar()
         TextEntryRUE = Tkinter.Entry(self,textvariable=ratioUSERFILEEXP,state='disabled') #create first widget, an Entry widget
-        TextEntryRUE.grid(column=3,row=21,sticky='EW')
+        TextEntryRUE.grid(column=3,row=17,sticky='EW')
 
         label10 = Tkinter.Label(self,anchor='w',text=u"            P(xn) Values for Ratio (Theo.): ")
-        label10.grid(column=1,row=22,columnspan=5,sticky='EW') #label widget
+        label10.grid(column=1,row=18,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonRMTHEO():
             if checkButtonRatio_MOE_THEO.get() == 0:
@@ -608,7 +630,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_MOE_THEO = Tkinter.IntVar()
         cRMTHEO = Tkinter.Checkbutton(self,text="MOELLER 2003",variable=checkButtonRatio_MOE_THEO,state='disabled',
                                       command=OncheckButtonRMTHEO)
-        cRMTHEO.grid(column=2,row=22,sticky='EW')
+        cRMTHEO.grid(column=2,row=18,sticky='EW')
 
         def OncheckButtonRUTHEO():
             if checkButtonRatio_USER_THEO.get() == 0:
@@ -617,15 +639,15 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_USER_THEO = Tkinter.IntVar()
         cRUTHEO = Tkinter.Checkbutton(self,text="Upload Theoretical P(xn) Data",variable=checkButtonRatio_USER_THEO,state='disabled',
                                       command=OncheckButtonRUTHEO)
-        cRUTHEO.grid(column=2,row=23,sticky='EW')
+        cRUTHEO.grid(column=2,row=19,sticky='EW')
 
         ratioUSERFILETHEO = Tkinter.StringVar()
         TextEntryRUT = Tkinter.Entry(self,textvariable=ratioUSERFILETHEO,state='disabled') #create first widget, an Entry widget
-        TextEntryRUT.grid(column=3,row=23,sticky='EW')
+        TextEntryRUT.grid(column=3,row=19,sticky='EW')
 
         # display options for theoretical database
         label11 = Tkinter.Label(self,anchor='w',text=u"Theoretical Database (Only check ONE box before proceeding): ")
-        label11.grid(column=0,row=24,columnspan=5,sticky='EW') #label widget
+        label11.grid(column=0,row=20,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonPxn_THEO():
             N_low_user = entryVariable1.get()
@@ -655,7 +677,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
         checkButtonPxn_THEO = Tkinter.IntVar()
         cPxnTHEO = Tkinter.Checkbutton(self,text="Show P(xn)-Values",variable=checkButtonPxn_THEO,state='disabled',command=OncheckButtonPxn_THEO)
-        cPxnTHEO.grid(column=1,row=26,sticky='EW')
+        cPxnTHEO.grid(column=1,row=22,sticky='EW')
 
         def OncheckButtonPxn_THEO_ALL():
             if checkButtonPxn_THEO_ALL.get() == 1:
@@ -673,16 +695,16 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         
         checkButtonPxn_THEO_ALL = Tkinter.IntVar()
         cPxnTHEOA = Tkinter.Checkbutton(self,text="ALL",variable=checkButtonPxn_THEO_ALL,state='disabled',command=OncheckButtonPxn_THEO_ALL)
-        cPxnTHEOA.grid(column=2,row=25,sticky='EW')
+        cPxnTHEOA.grid(column=2,row=21,sticky='EW')
         checkButtonPxn_THEO_1n = Tkinter.IntVar()
         cPxnTHEO1 = Tkinter.Checkbutton(self,text="P(1n)",variable=checkButtonPxn_THEO_1n,state='disabled',command=OncheckButtonPxn_THEO_xn)
-        cPxnTHEO1.grid(column=3,row=25,sticky='EW')
+        cPxnTHEO1.grid(column=3,row=21,sticky='EW')
         checkButtonPxn_THEO_2n = Tkinter.IntVar()
         cPxnTHEO2 = Tkinter.Checkbutton(self,text="P(2n)",variable=checkButtonPxn_THEO_2n,state='disabled',command=OncheckButtonPxn_THEO_xn)
-        cPxnTHEO2.grid(column=2,row=26,sticky='EW')
+        cPxnTHEO2.grid(column=2,row=22,sticky='EW')
         checkButtonPxn_THEO_3n = Tkinter.IntVar()
         cPxnTHEO3 = Tkinter.Checkbutton(self,text="P(3n)",variable=checkButtonPxn_THEO_3n,state='disabled',command=OncheckButtonPxn_THEO_xn)
-        cPxnTHEO3.grid(column=3,row=26,sticky='EW')
+        cPxnTHEO3.grid(column=3,row=22,sticky='EW')
 
         def OncheckButtonNORM_THEO():
             N_low_user = entryVariable1.get()
@@ -717,7 +739,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonNORM_THEO = Tkinter.IntVar()
         cNORMTHEO = Tkinter.Checkbutton(self,text="Color-Only Plot (No Values)",variable=checkButtonNORM_THEO,state='disabled',
                                         command=OncheckButtonNORM_THEO)
-        cNORMTHEO.grid(column=1,row=25,sticky='EW')
+        cNORMTHEO.grid(column=1,row=21,sticky='EW')
 
         def OncheckButtonP1nC_THEO():
             N_low_user = entryVariable1.get()
@@ -748,7 +770,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonP1nC_THEO = Tkinter.IntVar()
         cP1nC = Tkinter.Checkbutton(self,text="Show P(1n) Color Bar Gradient",variable=checkButtonP1nC_THEO,state='disabled',
                                     command=OncheckButtonP1nC_THEO)
-        cP1nC.grid(column=1,row=27,sticky='EW')
+        cP1nC.grid(column=1,row=23,sticky='EW')
 
         def OncheckButtonP2nC_THEO():
             N_low_user = entryVariable1.get()
@@ -779,7 +801,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonP2nC_THEO = Tkinter.IntVar()
         cP2nC = Tkinter.Checkbutton(self,text="Show P(2n) Color Bar Gradient",variable=checkButtonP2nC_THEO,state='disabled',
                                     command=OncheckButtonP2nC_THEO)
-        cP2nC.grid(column=2,row=27,sticky='EW')
+        cP2nC.grid(column=2,row=23,sticky='EW')
 
         def OncheckButtonP3nC_THEO():
             N_low_user = entryVariable1.get()
@@ -810,7 +832,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonP3nC_THEO = Tkinter.IntVar()
         cP3nC = Tkinter.Checkbutton(self,text="Show P(3n) Color Bar Gradient",variable=checkButtonP3nC_THEO,state='disabled',
                                     command=OncheckButtonP3nC_THEO)
-        cP3nC.grid(column=3,row=27,sticky='EW')
+        cP3nC.grid(column=3,row=23,sticky='EW')
 
         def PLOT(): # event when PLOT button clicked; will display the visualization based on user options
             # obtains all relevant variable values from GUI
@@ -2983,7 +3005,9 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 plt.show(block=False)
 
         PLOT_Button = Tkinter.Button(self,text=u"PLOT",command=PLOT) # PLOT button
-        PLOT_Button.grid(column=2,row=28)
+        PLOT_Button.grid(column=5,row=18)
+        labelExtra1 = Tkinter.Label(self,anchor='w',text=u"")
+        labelExtra1.grid(column=6,row=0,columnspan=1,sticky='EW')
 
         self.grid_columnconfigure(0,weight=1) #resize columns when window is resized
         self.grid_columnconfigure(1,weight=1) #resize columns when window is resized
@@ -2991,12 +3015,12 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         self.grid_columnconfigure(3,weight=1) #resize columns when window is resized
         self.grid_columnconfigure(4,weight=1) #resize columns when window is resized
 
-        self.resizable(True,False) #enables horizontal resizing, prevents vertical resizing
+        self.resizable(True,True) #enables horizontal resizing and vertical resizing
         self.update()
         self.geometry(self.geometry())  
 
 # opens and starts GUI for visualization
 if __name__ == "__main__":
     app = BDNE_GUI(None) #first GUI element so no parent, 'None'
-    app.title('Beta-Delayed Neutron Emission Visualization Program - Version 1.3')
+    app.title('Beta-Delayed Neutron Emission Visualization Program - Version 1.4')
     app.mainloop() #program loops indefinitely, waiting for events, until user closes window
