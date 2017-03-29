@@ -6,8 +6,10 @@ Supervisor: Dr. Iris Dillmann
 Set-Up Instructions
 ----------------------
 
-This program was written in Python using Python 2.7. Please Have Python 2.7 installed in order to run this program. 
-A version tested to run in the Python 3x series will possibly be made in the future.
+This program was written in Python using Python 2.7. 
+Two versions of the source code have been made available and will be updated if need be to maintain working status. 
+The Py2 version should run with a Python 2.x installation.
+The Py3 version should run with a Python 3.x installation.
 
 This program should run on any operating system (Windows, Unix, etc.).
 
@@ -21,19 +23,19 @@ Also requires dateutil, pytz, pyparsing, and six to run properly which can be fo
 http://www.lfd.uci.edu/~gohlke/pythonlibs/#matplotlib 
 
 
-After installing Python 2.7 and the relevant extra libraries, this program should compile and run once obtained off of Github.
+After installing Python 2.x/3.x and the relevant extra libraries, this program should compile and run once obtained off of Github.
 https://github.com/ciccons/TRIUMF-BDNE-Chart
 
 ----
  
-Install the Anaconda Python distribution, which provides Python 2.7, iPython and all of its dependencies 
+Install the Anaconda Python distribution, which provides Python, iPython and all of its dependencies 
 as well as a complete set of open source packages for scientific computing and data science.
 Anaconda Download: http://continuum.io/downloads
 
 The Canopy Distribution should also be a viable option, similar to Anaconda.
 Canopy Download: https://store.enthought.com/downloads/
 
-If you install one of these distributions, it comes with all of the libraries needed to run this software in Python 2.7.
+If you install one of these distributions, it comes with all of the libraries needed to run this software in Python.
 And so, Anaconda would be the recommended option.
 
 ------------------------
@@ -53,7 +55,7 @@ Theoretical Model: MOELLER (2003)
 Theoretical Model: MARKETIN 
 
 Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
-Contact Email: ciccons1928@gmail.com or ciccons@mcmaster.ca
+Contact Email: ciccons1928@gmail.com or 16smc5@queensu.ca
 
 ------------------------
 
