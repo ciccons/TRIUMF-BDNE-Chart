@@ -1,6 +1,6 @@
 #-----------------------------------------------------------------------------
 # Author: Stephanie Ciccone
-# BDNE-Visualization_Version1.4.py
+# BDNE-Visualization_Version2.py
 # Consult README.txt for instruction on how to ensure this software properly runs on your machine.
 #-----------------------------------------------------------------------------
 
@@ -14,32 +14,31 @@ import matplotlib.rcsetup as rcsetup
 #print(rcsetup.all_backends)
 import matplotlib as mpl
 import sys
-from tkinter import *
 import tkinter
 
 # Plot Labels & Titles------------------------------------------------
 xlabel = "N"
 xlabel1 = """N
 Program Written By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012 (Wang et al.)   |   Theory:  MOELLER (2003)"""
+Masses: AME 2012 (Wang et al.)   |   Theory:  MOELLER(2003)"""
 xlabel2 = """N
 Program Written By: Ciccone, Stephanie   |   TRIUMF/McMaster University
-Masses: AME 2012 (Wang et al.)   |   Exp.:  ENSDF (2017), Hosmer (2010),Padgett (2010), Miernik (2013),Birch et al.(2015)"""
+Masses: AME 2012 (Wang et al.)   |   Exp.:  ENSDF (2017), Hosmer (2010), Padgett(2010), Miernik (2013), Birch et al.(2015)"""
 ylabel = "Z"
                         
 CreditTextTHEO_1 = "Program Written By: Ciccone, Stephanie"
 CreditTextTHEO_2 = "               TRIUMF/McMaster University"
 CreditTextTHEO_3 = "Masses: AME 2012 (Wang et al.)"
-CreditTextTHEO_4 = "Theory:        MOELLER (2003)"
+CreditTextTHEO_4 = "Theory:        MOELLER(2003)"
 CreditTextTHEO_ColorBar_1 = "Program Written By: Ciccone, Stephanie   |   Masses: AME 2012 (Wang et al.)"
-CreditTextTHEO_ColorBar_2 = "               TRIUMF/McMaster University   |   Theory:  MOELLER (2003)"
+CreditTextTHEO_ColorBar_2 = "               TRIUMF/McMaster University   |   Theory:  MOELLER(2003)"
 
 CreditTextEXP_1 = "Program Written By: Ciccone, Stephanie"
 CreditTextEXP_2 = "    TRIUMF/McMaster University"
 CreditTextEXP_3 = "Masses: AME 2012 (Wang et al.)"
-CreditTextEXP_4 = "Exp.: ENSDF (2017), Miernik (2013), Birch et al.(2015)"
-CreditTextEXP_5 = "        Hosmer (2010), Padgett (2010)"
-CreditTextEXP_6 = "Theory: Moeller (2003)"
+CreditTextEXP_4 = "Exp.: ENSDF (2017), Miernik(2013), Birch(2015)"
+CreditTextEXP_5 = "        Hosmer(2010), Padgett(2010)"
+CreditTextEXP_6 = "Theory: Moeller(2003)"
 
 Title_Ratio = "Ratio between Theoretical & Experimental Data"
 Title_EXP = "Experimentally Known Beta-Delayed Neutron Emitters"
@@ -56,17 +55,15 @@ leg_THEO_3 = "P(1n) dominates"
 leg_THEO_4 = "P(2n) dominates"
 leg_THEO_5 = "P(3n) dominates"
 
-leg_EXP_1 = "Known"
-leg_EXP_2 = "Stable"
-leg_EXP_3 = "Q(b1n) > 0 keV"
-leg_EXP_4 = "Q(b2n) > 0 keV"
-leg_EXP_5 = "Q(b3n) > 0 keV"
-leg_EXP_6 = "Q(b4n) > 0 keV"
-leg_EXP_7 = "S(n) < 0 keV"
-leg_EXP_8 = "Measured P(1n)"
-leg_EXP_9 = "Measured P(2n)"
-leg_EXP_10 = "Measured P(3n)"
-leg_EXP_11 = "Measured P(4n)"
+leg_EXP_1 = "Stable" #black
+leg_EXP_2 = "Delayed Neutron Emission Not Possible" #yellow
+leg_EXP_3 = "Potential Precursor" #orange
+
+greek_code_beta = 0x3b2
+greek_char_beta = chr(greek_code_beta).encode('utf-8')
+
+leg_EXP_6 = "Neutron Unbound" #(Sn < 0) #green
+leg_EXP_7 = "Not Observed" #white
 
 leg_ValueLabels1_THEO = "  Isotope [%] "
 leg_ValueLabels2_THEO = "  P(1n)"
@@ -93,32 +90,11 @@ class BDNE_GUI(tkinter.Tk):
         # ex. button contained in a window
         tkinter.Tk.__init__(self,parent)
         self.parent = parent #references the parent
-        
         self.initialize() #creates GUI element
 
-    def onFrameConfigure(self, event):
-        "Reset the scroll region to encompass inner frame"
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-
     def initialize(self): #can create all GUI elements
-
-##        self.canvas = Canvas(self.parent,borderwidth=0, background="#ffffff")
-##        self.frame = Frame(self.canvas,background="#ffffff")
-##        self.vsb = Scrollbar(self.parent, orient="vertical", command=self.canvas.yview)
-##        self.canvas.configure(yscrollcommand=self.vsb.set)
-##
-##        self.vsb.pack(side=RIGHT,fill=Y)
-##        self.canvas.pack(side="left", fill="both", expand=True)
-##        self.canvas.create_window((4,4), window=self.parent, anchor="nw", tags="self.frame")
-##
-##        self.bind("<Configure>", self.onFrameConfigure)
         
         self.grid() #how to place widgets in the window (put button at column 2, row 1)
-##        text = Text(self.parent)
-##        text.grid()
-##        vsb = Scrollbar(self.parent,command=text.yview)
-##        text.config(yscrollcommand=vsb.set)
-##        vsb.grid(row=1,column=6)
 
         def OnButtonProgramINFO():
             # text found in Program Information Button
@@ -130,7 +106,7 @@ It was created at TRIUMF by Stephanie Ciccone, a Co-op student from McMaster Uni
 It was written using the programming lanquage, Python.
 
 Users first choose which database they wish to work with.
-    1. Evaluated Database: Contains P(xn) values taken from ENSDF et al. and
+    1. Evaluated Database: Contains P(xn) values taken from ENSDF and
                             Q(bxn) values taken from AME 2012.
 
     2. Theoretical Database: Contains P(xn) values taken from the MOELLER
@@ -165,7 +141,7 @@ Experimental Data: Z<28 values based on Birch et al. evaluation (NDS 2015)
 Theoretical Model: MOELLER (2003)
 
 Software URL: https://github.com/ciccons/TRIUMF-BDNE-Chart
-Contact Email: ciccons1928@gmail.com or 16smc5@queensu.ca
+Contact Email: ciccons1928@gmail.com
 ----------------------------------------------------------------
 Acknowledgements: I would like to thank Dr. Iris Dillmann, William Mills, and TRIUMF for contributing to this software project."""
             
@@ -204,12 +180,12 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         buttonINFO2 = tkinter.Button(self,text=u"User File Formats",command=OnButtonUFF)
         buttonINFO2.grid(column=2,row=0)
 
-        labelCRED1 = tkinter.Label(self,text=u"""    Author: Stephanie Ciccone  [2015]
+        labelCRED1 = tkinter.Label(self,text=u"""    Author: Stephanie Ciccone  [2014]
     Email: ciccons1928@gmail.com""",anchor='w') # add author credit
         labelCRED1.grid(column=3,row=0)
 
-        label1 = tkinter.Label(self,text=u"Select Database: ",anchor='w')
-        label1.grid(column=0,row=1,columnspan=5,sticky='EW') #label widget
+        label1 = tkinter.Label(self,text=u"Select Database:",anchor='w')
+        label1.grid(column=0,row=2,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonCHOICE_EXP(): #event for when Experimental Database clicked
             choice_user_EXP = checkButtonCHOICE_EXP.get()
@@ -241,37 +217,36 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonCHOICE_EXP = tkinter.IntVar()
         cCEXP = tkinter.Checkbutton(self,text="Evaluated (ENSDF)",variable=checkButtonCHOICE_EXP,
                                 command = OncheckButtonCHOICE_EXP)
-        checkButtonCHOICE_EXP.set(1)
-        cCEXP.grid(column=1,row=2,sticky='EW')
+        cCEXP.grid(column=1,row=3,sticky='EW')
 
         checkButtonUSER_EXP = tkinter.IntVar()
-        cUFEXP = tkinter.Checkbutton(self,text="Upload experiment data:",variable=checkButtonUSER_EXP)
-        cUFEXP.grid(column=2,row=2,sticky='EW')
+        cUFEXP = tkinter.Checkbutton(self,text="Upload experiment data:",variable=checkButtonUSER_EXP,state='disabled')
+        cUFEXP.grid(column=1,row=4,sticky='EW')
 
         userFileEXP = tkinter.StringVar() 
-        TextEntryEXP = tkinter.Entry(self,textvariable=userFileEXP,state='normal') 
-        TextEntryEXP.grid(column=3,row=2,sticky='EW') #add to grid layout
+        TextEntryEXP = tkinter.Entry(self,textvariable=userFileEXP,state='disabled') 
+        TextEntryEXP.grid(column=2,row=4,sticky='EW') #add to grid layout
 
         checkButtonCHOICE_THEO = tkinter.IntVar()
         cCTHEO = tkinter.Checkbutton(self,text="Theoretical (MOELLER 2003)",variable=checkButtonCHOICE_THEO,
-                                command = OncheckButtonCHOICE_THEO,state='disabled')
-        cCTHEO.grid(column=1,row=3,sticky='EW')
+                                command = OncheckButtonCHOICE_THEO)
+        cCTHEO.grid(column=1,row=5,sticky='EW')
 
         checkButtonUSER_THEO = tkinter.IntVar()
         cUFTHEO = tkinter.Checkbutton(self,text="Upload theoretical data:",variable=checkButtonUSER_THEO,
                                       state='disabled')
-        cUFTHEO.grid(column=2,row=3,sticky='EW')
+        cUFTHEO.grid(column=1,row=6,sticky='EW')
 
         userFileTHEO = tkinter.StringVar() 
         TextEntryTHEO = tkinter.Entry(self,textvariable=userFileTHEO,state='disabled') 
-        TextEntryTHEO.grid(column=3,row=3,sticky='EW') #add to grid layout
+        TextEntryTHEO.grid(column=2,row=6,sticky='EW') #add to grid layout
 
         # labels for plot range information
-        label2 = tkinter.Label(self,anchor='w',text=u"                                                                                                    ---------------------------------------------")
-        label2.grid(column=0,row=4,columnspan=5,sticky='EW')
+        label2 = tkinter.Label(self,anchor='w')
+        label2.grid(column=0,row=7,columnspan=5,sticky='EW')
         
         label3 = tkinter.Label(self,anchor='w',text=u"Plot Range Options: (Click NEXT to proceed when done)")
-        label3.grid(column=0,row=5,columnspan=5,sticky='EW') #label widget
+        label3.grid(column=0,row=8,columnspan=5,sticky='EW') #label widget
 
         Delta = u"\N{GREEK CAPITAL LETTER DELTA}"
 
@@ -345,49 +320,49 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
         checkButton0 = tkinter.IntVar()
         c0 = tkinter.Checkbutton(self,text=Delta + "N = 0, " + Delta + "Z = 0 [1x1 Isotopes]",variable=checkButton0,command=OncheckButton0)
-        c0.grid(column=1,row=6,sticky='EW')
+        c0.grid(column=1,row=9,sticky='EW')
 
         checkButton4 = tkinter.IntVar()
         c4 = tkinter.Checkbutton(self,text=Delta + "N = 4, " + Delta + "Z = 4 [5x5 Isotopes]",variable=checkButton4,command=OncheckButton4)
-        c4.grid(column=1,row=7,sticky='EW')
+        c4.grid(column=1,row=10,sticky='EW')
 
         checkButton7 = tkinter.IntVar()
         c7 = tkinter.Checkbutton(self,text=Delta + "N = 7, " + Delta + "Z = 7 [8x8 Isotopes]*",variable=checkButton7,command=OncheckButton7)
-        c7.grid(column=2,row=6,sticky='EW')
+        c7.grid(column=2,row=9,sticky='EW')
 
         checkButton10 = tkinter.IntVar()
         c10 = tkinter.Checkbutton(self,text=Delta + "N = 10, " + Delta + "Z = 10 [11x11 Isotopes]*",variable=checkButton10,command=OncheckButton10)
-        c10.grid(column=2,row=7,sticky='EW')
+        c10.grid(column=2,row=10,sticky='EW')
 
-        labelZoom1 = tkinter.Label(self,anchor='w',text=u"Note: These set N and Z to a zoomed in range.")
-        labelZoom1.grid(column=3,row=6,sticky='EW')
+        labelZoom1 = tkinter.Label(self,anchor='w',text=u"These set N and Z to a zoomed in range.")
+        labelZoom1.grid(column=3,row=9,sticky='EW')
         labelZoom2 = tkinter.Label(self,anchor='w',text=u"Can show P(xn) or Ratio values when zoomed in.")
-        labelZoom2.grid(column=3,row=7,sticky='EW')
+        labelZoom2.grid(column=3,row=10,sticky='EW')
         
         # buttons for inputting N and Z plot range
         button1 = tkinter.Button(self,text=u"N (minimum)") #add button widget
-        button1.grid(column=0,row=8) #place button in grid
+        button1.grid(column=0,row=12) #place button in grid
         entryVariable1 = tkinter.IntVar() #sets variable for N min
         TextEntry1 = tkinter.Entry(self,textvariable=entryVariable1) 
-        TextEntry1.grid(column=1,row=8,sticky='EW') #add to grid layout
+        TextEntry1.grid(column=1,row=12,sticky='EW') #add to grid layout
 
         button2 = tkinter.Button(self,text=u"Z (minimum)") #add button widget
-        button2.grid(column=2,row=8) #place button in grid
+        button2.grid(column=2,row=12) #place button in grid
         entryVariable2 = tkinter.IntVar()
         TextEntry2 = tkinter.Entry(self,textvariable=entryVariable2) #create first widget, an Entry widget
-        TextEntry2.grid(column=3,row=8,sticky='EW')
+        TextEntry2.grid(column=3,row=12,sticky='EW')
 
         button3 = tkinter.Button(self,text=u"N (maximum)") #add button widget
-        button3.grid(column=0,row=9) #place button in grid   
+        button3.grid(column=0,row=13) #place button in grid   
         entryVariable3 = tkinter.IntVar()
         TextEntry3 = tkinter.Entry(self,textvariable=entryVariable3) #create first widget, an Entry widget
-        TextEntry3.grid(column=1,row=9,sticky='EW')
+        TextEntry3.grid(column=1,row=13,sticky='EW')
 
         button4 = tkinter.Button(self,text=u"Z (maximum)") #add button widget
-        button4.grid(column=2,row=9) #place button in grid
+        button4.grid(column=2,row=13) #place button in grid
         entryVariable4 = tkinter.IntVar()
         TextEntry4 = tkinter.Entry(self,textvariable=entryVariable4) #create first widget, an Entry widget
-        TextEntry4.grid(column=3,row=9,sticky='EW')
+        TextEntry4.grid(column=3,row=13,sticky='EW')
 
         def NextButton(): #event for when Next button clicked to highlight display options
             N_low_user = entryVariable1.get()
@@ -402,23 +377,21 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             if (checkButtonCHOICE_EXP.get() == 1 and checkButtonCHOICE_THEO.get() == 0):
                 check_PxnEXP = checkButtonPxn_EXP.get();check_NORMEXP = checkButtonNORM_EXP.get()
                 check_R = checkButtonRatio.get()
-                cPxnTHEOA.configure(state='disabled');cPxnTHEO2.configure(state='disabled')
-                cPxnTHEO1.configure(state='disabled');cPxnTHEO3.configure(state='disabled')
-                checkButtonPxn_THEO_ALL.set(0);checkButtonPxn_THEO_1n.set(0)
-                checkButtonPxn_THEO_2n.set(0);checkButtonPxn_THEO_3n.set(0)
                 
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnEXP.configure(state='normal');cNORMEXP.configure(state='normal');cR.configure(state='normal')          
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
+                    
+                    cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
                     cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
                 
                 if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='normal');cR.configure(state='disabled')
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='disabled')
                     cP1nC.configure(state='disabled');cP2nC.configure(state='disabled');cP3nC.configure(state='disabled')
-                    cPxnEXPA.configure(state='normal');cPxnEXPA.select();cPxnEXP1.configure(state='normal')
-                    cPxnEXP2.configure(state='normal');cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
+                    cXnEXP1.configure(state='normal');cXnEXP2.configure(state='normal')
+                    cXnEXP3.configure(state='normal');cXnEXP4.configure(state='normal')
                     
                     cNORMEXP.select();cPxnEXP.deselect();cR.deselect()
                     cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
@@ -426,14 +399,6 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             if (checkButtonCHOICE_THEO.get() == 1 and checkButtonCHOICE_EXP.get() == 0):
                 check_PxnTHEO = checkButtonPxn_THEO.get();check_NORMTHEO = checkButtonNORM_THEO.get()
                 check_P1nC = checkButtonP1nC_THEO.get();check_P2nC = checkButtonP2nC_THEO.get();check_P3nC = checkButtonP3nC_THEO.get()
-                cPxnEXPA.configure(state='disabled');cPxnEXP1.configure(state='disabled');cPxnEXP2.configure(state='disabled')
-                cPxnEXP3.configure(state='disabled');cPxnEXP4.configure(state='disabled')
-                cREEXP.configure(state='disabled');cRUEXP.configure(state='disabled');cREEXP.deselect();cRUEXP.deselect()
-                TextEntryRUE.configure(state='disabled')
-                cRMTHEO.configure(state='disabled');cRUTHEO.configure(state='disabled');cRMTHEO.deselect();cRUTHEO.deselect()
-                TextEntryRUT.configure(state='disabled')
-                checkButtonPxn_EXP_ALL.set(0);checkButtonPxn_EXP_1n.set(0)
-                checkButtonPxn_EXP_2n.set(0);checkButtonPxn_EXP_3n.set(0);checkButtonPxn_EXP_4n.set(0)
                 
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnTHEO.configure(state='normal');cNORMTHEO.configure(state='normal')
@@ -441,28 +406,28 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='disabled');cR.configure(state='disabled')
 
                     cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
                     
                 if (Delta_N != 10 or Delta_Z != 10) and (Delta_N != 7 or Delta_Z != 7) and (Delta_N != 4 or Delta_Z != 4) and (Delta_N != 0 or Delta_Z != 0):
                     cPxnTHEO.configure(state='disabled');cNORMTHEO.configure(state='normal')
                     cP1nC.configure(state='normal');cP2nC.configure(state='normal');cP3nC.configure(state='normal')                
                     cPxnEXP.configure(state='disabled');cNORMEXP.configure(state='disabled');cR.configure(state='disabled')
-                    checkButtonPxn_THEO_ALL.set(0);checkButtonPxn_THEO_1n.set(0)
-                    checkButtonPxn_THEO_2n.set(0);checkButtonPxn_THEO_3n.set(0)
+
                     cPxnEXP.deselect();cNORMEXP.deselect();cR.deselect()
-                    cPxnTHEO.deselect()
+                    cPxnTHEO.deselect();cNORMTHEO.deselect();cP1nC.deselect();cP2nC.deselect();cP3nC.deselect()
 
         NextButton = tkinter.Button(self,text=u"NEXT",command=NextButton)
-        NextButton.grid(column=5,row=9)
+        NextButton.grid(column=5,row=13)
 
         label6 = tkinter.Label(self,anchor='w',text=u"*This option might not show all information due to space constraints.")
-        label6.grid(column=0,row=10,sticky='EW',columnspan=5)
+        label6.grid(column=0,row=14,sticky='EW',columnspan=5)
 
         # display options for Experimental Database
-        label7 = tkinter.Label(self,anchor='w',text=u"                                                                                                    ---------------------------------------------")
-        label7.grid(column=0,row=11,columnspan=5,sticky='EW') #label widget
+        label7 = tkinter.Label(self,anchor='w',text=u"")
+        label7.grid(column=0,row=15,columnspan=5,sticky='EW') #label widget
 
         label8 = tkinter.Label(self,anchor='w',text=u"Evaluated Database (Only check ONE box before proceeding): ")
-        label8.grid(column=0,row=12,columnspan=5,sticky='EW') #label widget
+        label8.grid(column=0,row=16,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonPxn_EXP():
             N_low_user = entryVariable1.get()
@@ -473,54 +438,75 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             Delta_N = N_high_user-N_low_user
             Delta_Z = Z_high_user-Z_low_user
             
-            if checkButtonPxn_EXP.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
-                cNORMEXP.configure(state='disabled');checkButtonNORM_EXP.set(0)
-                cR.configure(state='disabled');checkButtonRatio.set(0)
-                cPxnEXPA.configure(state='normal');checkButtonPxn_EXP_ALL.set(1);cPxnEXP1.configure(state='normal')
-                cPxnEXP2.configure(state='normal');cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
-                cREEXP.deselect();cRUEXP.deselect();cRMTHEO.deselect();cRUTHEO.deselect()
-                TextEntryRUE.configure(state='disabled');TextEntryRUT.configure(state='disabled')
-            if checkButtonPxn_EXP.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+            if checkButtonXn_EXP.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
+                cNORMEXP.configure(state='disabled')
+                cR.configure(state='disabled')
+                cXnEXP1.configure(state='normal');cXnEXP2.configure(state='normal')
+                cXnEXP3.configure(state='normal');cXnEXP4.configure(state='normal')
+            if checkButtonXn_EXP.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
                 cNORMEXP.configure(state='normal')
                 cR.configure(state='normal')
-                cPxnEXPA.configure(state='disabled');cPxnEXP1.configure(state='disabled');cPxnEXP2.configure(state='disabled')
-                cPxnEXP3.configure(state='disabled');cPxnEXP4.configure(state='disabled')
-                checkButtonPxn_EXP_ALL.set(0);checkButtonPxn_EXP_1n.set(0)
-                checkButtonPxn_EXP_2n.set(0);checkButtonPxn_EXP_3n.set(0);checkButtonPxn_EXP_4n.set(0)
+                cXnEXP1.configure(state='disabled');cXnEXP2.configure(state='disabled')
+                cXnEXP3.configure(state='disabled');cXnEXP4.configure(state='disabled')
+                checkButtonXn_EXP_1n.set(0);checkButtonXn_EXP_2n.set(0)
+                checkButtonXn_EXP_3n.set(0);checkButtonXn_EXP_4n.set(0)
 
         checkButtonPxn_EXP = tkinter.IntVar()
         cPxnEXP = tkinter.Checkbutton(self,text="Show P(xn)-Values",variable=checkButtonPxn_EXP,state='disabled',command=OncheckButtonPxn_EXP)
-        cPxnEXP.grid(column=1,row=14,sticky='EW')
+        cPxnEXP.grid(column=1,row=18,sticky='EW')
 
-        def OncheckButtonPxn_EXP_ALL():
-            if checkButtonPxn_EXP_ALL.get() == 1:
-                cPxnEXP1.configure(state='disabled');cPxnEXP2.configure(state='disabled')
-                cPxnEXP3.configure(state='disabled');cPxnEXP4.configure(state='disabled')
-            if checkButtonPxn_EXP_ALL.get() == 0:
-                cPxnEXP1.configure(state='normal');cPxnEXP2.configure(state='normal')
-                cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
-                
-        def OncheckButtonPxn_EXP_xn():
-            if checkButtonPxn_EXP_1n.get() == 1 or checkButtonPxn_EXP_2n.get() == 1 or checkButtonPxn_EXP_3n.get() == 1 or checkButtonPxn_EXP_4n.get() == 1:
-                cPxnEXPA.configure(state='disabled');checkButtonPxn_EXP_ALL.set(0)
-            if checkButtonPxn_EXP_1n.get() == 0 and checkButtonPxn_EXP_2n.get() == 0 and checkButtonPxn_EXP_3n.get() == 0 and checkButtonPxn_EXP_4n.get() == 0:
-                cPxnEXPA.configure(state='normal')
-    
-        checkButtonPxn_EXP_ALL = tkinter.IntVar()
-        cPxnEXPA = tkinter.Checkbutton(self,text="ALL",variable=checkButtonPxn_EXP_ALL,state='disabled',command=OncheckButtonPxn_EXP_ALL)
-        cPxnEXPA.grid(column=2,row=13,sticky='EW')
-        checkButtonPxn_EXP_1n = tkinter.IntVar()
-        cPxnEXP1 = tkinter.Checkbutton(self,text="P(1n)",variable=checkButtonPxn_EXP_1n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP1.grid(column=3,row=13,sticky='EW')
-        checkButtonPxn_EXP_2n = tkinter.IntVar()
-        cPxnEXP2 = tkinter.Checkbutton(self,text="P(2n)",variable=checkButtonPxn_EXP_2n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP2.grid(column=4,row=13,sticky='EW')
-        checkButtonPxn_EXP_3n = tkinter.IntVar()
-        cPxnEXP3 = tkinter.Checkbutton(self,text="P(3n)",variable=checkButtonPxn_EXP_3n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP3.grid(column=2,row=14,sticky='EW')
-        checkButtonPxn_EXP_4n = tkinter.IntVar()
-        cPxnEXP4 = tkinter.Checkbutton(self,text="P(4n)",variable=checkButtonPxn_EXP_4n,state='disabled',command=OncheckButtonPxn_EXP_xn)
-        cPxnEXP4.grid(column=3,row=14,sticky='EW')
+        def OncheckButtonXn_EXP_1n():
+            if checkButtonXn_EXP_1n.get() == 1:
+                cXnEXP2.configure(state='disabled');checkButtonXn_EXP_2n.set(0)
+                cXnEXP3.configure(state='disabled');checkButtonXn_EXP_3n.set(0)
+                cXnEXP4.configure(state='disabled');checkButtonXn_EXP_4n.set(0)
+            if checkButtonXn_EXP_1n.get() == 0:
+                cXnEXP2.configure(state='normal');checkButtonXn_EXP_2n.set(0)
+                cXnEXP3.configure(state='normal');checkButtonXn_EXP_3n.set(0)
+                cXnEXP4.configure(state='normal');checkButtonXn_EXP_4n.set(0)
+
+        def OncheckButtonXn_EXP_2n():
+            if checkButtonXn_EXP_2n.get() == 1:
+                cXnEXP1.configure(state='disabled');checkButtonXn_EXP_1n.set(0)
+                cXnEXP3.configure(state='disabled');checkButtonXn_EXP_3n.set(0)
+                cXnEXP4.configure(state='disabled');checkButtonXn_EXP_4n.set(0)
+            if checkButtonXn_EXP_2n.get() == 0:
+                cXnEXP1.configure(state='normal');checkButtonXn_EXP_1n.set(0)
+                cXnEXP3.configure(state='normal');checkButtonXn_EXP_3n.set(0)
+                cXnEXP4.configure(state='normal');checkButtonXn_EXP_4n.set(0)
+
+        def OncheckButtonXn_EXP_3n():
+            if checkButtonXn_EXP_3n.get() == 1:
+                cXnEXP2.configure(state='disabled');checkButtonXn_EXP_2n.set(0)
+                cXnEXP1.configure(state='disabled');checkButtonXn_EXP_1n.set(0)
+                cXnEXP4.configure(state='disabled');checkButtonXn_EXP_4n.set(0)
+            if checkButtonXn_EXP_3n.get() == 0:
+                cXnEXP2.configure(state='normal');checkButtonXn_EXP_2n.set(0)
+                cXnEXP1.configure(state='normal');checkButtonXn_EXP_1n.set(0)
+                cXnEXP4.configure(state='normal');checkButtonXn_EXP_4n.set(0)
+
+        def OncheckButtonXn_EXP_4n():
+            if checkButtonXn_EXP_4n.get() == 1:
+                cXnEXP2.configure(state='disabled');checkButtonXn_EXP_2n.set(0)
+                cXnEXP3.configure(state='disabled');checkButtonXn_EXP_3n.set(0)
+                cXnEXP1.configure(state='disabled');checkButtonXn_EXP_1n.set(0)
+            if checkButtonXn_EXP_4n.get() == 0:
+                cXnEXP2.configure(state='normal');checkButtonXn_EXP_2n.set(0)
+                cXnEXP3.configure(state='normal');checkButtonXn_EXP_3n.set(0)
+                cXnEXP1.configure(state='normal');checkButtonXn_EXP_1n.set(0)
+        
+        checkButtonXn_EXP_1n = tkinter.IntVar()
+        cXnEXP1 = tkinter.Checkbutton(self,text="1n",variable=checkButtonXn_EXP_1n,state='disabled',command=OncheckButtonXn_EXP_1n)
+        cXnEXP1.grid(column=2,row=17,sticky='EW')
+        checkButtonXn_EXP_2n = tkinter.IntVar()
+        cXnEXP2 = tkinter.Checkbutton(self,text="2n",variable=checkButtonXn_EXP_2n,state='disabled',command=OncheckButtonXn_EXP_2n)
+        cXnEXP2.grid(column=3,row=17,sticky='EW')
+        checkButtonXn_EXP_3n = tkinter.IntVar()
+        cXnEXP3 = tkinter.Checkbutton(self,text="3n",variable=checkButtonXn_EXP_3n,state='disabled',command=OncheckButtonXn_EXP_3n)
+        cXnEXP3.grid(column=2,row=18,sticky='EW')
+        checkButtonXn_EXP_4n = tkinter.IntVar()
+        cXnEXP4 = tkinter.Checkbutton(self,text="4n",variable=checkButtonXn_EXP_4n,state='disabled',command=OncheckButtonXn_EXP_4n)
+        cXnEXP4.grid(column=3,row=18,sticky='EW')
 
         def OncheckButtonNORM_EXP():
             N_low_user = entryVariable1.get()
@@ -532,34 +518,31 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             Delta_Z = Z_high_user-Z_low_user
 
             if checkButtonNORM_EXP.get() == 1 and ((Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0)):
-                cPxnEXPA.configure(state='normal');checkButtonPxn_EXP_ALL.set(1);cPxnEXP1.configure(state='normal');
-                cPxnEXP2.configure(state='normal');cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
+                cXnEXP1.configure(state='normal');cXnEXP2.configure(state='normal')
+                cXnEXP3.configure(state='normal');cXnEXP4.configure(state='normal')
             if checkButtonNORM_EXP.get() == 0 and ((Delta_N != 10 and Delta_Z != 10) or (Delta_N != 7 and Delta_Z != 7) or (Delta_N != 4 and Delta_Z != 4) or (Delta_N != 0 and Delta_Z != 0)):
-                cPxnEXPA.configure(state='disabled');cPxnEXP1.configure(state='disabled');cPxnEXP2.configure(state='disabled')
-                cPxnEXP3.configure(state='disabled');cPxnEXP4.configure(state='disabled')
-                checkButtonPxn_EXP_ALL.set(0);checkButtonPxn_EXP_1n.set(0)
-                checkButtonPxn_EXP_2n.set(0);checkButtonPxn_EXP_3n.set(0);checkButtonPxn_EXP_4n.set(0)
-
+                cXnEXP1.configure(state='disabled');cXnEXP2.configure(state='disabled')
+                cXnEXP3.configure(state='disabled');cXnEXP4.configure(state='disabled')
+                checkButtonXn_EXP_1n.set(0);checkButtonXn_EXP_2n.set(0)
+                checkButtonXn_EXP_3n.set(0);checkButtonXn_EXP_4n.set(0)
                 
             if checkButtonNORM_EXP.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
-                cPxnEXP.configure(state='disabled');checkButtonPxn_EXP.set(0)
-                cR.configure(state='disabled');checkButtonRatio.set(0)
-                cPxnEXPA.configure(state='normal');cPxnEXP1.configure(state='normal');cPxnEXP2.configure(state='normal')
-                cPxnEXP3.configure(state='normal');cPxnEXP4.configure(state='normal')
-                cREEXP.deselect();cRUEXP.deselect();cRMTHEO.deselect();cRUTHEO.deselect()
-                TextEntryRUE.configure(state='disabled');TextEntryRUT.configure(state='disabled')
+                cPxnEXP.configure(state='disabled')
+                cR.configure(state='disabled')
+                cXnEXP1.configure(state='normal');cXnEXP2.configure(state='normal')
+                cXnEXP3.configure(state='normal');cXnEXP4.configure(state='normal')
             if checkButtonNORM_EXP.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
                 cPxnEXP.configure(state='normal')
                 cR.configure(state='normal')
-                cPxnEXPA.configure(state='disabled');cPxnEXP1.configure(state='disabled');cPxnEXP2.configure(state='disabled')
-                cPxnEXP3.configure(state='disabled');cPxnEXP4.configure(state='disabled')
-                checkButtonPxn_EXP_ALL.set(0);checkButtonPxn_EXP_1n.set(0)
-                checkButtonPxn_EXP_2n.set(0);checkButtonPxn_EXP_3n.set(0);checkButtonPxn_EXP_4n.set(0)
+                cXnEXP1.configure(state='disabled');cXnEXP2.configure(state='disabled')
+                cXnEXP3.configure(state='disabled');cXnEXP4.configure(state='disabled')
+                checkButtonXn_EXP_1n.set(0);checkButtonXn_EXP_2n.set(0)
+                checkButtonXn_EXP_3n.set(0);checkButtonXn_EXP_4n.set(0)
 
         checkButtonNORM_EXP = tkinter.IntVar()
-        cNORMEXP = tkinter.Checkbutton(self,text="Color-Only Plot (No Values)",variable=checkButtonNORM_EXP,state='disabled',
+        cNORMEXP = tkinter.Checkbutton(self,text="Normal",variable=checkButtonNORM_EXP,state='disabled',
                                        command=OncheckButtonNORM_EXP)
-        cNORMEXP.grid(column=1,row=13,sticky='EW')
+        cNORMEXP.grid(column=1,row=17,sticky='EW')
 
         def OncheckButtonRatio(): #event when Ratio button is clicked
             choice_user_Ratio = checkButtonRatio.get()
@@ -571,9 +554,9 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 cRMTHEO.configure(state='normal')
                 cRUTHEO.configure(state='disabled')
                 TextEntryRUT.configure(state='normal')
-                cPxnEXP.configure(state='disabled');checkButtonPxn_EXP.set(0)
-                cNORMEXP.configure(state='disabled');checkButtonNORM_EXP.set(0)
-                checkButtonPxn_EXP_ALL.set(0)
+                cPxnEXP.configure(state='disabled')
+                cNORMEXP.configure(state='disabled')
+
                 cREEXP.select();cRMTHEO.select()
                 
             if choice_user_Ratio == 0:
@@ -593,10 +576,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio = tkinter.IntVar()
         cR = tkinter.Checkbutton(self,text="Show Ratio [Pxn(Exp.)/Pxn(Theo.)]",variable=checkButtonRatio,state='disabled',
                                  command=OncheckButtonRatio)
-        cR.grid(column=1,row=15,sticky='EW')
+        cR.grid(column=1,row=19,sticky='EW')
 
         label9 = tkinter.Label(self,anchor='w',text=u"            P(xn) Values for Ratio (Exp.): ")
-        label9.grid(column=1,row=16,columnspan=5,sticky='EW') #label widget
+        label9.grid(column=1,row=20,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonREEXP():
             if checkButtonRatio_ENSDF_EXP.get() == 0:
@@ -605,7 +588,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_ENSDF_EXP = tkinter.IntVar()
         cREEXP = tkinter.Checkbutton(self,text="ENSDF",variable=checkButtonRatio_ENSDF_EXP,state='disabled',
                                      command=OncheckButtonREEXP)
-        cREEXP.grid(column=2,row=16,sticky='EW')
+        cREEXP.grid(column=2,row=20,sticky='EW')
 
         def OncheckButtonRUEXP():
             if checkButtonRatio_USER_EXP.get() == 0:
@@ -614,14 +597,14 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_USER_EXP = tkinter.IntVar()
         cRUEXP = tkinter.Checkbutton(self,text="Upload Experimental P(xn) Data",variable=checkButtonRatio_USER_EXP,state='disabled',
                                      command=OncheckButtonRUEXP)
-        cRUEXP.grid(column=2,row=17,sticky='EW')
+        cRUEXP.grid(column=2,row=21,sticky='EW')
 
         ratioUSERFILEEXP = tkinter.StringVar()
         TextEntryRUE = tkinter.Entry(self,textvariable=ratioUSERFILEEXP,state='disabled') #create first widget, an Entry widget
-        TextEntryRUE.grid(column=3,row=17,sticky='EW')
+        TextEntryRUE.grid(column=3,row=21,sticky='EW')
 
         label10 = tkinter.Label(self,anchor='w',text=u"            P(xn) Values for Ratio (Theo.): ")
-        label10.grid(column=1,row=18,columnspan=5,sticky='EW') #label widget
+        label10.grid(column=1,row=22,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonRMTHEO():
             if checkButtonRatio_MOE_THEO.get() == 0:
@@ -630,7 +613,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_MOE_THEO = tkinter.IntVar()
         cRMTHEO = tkinter.Checkbutton(self,text="MOELLER 2003",variable=checkButtonRatio_MOE_THEO,state='disabled',
                                       command=OncheckButtonRMTHEO)
-        cRMTHEO.grid(column=2,row=18,sticky='EW')
+        cRMTHEO.grid(column=2,row=22,sticky='EW')
 
         def OncheckButtonRUTHEO():
             if checkButtonRatio_USER_THEO.get() == 0:
@@ -639,15 +622,15 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonRatio_USER_THEO = tkinter.IntVar()
         cRUTHEO = tkinter.Checkbutton(self,text="Upload Theoretical P(xn) Data",variable=checkButtonRatio_USER_THEO,state='disabled',
                                       command=OncheckButtonRUTHEO)
-        cRUTHEO.grid(column=2,row=19,sticky='EW')
+        cRUTHEO.grid(column=2,row=23,sticky='EW')
 
         ratioUSERFILETHEO = tkinter.StringVar()
         TextEntryRUT = tkinter.Entry(self,textvariable=ratioUSERFILETHEO,state='disabled') #create first widget, an Entry widget
-        TextEntryRUT.grid(column=3,row=19,sticky='EW')
+        TextEntryRUT.grid(column=3,row=23,sticky='EW')
 
         # display options for theoretical database
         label11 = tkinter.Label(self,anchor='w',text=u"Theoretical Database (Only check ONE box before proceeding): ")
-        label11.grid(column=0,row=20,columnspan=5,sticky='EW') #label widget
+        label11.grid(column=0,row=24,columnspan=5,sticky='EW') #label widget
 
         def OncheckButtonPxn_THEO():
             N_low_user = entryVariable1.get()
@@ -659,10 +642,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             Delta_Z = Z_high_user-Z_low_user
 
             if checkButtonPxn_THEO.get() == 1 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
-                cNORMTHEO.configure(state='disabled');cNORMTHEO.deselect();checkButtonPxn_THEO_ALL.set(1)
-                cP1nC.configure(state='disabled');cP1nC.deselect()
-                cP2nC.configure(state='disabled');cP2nC.deselect()
-                cP3nC.configure(state='disabled');cP3nC.deselect()
+                cNORMTHEO.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
                 cPxnTHEOA.configure(state='normal');cPxnTHEO2.configure(state='normal')
                 cPxnTHEO1.configure(state='normal');cPxnTHEO3.configure(state='normal')
             if checkButtonPxn_THEO.get() == 0 and ((Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0)):
@@ -677,7 +660,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
         checkButtonPxn_THEO = tkinter.IntVar()
         cPxnTHEO = tkinter.Checkbutton(self,text="Show P(xn)-Values",variable=checkButtonPxn_THEO,state='disabled',command=OncheckButtonPxn_THEO)
-        cPxnTHEO.grid(column=1,row=22,sticky='EW')
+        cPxnTHEO.grid(column=1,row=26,sticky='EW')
 
         def OncheckButtonPxn_THEO_ALL():
             if checkButtonPxn_THEO_ALL.get() == 1:
@@ -695,16 +678,16 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         
         checkButtonPxn_THEO_ALL = tkinter.IntVar()
         cPxnTHEOA = tkinter.Checkbutton(self,text="ALL",variable=checkButtonPxn_THEO_ALL,state='disabled',command=OncheckButtonPxn_THEO_ALL)
-        cPxnTHEOA.grid(column=2,row=21,sticky='EW')
+        cPxnTHEOA.grid(column=2,row=25,sticky='EW')
         checkButtonPxn_THEO_1n = tkinter.IntVar()
         cPxnTHEO1 = tkinter.Checkbutton(self,text="P(1n)",variable=checkButtonPxn_THEO_1n,state='disabled',command=OncheckButtonPxn_THEO_xn)
-        cPxnTHEO1.grid(column=3,row=21,sticky='EW')
+        cPxnTHEO1.grid(column=3,row=25,sticky='EW')
         checkButtonPxn_THEO_2n = tkinter.IntVar()
         cPxnTHEO2 = tkinter.Checkbutton(self,text="P(2n)",variable=checkButtonPxn_THEO_2n,state='disabled',command=OncheckButtonPxn_THEO_xn)
-        cPxnTHEO2.grid(column=2,row=22,sticky='EW')
+        cPxnTHEO2.grid(column=2,row=26,sticky='EW')
         checkButtonPxn_THEO_3n = tkinter.IntVar()
         cPxnTHEO3 = tkinter.Checkbutton(self,text="P(3n)",variable=checkButtonPxn_THEO_3n,state='disabled',command=OncheckButtonPxn_THEO_xn)
-        cPxnTHEO3.grid(column=3,row=22,sticky='EW')
+        cPxnTHEO3.grid(column=3,row=26,sticky='EW')
 
         def OncheckButtonNORM_THEO():
             N_low_user = entryVariable1.get()
@@ -717,10 +700,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             
             if checkButtonNORM_THEO.get() == 1:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
-                    cPxnTHEO.configure(state='disabled');cPxnTHEO.deselect()
-                cP1nC.configure(state='disabled');cP1nC.deselect();checkButtonPxn_THEO_ALL.set(1)
-                cP2nC.configure(state='disabled');cP2nC.deselect();cPxnTHEO.deselect()
-                cP3nC.configure(state='disabled');cP3nC.deselect()
+                    cPxnTHEO.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
                 cPxnTHEOA.configure(state='normal');cPxnTHEO2.configure(state='normal')
                 cPxnTHEO1.configure(state='normal');cPxnTHEO3.configure(state='normal')
                 
@@ -737,9 +720,9 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 
 
         checkButtonNORM_THEO = tkinter.IntVar()
-        cNORMTHEO = tkinter.Checkbutton(self,text="Color-Only Plot (No Values)",variable=checkButtonNORM_THEO,state='disabled',
+        cNORMTHEO = tkinter.Checkbutton(self,text="Normal",variable=checkButtonNORM_THEO,state='disabled',
                                         command=OncheckButtonNORM_THEO)
-        cNORMTHEO.grid(column=1,row=21,sticky='EW')
+        cNORMTHEO.grid(column=1,row=25,sticky='EW')
 
         def OncheckButtonP1nC_THEO():
             N_low_user = entryVariable1.get()
@@ -752,14 +735,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             
             if checkButtonP1nC_THEO.get() == 1:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
-                    cPxnTHEO.configure(state='disabled');cPxnTHEO.deselect()
-                cNORMTHEO.configure(state='disabled');cNORMTHEO.deselect()
-                cP2nC.configure(state='disabled');cP2nC.deselect();cPxnTHEO.deselect()
-                cP3nC.configure(state='disabled');cP3nC.deselect()
-                cPxnTHEOA.configure(state='disabled');cPxnTHEO2.configure(state='disabled')
-                cPxnTHEO1.configure(state='disabled');cPxnTHEO3.configure(state='disabled')
-                checkButtonPxn_THEO_ALL.set(0);checkButtonPxn_THEO_1n.set(0)
-                checkButtonPxn_THEO_2n.set(0);checkButtonPxn_THEO_3n.set(0)
+                    cPxnTHEO.configure(state='disabled')
+                cNORMTHEO.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
             if checkButtonP1nC_THEO.get() == 0:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnTHEO.configure(state='normal')
@@ -770,7 +749,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonP1nC_THEO = tkinter.IntVar()
         cP1nC = tkinter.Checkbutton(self,text="Show P(1n) Color Bar Gradient",variable=checkButtonP1nC_THEO,state='disabled',
                                     command=OncheckButtonP1nC_THEO)
-        cP1nC.grid(column=1,row=23,sticky='EW')
+        cP1nC.grid(column=1,row=27,sticky='EW')
 
         def OncheckButtonP2nC_THEO():
             N_low_user = entryVariable1.get()
@@ -783,14 +762,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             
             if checkButtonP2nC_THEO.get() == 1:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
-                    cPxnTHEO.configure(state='disabled');cPxnTHEO.deselect()
-                cNORMTHEO.configure(state='disabled');cNORMTHEO.deselect()
-                cP1nC.configure(state='disabled');cP1nC.deselect();cPxnTHEO.deselect()
-                cP3nC.configure(state='disabled');cP3nC.deselect()
-                cPxnTHEOA.configure(state='disabled');cPxnTHEO2.configure(state='disabled')
-                cPxnTHEO1.configure(state='disabled');cPxnTHEO3.configure(state='disabled')
-                checkButtonPxn_THEO_ALL.set(0);checkButtonPxn_THEO_1n.set(0)
-                checkButtonPxn_THEO_2n.set(0);checkButtonPxn_THEO_3n.set(0)
+                    cPxnTHEO.configure(state='disabled')
+                cNORMTHEO.configure(state='disabled')
+                cP1nC.configure(state='disabled')
+                cP3nC.configure(state='disabled')
             if checkButtonP2nC_THEO.get() == 0:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnTHEO.configure(state='normal')
@@ -801,7 +776,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonP2nC_THEO = tkinter.IntVar()
         cP2nC = tkinter.Checkbutton(self,text="Show P(2n) Color Bar Gradient",variable=checkButtonP2nC_THEO,state='disabled',
                                     command=OncheckButtonP2nC_THEO)
-        cP2nC.grid(column=2,row=23,sticky='EW')
+        cP2nC.grid(column=2,row=27,sticky='EW')
 
         def OncheckButtonP3nC_THEO():
             N_low_user = entryVariable1.get()
@@ -814,14 +789,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             
             if checkButtonP3nC_THEO.get() == 1:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
-                    cPxnTHEO.configure(state='disabled');cPxnTHEO.deselect()
-                cNORMTHEO.configure(state='disabled');cNORMTHEO.deselect()
-                cP2nC.configure(state='disabled');cP2nC.deselect();cPxnTHEO.deselect()
-                cP1nC.configure(state='disabled');cP1nC.deselect()
-                cPxnTHEOA.configure(state='disabled');cPxnTHEO2.configure(state='disabled')
-                cPxnTHEO1.configure(state='disabled');cPxnTHEO3.configure(state='disabled')
-                checkButtonPxn_THEO_ALL.set(0);checkButtonPxn_THEO_1n.set(0)
-                checkButtonPxn_THEO_2n.set(0);checkButtonPxn_THEO_3n.set(0)
+                    cPxnTHEO.configure(state='disabled')
+                cNORMTHEO.configure(state='disabled')
+                cP2nC.configure(state='disabled')
+                cP1nC.configure(state='disabled')
             if checkButtonP3nC_THEO.get() == 0:
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     cPxnTHEO.configure(state='normal')
@@ -832,7 +803,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         checkButtonP3nC_THEO = tkinter.IntVar()
         cP3nC = tkinter.Checkbutton(self,text="Show P(3n) Color Bar Gradient",variable=checkButtonP3nC_THEO,state='disabled',
                                     command=OncheckButtonP3nC_THEO)
-        cP3nC.grid(column=3,row=23,sticky='EW')
+        cP3nC.grid(column=3,row=27,sticky='EW')
 
         def PLOT(): # event when PLOT button clicked; will display the visualization based on user options
             # obtains all relevant variable values from GUI
@@ -852,10 +823,22 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                     userFile_EXP = userFileEXP.get()
 
                 Pxn_EXP = checkButtonPxn_EXP.get()
-                PxnEXPA = checkButtonPxn_EXP_ALL.get()
-                PxnEXP1 = checkButtonPxn_EXP_1n.get();PxnEXP2 = checkButtonPxn_EXP_2n.get()
-                PxnEXP3 = checkButtonPxn_EXP_3n.get();PxnEXP4 = checkButtonPxn_EXP_4n.get()
+                Xn_EXP1 = checkButtonXn_EXP_1n.get();Xn_EXP2 = checkButtonXn_EXP_2n.get()
+                Xn_EXP3 = checkButtonXn_EXP_3n.get();Xn_EXP4 = checkButtonXn_EXP_4n.get()
                 NORM_EXP = checkButtonNORM_EXP.get()
+
+                if Xn_EXP1 == 1:
+                    leg_EXP_4 = "%"+r'$\beta$'+"-1n Measured" #red
+                    leg_EXP_5 = "%"+r'$\beta$'+"-1n Upper Limit Determined" #blue
+                if Xn_EXP2 == 1:
+                    leg_EXP_4 = "%"+r'$\beta$'+"-2n Measured" #red
+                    leg_EXP_5 = "%"+r'$\beta$'+"-2n Upper Limit Determined" #blue
+                if Xn_EXP3 == 1:
+                    leg_EXP_4 = "%"+r'$\beta$'+"-3n Measured" #red
+                    leg_EXP_5 = "%"+r'$\beta$'+"-3n Upper Limit Determined" #blue
+                if Xn_EXP4 == 1:
+                    leg_EXP_4 = "%"+r'$\beta$'+"-4n Measured" #red
+                    leg_EXP_5 = "%"+r'$\beta$'+"-4n Upper Limit Determined" #blue
                 
                 Ratio = checkButtonRatio.get()
                 if Ratio == 1:
@@ -958,7 +941,6 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 N_Bound_magic = np.array(N_Bound_magic) ; Z_Bound_magic = np.array(Z_Bound_magic)
 
                 for i in range(0,size_P):
-
                     if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user:
                         append_NPB(N_P[i])
                         append_ZPB(Z_P[i])
@@ -2002,7 +1984,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
             if choice_user_EXP == 1 and choice_user_THEO == 0: #experimental database      
                 #reads in values from text files and stores all of the data columns into arrays
                 filename_ENSDF_1 = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF_Stable-QValues.txt"
-                filename_ENSDF_2 = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF_PValues.txt"
+                filename_ENSDF_2 = os.getcwd() + dirDelim + "Data_Files" + dirDelim + "ChartNuclides_DataTable_ENSDF_PValues_altver.txt"
 
                 user_P = 0 ; user_Q = 0 ; user_i = 0
                 if choice_USERFILE_EXP == 1:
@@ -2042,7 +2024,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 Snlt0,Qbn,Qb2n,Qb3n,Qb4n = np.genfromtxt(filename_ENSDF_1,skip_header=1,usecols=(4,5,6,7,8),dtype=str,unpack=True)
 
                 ELE_names_EXP = np.genfromtxt(filename_ENSDF_2,skip_header=1,usecols=(0),dtype=str,unpack=True)
-                N_P,Z_P,P1n,P2n,P3n,P4n = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1, 2, 3, 6, 9, 10),unpack=True)
+                N_P,Z_P,P1n,P2n,P3n,P4n,P1SP,P2SP,P3SP,P4SP = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1, 2, 3, 6, 9, 10, 11, 12, 13 ,14),unpack=True)
                 size_P = len(N_P)
 
                 N_P_iso1,Z_P_iso1,P1n_iso1,P2n_iso1,N_P_iso2,Z_P_iso2,P1n_iso2,P2n_iso2 = np.loadtxt(filename_ENSDF_2,skiprows=1,usecols=(1,2,4,7,1,2,5,8),unpack=True)
@@ -2238,10 +2220,6 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         if float(Qb4n[i]) > 0:
                             N_Qb4n_Bound = np.append(N_Qb4n_Bound,N[i]) 
                             Z_Qb4n_Bound = np.append(Z_Qb4n_Bound,Z[i])
-                #print np.size(N_Qbn_Bound),np.size(Z_Qbn_Bound)
-                #print np.size(N_Qb2n_Bound),np.size(Z_Qb2n_Bound)
-                #print np.size(N_Qb3n_Bound),np.size(Z_Qb3n_Bound)
-                #print np.size(N_Qb4n_Bound),np.size(Z_Qb4n_Bound)
 
                 # for loop that assigns N and Z values to the arrays only if the isotopes have a Qbxn greater than 0 using user files
                 if user_Q == 1 or user_i == 1:
@@ -2275,10 +2253,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         #----------------------------------------------------------------------------    
 
                 # assigns the N and Z values of the isotopes with probability > 0
-                N_P1n_Bound = [];Z_P1n_Bound = []
-                N_P2n_Bound = [];Z_P2n_Bound = []      
-                N_P3n_Bound = [];Z_P3n_Bound = []        
-                N_P4n_Bound = [];Z_P4n_Bound = []
+                N_P1n_Bound = [];Z_P1n_Bound = [] ; N_P1n_UL = [];Z_P1n_UL = [] ; N_P1n_NO = [];Z_P1n_NO = []
+                N_P2n_Bound = [];Z_P2n_Bound = [] ; N_P2n_UL = [];Z_P2n_UL = [] ; N_P2n_NO = [];Z_P2n_NO = []      
+                N_P3n_Bound = [];Z_P3n_Bound = [] ; N_P3n_UL = [];Z_P3n_UL = [] ; N_P3n_NO = [];Z_P3n_NO = []        
+                N_P4n_Bound = [];Z_P4n_Bound = [] ; N_P4n_UL = [];Z_P4n_UL = [] ; N_P4n_NO = [];Z_P4n_NO = []
 
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     if (Pxn_EXP == 1 or Ratio == 1) and NORM_EXP == 0:
@@ -2332,9 +2310,27 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 # sets arrays for the nuclei with Pxn values within user bounds using the basic data files
                 for i in range(0,size_P):
                     if Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user:
+                        
+                        if Xn_EXP1 == 1 and P1SP[i] == 3:
+                            N_P1n_NO = np.append(N_P1n_NO,N_P[i])
+                            Z_P1n_NO = np.append(Z_P1n_NO,Z_P[i])
+                        if Xn_EXP2 == 1 and P2SP[i] == 3:
+                            N_P2n_NO = np.append(N_P2n_NO,N_P[i])
+                            Z_P2n_NO = np.append(Z_P2n_NO,Z_P[i])
+                        if Xn_EXP3 == 1 and P3SP[i] == 3:
+                            N_P3n_NO = np.append(N_P3n_NO,N_P[i])
+                            Z_P3n_NO = np.append(Z_P3n_NO,Z_P[i])
+                        if Xn_EXP4 == 1 and P4SP[i] == 3:
+                            N_P4n_NO = np.append(N_P4n_NO,N_P[i])
+                            Z_P4n_NO = np.append(Z_P4n_NO,Z_P[i])
+                        
                         if P1n[i] > 0: 
                             N_P1n_Bound = np.append(N_P1n_Bound,N_P[i]) 
                             Z_P1n_Bound = np.append(Z_P1n_Bound,Z_P[i])
+
+                            if Xn_EXP1 == 1 and P1SP[i] == 1:
+                                N_P1n_UL = np.append(N_P1n_UL,N_P[i])
+                                Z_P1n_UL = np.append(Z_P1n_UL,Z_P[i])
 
                             if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                                 if Pxn_EXP == 1 and NORM_EXP == 0 and Ratio == 0 and Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
@@ -2346,6 +2342,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                             N_P2n_Bound = np.append(N_P2n_Bound,N_P[i])
                             Z_P2n_Bound = np.append(Z_P2n_Bound,Z_P[i])
 
+                            if Xn_EXP2 == 1 and P2SP[i] == 1:
+                                N_P2n_UL = np.append(N_P2n_UL,N_P[i])
+                                Z_P2n_UL = np.append(Z_P2n_UL,Z_P[i])
+
                             if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                                 if Pxn_EXP == 1 and NORM_EXP == 0 and Ratio == 0 and Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
                                     N_P2n_Bound_value = np.append(N_P2n_Bound_value,N_P[i])
@@ -2355,6 +2355,10 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                         if P3n[i] > 0: 
                             N_P3n_Bound = np.append(N_P3n_Bound,N_P[i])
                             Z_P3n_Bound = np.append(Z_P3n_Bound,Z_P[i])
+
+                            if Xn_EXP3 == 1 and P3SP[i] == 1:
+                                N_P3n_UL = np.append(N_P3n_UL,N_P[i])
+                                Z_P3n_UL = np.append(Z_P3n_UL,Z_P[i])
 
                             if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                                 if Pxn_EXP == 1 and NORM_EXP == 0 and Ratio == 0 and Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
@@ -2366,12 +2370,15 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                             N_P4n_Bound = np.append(N_P4n_Bound,N_P[i])
                             Z_P4n_Bound = np.append(Z_P4n_Bound,Z_P[i])
 
+                            if Xn_EXP4 == 1 and P4SP[i] == 1:
+                                N_P4n_UL = np.append(N_P4n_UL,N_P[i])
+                                Z_P4n_UL = np.append(Z_P4n_UL,Z_P[i])
+
                             if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                                 if Pxn_EXP == 1 and NORM_EXP == 0 and Ratio == 0 and Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user:
                                     N_P4n_Bound_value = np.append(N_P4n_Bound_value,N_P[i])
                                     Z_P4n_Bound_value = np.append(Z_P4n_Bound_value,Z_P[i])
                                     P4n_Bound = np.append(P4n_Bound,P4n[i])
-                        
 
                     if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                         if (Pxn_EXP == 1 or Ratio == 1) and NORM_EXP == 0 and Z_P[i] >= Z_low_user and Z_P[i] <= Z_high_user and N_P[i] > N_low_user and N_P[i] < N_high_user and (P1n[i] != 0 or P2n[i] != 0 or P3n[i] != 0 or P4n[i] != 0): 
@@ -2380,8 +2387,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                             A_calc = N_P[i] + Z_P[i]
                             ELE_name = np.append(ELE_name,ELE_names_EXP[i])
                             A_ELE = np.append(A_ELE,A_calc)
-                #print np.size(N_P1n_Bound),np.size(N_P2n_Bound)
-                #print np.size(N_P3n_Bound),np.size(N_P4n_Bound) 
+                            
                 # sets arrays for the nuclei with Pxn values within user bounds using the user data files
                 if user_P == 1 or user_Q == 1 or user_i == 1:
                     for i in range(0,size_P_USER):
@@ -2489,14 +2495,12 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                 # builds the chart that will be displayed
                 color1='black'
-                color2='Tomato'
-                color3='DeepSkyBlue'
-                color4='DarkOrange'
-                color5='IndianRed'
-                color6='Lime'
-                color7='Red'
-                color8='Magenta'
-                color9='Green'
+                color2='Yellow'
+                color3='DarkOrange'
+                color4='Red'
+                color5='Blue'
+                color6='Green'
+                color7='White'
                 leg_list = []
                 c1=0;c2=0;c3=0;c4=0;c5=0
                 c6=0;c7=0;c8=0;c9=0;c10=0;c11=0
@@ -2571,50 +2575,70 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 leg_text = []
                 # outputs highlighted nuclei based on Qbxn values and Pxn values
                 if len(N_Bound) != 0:
-                    e0, = plt.plot(N_Bound,Z_Bound,marker='s',color='0.8',markersize=msize,linestyle='');c1=1
+                    e2, = plt.plot(N_Bound,Z_Bound,marker='s',color=color2,markersize=msize,linestyle='');c2=1
                 if len(N_stable_Bound) != 0:
-                    e1, = plt.plot(N_stable_Bound,Z_stable_Bound,marker='s',color=color1,markersize=msize,linestyle='');c2=1
+                    e1, = plt.plot(N_stable_Bound,Z_stable_Bound,marker='s',color=color1,markersize=msize,linestyle='');c1=1
 
-                if len(N_Qbn_Bound) != 0:
-                    e2, = plt.plot(N_Qbn_Bound,Z_Qbn_Bound,marker='s',color=color2,markersize=msize,linestyle='');c3=1
-                if len(N_Qb2n_Bound) != 0:
-                    e3, = plt.plot(N_Qb2n_Bound,Z_Qb2n_Bound,marker='s',color=color3,markersize=msize,linestyle='');c4=1
-                if len(N_Qb3n_Bound) != 0:
-                    e4, = plt.plot(N_Qb3n_Bound,Z_Qb3n_Bound,marker='s',color=color4,markersize=msize,linestyle='');c5=1
-                if len(N_Qb4n_Bound) != 0:
-                    e5, = plt.plot(N_Qb4n_Bound,Z_Qb4n_Bound,marker='s',color=color5,markersize=msize,linestyle='');c6=1
+                if Xn_EXP1 == 1 and len(N_Qbn_Bound) != 0:
+                    e3, = plt.plot(N_Qbn_Bound,Z_Qbn_Bound,marker='s',color=color3,markersize=msize,linestyle='');c3=1
+                if Xn_EXP2 == 1 and len(N_Qb2n_Bound) != 0:
+                    e3, = plt.plot(N_Qb2n_Bound,Z_Qb2n_Bound,marker='s',color=color3,markersize=msize,linestyle='');c3=1
+                if Xn_EXP3 == 1 and len(N_Qb3n_Bound) != 0:
+                    e3, = plt.plot(N_Qb3n_Bound,Z_Qb3n_Bound,marker='s',color=color3,markersize=msize,linestyle='');c3=1
+                if Xn_EXP4 == 1 and len(N_Qb4n_Bound) != 0:
+                    e3, = plt.plot(N_Qb4n_Bound,Z_Qb4n_Bound,marker='s',color=color3,markersize=msize,linestyle='');c3=1
+
+                if len(N_P1n_Bound) != 0 and (Xn_EXP1 == 1):
+                    e4, = plt.plot(N_P1n_Bound,Z_P1n_Bound,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+                if len(N_P2n_Bound) != 0 and (Xn_EXP2 == 1):
+                    e4, = plt.plot(N_P2n_Bound,Z_P2n_Bound,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+                if len(N_P3n_Bound) != 0 and (Xn_EXP3 == 1):
+                    e4, = plt.plot(N_P3n_Bound,Z_P3n_Bound,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+                if len(N_P4n_Bound) != 0 and (Xn_EXP4 == 1):
+                    e4, = plt.plot(N_P4n_Bound,Z_P4n_Bound,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+
+                #print(len(N_P1n_UL),Xn_EXP1)
+                if len(N_P1n_UL) != 0 and (Xn_EXP1 == 1):
+                    e5, = plt.plot(N_P1n_UL,Z_P1n_UL,marker='s',color=color5,markersize=msize,linestyle='');c5=1
+                if len(N_P2n_UL) != 0 and (Xn_EXP2 == 1):
+                    e5, = plt.plot(N_P2n_UL,Z_P2n_UL,marker='s',color=color5,markersize=msize,linestyle='');c5=1
+                if len(N_P3n_UL) != 0 and (Xn_EXP3 == 1):
+                    e5, = plt.plot(N_P3n_UL,Z_P3n_UL,marker='s',color=color5,markersize=msize,linestyle='');c5=1
+                if len(N_P4n_UL) != 0 and (Xn_EXP4 == 1):
+                    e5, = plt.plot(N_P4n_UL,Z_P4n_UL,marker='s',color=color5,markersize=msize,linestyle='');c5=1
+
                 if len(Snlt0_N) != 0:
-                    e6, = plt.plot(Snlt0_N,Snlt0_Z,marker='s',color=color9,markersize=msize,linestyle='');c7=1
+                    e6, = plt.plot(Snlt0_N,Snlt0_Z,marker='s',color=color6,markersize=msize,linestyle='');c6=1
 
-                if len(N_P1n_Bound) != 0 and (PxnEXP1 == 1 or PxnEXPA == 1 or Ratio == 1):
-                    e7, = plt.plot(N_P1n_Bound,Z_P1n_Bound,marker='s',color=color1,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c8=1
-                if len(N_P2n_Bound) != 0 and (PxnEXP2 == 1 or PxnEXPA == 1 or Ratio == 1):
-                    e8, = plt.plot(N_P2n_Bound,Z_P2n_Bound,marker='s',color=color6,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c9=1
-                if len(N_P3n_Bound) != 0 and (PxnEXP3 == 1 or PxnEXPA == 1 or Ratio == 1):
-                    e9, = plt.plot(N_P3n_Bound,Z_P3n_Bound,marker='s',color=color7,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c10=1
-                if len(N_P4n_Bound) != 0 and (PxnEXP4 == 1 or PxnEXPA == 1 or Ratio == 1):
-                    e10, = plt.plot(N_P4n_Bound,Z_P4n_Bound,marker='s',color=color8,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c11=1
+                if len(N_P1n_NO) != 0 and (Xn_EXP1 == 1):
+                    e7, = plt.plot(N_P1n_NO,Z_P1n_NO,marker='s',color=color7,markeredgewidth=1,markersize=msize,linestyle='');c7=1
+                if len(N_P2n_NO) != 0 and (Xn_EXP2 == 1):
+                    e7, = plt.plot(N_P2n_NO,Z_P2n_NO,marker='s',color=color7,markeredgewidth=1,markersize=msize,linestyle='');c7=1
+                if len(N_P3n_NO) != 0 and (Xn_EXP3 == 1):
+                    e7, = plt.plot(N_P3n_NO,Z_P3n_NO,marker='s',color=color7,markeredgewidth=1,markersize=msize,linestyle='');c7=1
+                if len(N_P4n_NO) != 0 and (Xn_EXP4 == 1):
+                    e7, = plt.plot(N_P4n_NO,Z_P4n_NO,marker='s',color=color7,markeredgewidth=1,markersize=msize,linestyle='');c7=1
 
                 # if user uploaded data files, output is analyzed here
                 if user_Q == 1 or user_i == 1:
-                    if len(N_Qbn_Bound_USER) != 0:
-                        plt.plot(N_Qbn_Bound_USER,Z_Qbn_Bound_USER,marker='s',color=color2,markersize=msize,linestyle='');c3=1
-                    if len(N_Qb2n_Bound_USER) != 0:
-                        plt.plot(N_Qb2n_Bound_USER,Z_Qb2n_Bound_USER,marker='s',color=color3,markersize=msize,linestyle='');c4=1   
-                    if len(N_Qb3n_Bound_USER) != 0:
-                        plt.plot(N_Qb3n_Bound_USER,Z_Qb3n_Bound_USER,marker='s',color=color4,markersize=msize,linestyle='');c5=1
-                    if len(N_Qb4n_Bound_USER) != 0:
-                        plt.plot(N_Qb4n_Bound_USER,Z_Qb4n_Bound_USER,marker='s',color=color5,markersize=msize,linestyle='');c6=1
+                    if Xn_EXP1 == 1 and len(N_Qbn_Bound_USER) != 0:
+                        plt.plot(N_Qbn_Bound_USER,Z_Qbn_Bound_USER,marker='s',color=color3,markersize=msize,linestyle='');c3=1
+                    if Xn_EXP2 == 1 and len(N_Qb2n_Bound_USER) != 0:
+                        plt.plot(N_Qb2n_Bound_USER,Z_Qb2n_Bound_USER,marker='s',color=color3,markersize=msize,linestyle='');c3=1   
+                    if Xn_EXP3 == 1 and len(N_Qb3n_Bound_USER) != 0:
+                        plt.plot(N_Qb3n_Bound_USER,Z_Qb3n_Bound_USER,marker='s',color=color3,markersize=msize,linestyle='');c3=1
+                    if Xn_EXP4 == 1 and len(N_Qb4n_Bound_USER) != 0:
+                        plt.plot(N_Qb4n_Bound_USER,Z_Qb4n_Bound_USER,marker='s',color=color3,markersize=msize,linestyle='');c3=1
 
                 if user_P == 1 or user_Q == 1 or user_i == 1:
-                    if len(N_P1n_Bound_USER) != 0 and (PxnEXP1 == 1 or PxnEXPA == 1 or Ratio == 1):
-                        plt.plot(N_P1n_Bound_USER,Z_P1n_Bound_USER,marker='s',color=color1,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c8=1
-                    if len(N_P2n_Bound_USER) != 0 and (PxnEXP2 == 1 or PxnEXPA == 1 or Ratio == 1):
-                        plt.plot(N_P2n_Bound_USER,Z_P2n_Bound_USER,marker='s',color=color6,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c9=1
-                    if len(N_P3n_Bound_USER) != 0 and (PxnEXP3 == 1 or PxnEXPA == 1 or Ratio == 1):
-                        plt.plot(N_P3n_Bound_USER,Z_P3n_Bound_USER,marker='s',color=color7,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c10=1
-                    if len(N_P4n_Bound_USER) != 0 and (PxnEXP4 == 1 or PxnEXPA == 1 or Ratio == 1):
-                        plt.plot(N_P4n_Bound_USER,Z_P4n_Bound_USER,marker='s',color=color8,markeredgewidth=mew,markersize=msize,fillstyle='none',linestyle='');c11=1
+                    if len(N_P1n_Bound_USER) != 0 and (Xn_EXP1 == 1):
+                        plt.plot(N_P1n_Bound_USER,Z_P1n_Bound_USER,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+                    if len(N_P2n_Bound_USER) != 0 and (Xn_EXP2 == 1):
+                        plt.plot(N_P2n_Bound_USER,Z_P2n_Bound_USER,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+                    if len(N_P3n_Bound_USER) != 0 and (Xn_EXP3 == 1):
+                        plt.plot(N_P3n_Bound_USER,Z_P3n_Bound_USER,marker='s',color=color4,markersize=msize,linestyle='');c4=1
+                    if len(N_P4n_Bound_USER) != 0 and (Xn_EXP4 == 1):
+                        plt.plot(N_P4n_Bound_USER,Z_P4n_Bound_USER,marker='s',color=color4,markersize=msize,linestyle='');c4=1
                         
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     if (Ratio == 1 or Pxn_EXP == 1) and NORM_EXP == 0 and len(N_ELE) != 0 and len(ELE_name) != 0:
@@ -2676,7 +2700,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                     # outputs Pxn values and does priority check if user data files uploaded
                     if Pxn_EXP == 1 and NORM_EXP == 0 and Ratio == 0:
-                        if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
+                        if (Xn_EXP1 == 1) and len(N_P1n_Bound_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                             for i in range(0,len(N_P1n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
                                     str_ratio="{0:.2f}".format(P1n_Bound[i])
@@ -2692,7 +2716,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P1n_Bound[i])
                                         plt.text(N_P1n_Bound_value[i]-N_adj,Z_P1n_Bound_value[i]+Z_adj_1,str_ratio,fontsize=fontsize_set_3)        
 
-                        if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
+                        if (Xn_EXP2 == 1) and len(N_P2n_Bound_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                             for i in range(0,len(N_P2n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
                                     str_ratio="{0:.2f}".format(P2n_Bound[i])
@@ -2708,7 +2732,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P2n_Bound[i])
                                         plt.text(N_P2n_Bound_value[i]-N_adj,Z_P2n_Bound_value[i]+Z_adj_2,str_ratio,fontsize=fontsize_set_3)
 
-                        if (PxnEXP3 == 1 or PxnEXPA == 1) and len(N_P3n_Bound_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
+                        if (Xn_EXP3 == 1) and len(N_P3n_Bound_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                             for i in range(0,len(N_P3n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
                                     str_ratio="{0:.2f}".format(P3n_Bound[i])
@@ -2724,7 +2748,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P3n_Bound[i])
                                         plt.text(N_P3n_Bound_value[i]-N_adj,Z_P3n_Bound_value[i]+Z_adj_3,str_ratio,fontsize=fontsize_set_3)    
 
-                        if (PxnEXP4 == 1 or PxnEXPA == 1) and len(N_P4n_Bound_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
+                        if (Xn_EXP4 == 1) and len(N_P4n_Bound_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                             for i in range(0,len(N_P4n_Bound_value)):
                                 if user_P != 1 or user_Q != 1 or user_i != 1:
                                     str_ratio="{0:.2f}".format(P4n_Bound[i])
@@ -2740,7 +2764,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P4n_Bound[i])
                                         plt.text(N_P4n_Bound_value[i]-N_adj,Z_P4n_Bound_value[i]+Z_adj_4,str_ratio,fontsize=fontsize_set_3)
 
-                        if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                        if (Xn_EXP1 == 1) and len(N_P1n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in range(0,len(N_P1n_Bound_value_iso1)):
                                 if user_i != 1:
                                     str_ratio="{0:.2f}".format(P1n_Bound_iso1[i])
@@ -2756,7 +2780,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P1n_Bound_iso1[i])
                                         plt.text(N_P1n_Bound_value_iso1[i]-N_adj_i,Z_P1n_Bound_value_iso1[i]+Z_adj_1,'| '+str_ratio,fontsize=fontsize_set_3)
 
-                        if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                        if (Xn_EXP2 == 1) and len(N_P2n_Bound_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in range(0,len(N_P2n_Bound_value_iso1)):
                                 if user_i != 1:
                                     str_ratio="{0:.2f}".format(P2n_Bound_iso1[i])
@@ -2772,7 +2796,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P2n_Bound_iso1[i])
                                         plt.text(N_P2n_Bound_value_iso1[i]-N_adj_i,Z_P2n_Bound_value_iso1[i]+Z_adj_2,'| '+str_ratio,fontsize=fontsize_set_3)
 
-                        if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                        if (Xn_EXP1 == 1) and len(N_P1n_Bound_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in range(0,len(N_P1n_Bound_value_iso2)):
                                 if user_i != 1:
                                     str_ratio="{0:.2f}".format(P1n_Bound_iso2[i])
@@ -2788,7 +2812,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                                         str_ratio="{0:.2f}".format(P1n_Bound_iso2[i])
                                         plt.text(N_P1n_Bound_value_iso2[i]-N_adj_i,Z_P1n_Bound_value_iso2[i]+Z_adj_3,'| '+str_ratio,fontsize=fontsize_set_3)
 
-                        if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                        if (Xn_EXP2 == 1) and len(N_P2n_Bound_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                             for i in range(0,len(N_P2n_Bound_value_iso2)):
                                 if user_i != 1:
                                     str_ratio="{0:.2f}".format(P2n_Bound_iso2[i])
@@ -2806,43 +2830,43 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                         # outputs Pxn values from user data files 
                         if user_P == 1 or user_Q == 1 or user_i == 1:
-                            if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_USER_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
+                            if (Xn_EXP1 == 1) and len(N_P1n_Bound_USER_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                                 for i in range(0,len(N_P1n_Bound_USER_value)):
                                     str_ratio="{0:.2f}".format(P1n_Bound_USER[i])
                                     plt.text(N_P1n_Bound_USER_value[i]-N_adj,Z_P1n_Bound_USER_value[i]+Z_adj_1,str_ratio,fontsize=fontsize_set_3)
 
-                            if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_USER_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
+                            if (Xn_EXP2 == 1) and len(N_P2n_Bound_USER_value) != 0 and Delta_Z <= 10 and Delta_N <= 10:
                                 for i in range(0,len(N_P2n_Bound_USER_value)):
                                     str_ratio="{0:.2f}".format(P2n_Bound_USER[i])
                                     plt.text(N_P2n_Bound_USER_value[i]-N_adj,Z_P2n_Bound_USER_value[i]+Z_adj_2,str_ratio,fontsize=fontsize_set_3)
 
-                            if (PxnEXP3 == 1 or PxnEXPA == 1) and len(N_P3n_Bound_USER_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
+                            if (Xn_EXP3 == 1) and len(N_P3n_Bound_USER_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                                 for i in range(0,len(N_P3n_Bound_USER_value)):
                                     str_ratio="{0:.2f}".format(P3n_Bound_USER[i])
                                     plt.text(N_P3n_Bound_USER_value[i]-N_adj,Z_P3n_Bound_USER_value[i]+Z_adj_3,str_ratio,fontsize=fontsize_set_3)
 
-                            if (PxnEXP4 == 1 or PxnEXPA == 1) and len(N_P4n_Bound_USER_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
+                            if (Xn_EXP4 == 1) and len(N_P4n_Bound_USER_value) != 0 and Delta_Z <= 7 and Delta_N <= 7:
                                 for i in range(0,len(N_P4n_Bound_USER_value)):
                                     str_ratio="{0:.2f}".format(P4n_Bound_USER[i])
                                     plt.text(N_P4n_Bound_USER_value[i]-N_adj,Z_P4n_Bound_USER_value[i]+Z_adj_4,str_ratio,fontsize=fontsize_set_3)
 
                         if user_i == 1:    
-                            if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_USER_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                            if (Xn_EXP1 == 1) and len(N_P1n_Bound_USER_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in range(0,len(N_P1n_Bound_USER_value_iso1)):
                                     str_ratio="{0:.2f}".format(P1n_Bound_USER_iso1[i])
                                     plt.text(N_P1n_Bound_USER_value_iso1[i]-N_adj_i,Z_P1n_Bound_USER_value_iso1[i]+Z_adj_1,'| '+str_ratio,fontsize=fontsize_set_3)
 
-                            if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_USER_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                            if (Xn_EXP2 == 1) and len(N_P2n_Bound_USER_value_iso1) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in range(0,len(N_P2n_Bound_USER_value_iso1)):
                                     str_ratio="{0:.2f}".format(P2n_Bound_USER_iso1[i])
                                     plt.text(N_P2n_Bound_USER_value_iso1[i]-N_adj_i,Z_P2n_Bound_USER_value_iso1[i]+Z_adj_2,'| '+str_ratio,fontsize=fontsize_set_3)
 
-                            if (PxnEXP1 == 1 or PxnEXPA == 1) and len(N_P1n_Bound_USER_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                            if (Xn_EXP1 == 1) and len(N_P1n_Bound_USER_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in range(0,len(N_P1n_Bound_USER_value_iso2)):
                                     str_ratio="{0:.2f}".format(P1n_Bound_USER_iso2[i])
                                     plt.text(N_P1n_Bound_USER_value_iso2[i]-N_adj_i,Z_P1n_Bound_USER_value_iso2[i]+Z_adj_3,'| '+str_ratio,fontsize=fontsize_set_3)
 
-                            if (PxnEXP2 == 1 or PxnEXPA == 1) and len(N_P2n_Bound_USER_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
+                            if (Xn_EXP2 == 1) and len(N_P2n_Bound_USER_value_iso2) != 0 and Delta_Z <= 4 and Delta_N <= 4:
                                 for i in range(0,len(N_P2n_Bound_USER_value_iso2)):
                                     str_ratio="{0:.2f}".format(P2n_Bound_USER_iso2[i])
                                     plt.text(N_P2n_Bound_USER_value_iso2[i]-N_adj_i,Z_P2n_Bound_USER_value_iso2[i]+Z_adj_4,'| '+str_ratio,fontsize=fontsize_set_3)
@@ -2956,48 +2980,40 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
 
                 # builds legend
                 if c1 == 1:
-                    leg_entries.append(e0);leg_text.append(leg_EXP_1)
+                    leg_entries.append(e1);leg_text.append(leg_EXP_1)
                 if c2 == 1:
-                    leg_entries.append(e1);leg_text.append(leg_EXP_2)
+                    leg_entries.append(e2);leg_text.append(leg_EXP_2)
                 if c3 == 1:
-                    leg_entries.append(e2);leg_text.append(leg_EXP_3)
+                    leg_entries.append(e3);leg_text.append(leg_EXP_3)
                 if c4 == 1:
-                    leg_entries.append(e3);leg_text.append(leg_EXP_4)
+                    leg_entries.append(e4);leg_text.append(leg_EXP_4)
                 if c5 == 1:
-                    leg_entries.append(e4);leg_text.append(leg_EXP_5)
+                    leg_entries.append(e5);leg_text.append(leg_EXP_5)
                 if c6 == 1:
-                    leg_entries.append(e5);leg_text.append(leg_EXP_6)
+                    leg_entries.append(e6);leg_text.append(leg_EXP_6)
                 if c7 == 1:
-                    leg_entries.append(e6);leg_text.append(leg_EXP_7)
-                if c8 == 1:
-                    leg_entries.append(e7);leg_text.append(leg_EXP_8)
-                if c9 == 1:
-                    leg_entries.append(e8);leg_text.append(leg_EXP_9)
-                if c10 == 1:
-                    leg_entries.append(e9);leg_text.append(leg_EXP_10)
-                if c11 == 1:
-                    leg_entries.append(e10);leg_text.append(leg_EXP_11)
+                    leg_entries.append(e7);leg_text.append(leg_EXP_7)
                     
                 if (Delta_N == 10 and Delta_Z == 10) or (Delta_N == 7 and Delta_Z == 7) or (Delta_N == 4 and Delta_Z == 4) or (Delta_N == 0 and Delta_Z == 0):
                     l1 = plt.legend(leg_entries,leg_text,loc=2,bbox_to_anchor=[1.02,0.98],borderaxespad=0.,markerscale=ms1,numpoints=1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10  and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7:
-                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 1 and Pxn_EXP == 0 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP,leg_ValueLabels5_EXP),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_EXP,leg_ValueLabels2_EXP,leg_ValueLabels3_EXP,leg_ValueLabels4_EXP,leg_ValueLabels5_EXP),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
 
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 10 and Delta_N <= 10 and Delta_N > 7 and Delta_Z > 7:
-                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 7 and Delta_N <= 7  and Delta_N > 4 and Delta_Z > 4:
-                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO,leg_ValueLabels4_THEO,leg_ValueLabels5_THEO),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_THEO,leg_ValueLabels2_THEO,leg_ValueLabels3_THEO,leg_ValueLabels4_THEO,leg_ValueLabels5_THEO),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                     if Ratio == 0 and Pxn_EXP == 1 and NORM_EXP == 0 and Delta_Z <= 4 and Delta_N <= 4:
-                        l2 = plt.legend((leg_ValueLabels1_iso,leg_ValueLabels2_iso,leg_ValueLabels3_iso,leg_ValueLabels4_iso,leg_ValueLabels5_iso),loc=6,bbox_to_anchor=[1.02,0.35],numpoints=1,markerscale=ms2)
+                        l2 = plt.legend((leg_ValueLabels1_iso,leg_ValueLabels2_iso,leg_ValueLabels3_iso,leg_ValueLabels4_iso,leg_ValueLabels5_iso),loc=6,bbox_to_anchor=[1.02,0.4],numpoints=1,markerscale=ms2)
                         g.add_artist(l1)
                 else:
                     l1 = plt.legend(leg_entries,leg_text,loc=4,markerscale=ms1,numpoints=1)
@@ -3005,9 +3021,7 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
                 plt.show(block=False)
 
         PLOT_Button = tkinter.Button(self,text=u"PLOT",command=PLOT) # PLOT button
-        PLOT_Button.grid(column=5,row=18)
-        labelExtra1 = tkinter.Label(self,anchor='w',text=u"")
-        labelExtra1.grid(column=6,row=0,columnspan=1,sticky='EW')
+        PLOT_Button.grid(column=2,row=28)
 
         self.grid_columnconfigure(0,weight=1) #resize columns when window is resized
         self.grid_columnconfigure(1,weight=1) #resize columns when window is resized
@@ -3015,12 +3029,12 @@ N - Z - P1n - P2n - P3n - Nuclei Name"""
         self.grid_columnconfigure(3,weight=1) #resize columns when window is resized
         self.grid_columnconfigure(4,weight=1) #resize columns when window is resized
 
-        self.resizable(True,True) #enables horizontal resizing and vertical resizing
+        self.resizable(True,False) #enables horizontal resizing, prevents vertical resizing
         self.update()
         self.geometry(self.geometry())  
 
 # opens and starts GUI for visualization
 if __name__ == "__main__":
     app = BDNE_GUI(None) #first GUI element so no parent, 'None'
-    app.title('Beta-Delayed Neutron Emission Visualization Program - Version 1.4')
+    app.title('Beta-Delayed Neutron Emission Visualization Program - Version 2')
     app.mainloop() #program loops indefinitely, waiting for events, until user closes window
